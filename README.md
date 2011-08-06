@@ -20,28 +20,28 @@ as using the built-in one.
 
 3. Open lib/main.js and add the following code: 
 
-    spade.require('sproutcore-touch');
-    var MyApp = SC.Application.create();
+      spade.require('sproutcore-touch');
+      var MyApp = SC.Application.create();
 
-    MyApp.MyView = SC.View.extend({
-      pinchChange: function(recognizer) {
-        this.$().css('-webkit-transform','scale3d('+recognizer.get('scale')+','+recognizer.get('scale')+',1)');
-      }
-    });
+      MyApp.MyView = SC.View.extend({
+        pinchChange: function(recognizer) {
+          this.$().css('-webkit-transform','scale3d('+recognizer.get('scale')+','+recognizer.get('scale')+',1)');
+        }
+      });
 
-    MyApp.MyView.create({
-      elementId: 'test-view'
-    }).append();
+      MyApp.MyView.create({
+        elementId: 'test-view'
+      }).append();
 
   This code snippet will create a pinchable view and append it to your document.
 
 4. Open css/main.css and add the following styles:
 
-      #test-view {
-        width:500px;
-        height:500px;
-        background-color: red;
-      }
+        #test-view {
+          width:500px;
+          height:500px;
+          background-color: red;
+        }
   This simply makes our custom view visible
 
 5. Open the iOS Simulator and try pinching the red box
