@@ -1,5 +1,5 @@
 // ==========================================================================
-// Project:  SproutCore Touch
+// Project:  SproutCore Runtime
 // Copyright: ©2011 Strobe Inc. and contributors.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -135,9 +135,7 @@ test("If the touches move, the translation should reflect the change", function(
     }]
   };
 
-  window.foo=true;
   view.$().trigger(touchEvent);
-  window.foo=false;
 
   equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),SC.Gesture.BEGAN, "gesture should be BEGAN");
 
@@ -322,7 +320,7 @@ test("Subsequent pan gestures should be relative to previous ones", function() {
 
   view.$().trigger(touchEvent);
 
-  equals(translation.x,10,'changed x value');
+  equals(translation.x,5,'changed x value');
   equals(translation.y,0,'changed y value');
 
 });

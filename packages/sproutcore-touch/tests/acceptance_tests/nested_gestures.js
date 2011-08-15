@@ -1,5 +1,5 @@
 //// ==========================================================================
-// Project:  SproutCore Touch
+// Project:  SproutCore Runtime
 // Copyright: ©2011 Strobe Inc. and contributors.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -289,8 +289,8 @@ test("Simultaneous pinch and pan on the outer div", function() {
   ok(panChangeWasCalled, "panChange was called");
   ok(pinchStartWasCalled, "pinchStart was called");
 
-  equals(outerdiv.translate.x,25,'move right another 10px');
-  equals(outerdiv.translate.y,20,'move down another 10px');
+  equals(outerdiv.translate.x,15,'move right another 10px');
+  equals(outerdiv.translate.y,10,'move down another 10px');
 
   equals(outerdiv.scale,2,'double the scale');
 });

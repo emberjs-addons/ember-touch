@@ -1,8 +1,10 @@
 // ==========================================================================
-// Project:  SproutCore Touch
+// Project:  SproutCore Runtime
 // Copyright: ©2011 Strobe Inc. and contributors.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
+
+require('sproutcore-touch/system/gesture');
 
 var get = SC.get;
 var set = SC.set;

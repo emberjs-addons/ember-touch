@@ -1,5 +1,5 @@
 // ==========================================================================
-// Project:  SproutCore Touch
+// Project:  SproutCore Runtime
 // Copyright: ©2011 Strobe Inc. and contributors.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -10,6 +10,9 @@ var get = SC.get;
 var application;
 var manager;
 var numStart, numMove, numEnd, numCancel;
+
+var view = SC.View.create();
+var manager = SC.GestureManager.create()
 
 var gesture = SC.Object.extend({
   touchStart: function(evt, view, manager) {
@@ -51,16 +54,17 @@ module("Gesture Manager",{
 });
 
 test("manager should re-dispatch events to all gestures", function() {
-  manager.touchStart();
+  var evt = {};
+  manager.touchStart(evt, view);
   equals(numStart,2,"dispatch start event to all gestures");
 
-  manager.touchMove();
+  manager.touchMove(evt, view);
   equals(numMove,2,"dispatch move event to all gestures");
 
-  manager.touchEnd();
+  manager.touchEnd(evt, view);
   equals(numEnd,2,"dispatch end event to all gestures");
 
-  manager.touchCancel();
+  manager.touchCancel(evt, view);
   equals(numCancel,2,"dispatch cancel event to all gestures");
 });
 
