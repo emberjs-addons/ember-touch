@@ -147,13 +147,13 @@ namespace :starter_kit do
     mkdir_p "tmp"
 
     Dir.chdir("tmp") do
-      sh "git clone git://github.com/sproutcore/starter-kit.git"
+      sh "git clone git://github.com/sproutcore/starter-kit.git -b sproutcore-touch"
     end
   end
 
   file "tmp/starter-kit/index.html" => [sproutcore_output, sproutcore_min_output] do
     index = File.read("tmp/starter-kit/index.html")
-    index.gsub! %r{<script src="js/libs/sproutcore-\d\.\d.*</script>},
+    index.gsub! %r{<script src="js/libs/sproutcore-touch-\d\.\d.*</script>},
       %{<script src="js/libs/sproutcore-touch-#{SC_VERSION}.min.js"></script>}
 
     File.open("tmp/starter-kit/index.html", "w") { |f| f.write index }
