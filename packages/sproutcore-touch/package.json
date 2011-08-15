@@ -4,7 +4,7 @@
   "description": "The SproutCore touch system",
   "homepage": "http://sproutcore.com",
   "author": "Majd Taby",
-  "version": "2.0.beta.3",
+  "version": "2.0.beta",
 
   "directories": {
     "lib"       : "./lib"
@@ -13,6 +13,7 @@
   "dependencies": {
     "spade"            : "~> 1.0",
     "jquery"           : "~> 1.6",
+    "jqTransform"      : "~> 1.0",
     "sproutcore-views" : "2.0.beta.3"
   },
 
