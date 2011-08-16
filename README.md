@@ -14,37 +14,13 @@ as using the built-in one.
 
 # Usage
 
-1. Download the [SproutCore Touch Starter Kit](https://github.com/sproutcore/sproutcore-touch/tree/master/starter-kit.zip)
+1. Download the [SproutCore Touch Starter Kit](https://github.com/sproutcore/sproutcore-touch/downloads)
 
 2. Unzip and open the kit in your favourite editor
 
-3. Open lib/main.js and add the following code: 
+3. Open the iOS Simulator and try pinching and panning the red box with two fingers
 
-        spade.require('sproutcore-touch');
-        var MyApp = SC.Application.create();
-
-        MyApp.MyView = SC.View.extend({
-          pinchChange: function(recognizer) {
-            this.$().css('-webkit-transform','scale3d('+recognizer.get('scale')+','+recognizer.get('scale')+',1)');
-          }
-        });
-
-        MyApp.MyView.create({
-          elementId: 'test-view'
-        }).append();
-
-  This code snippet will create a pinchable view and append it to your document.
-
-4. Open css/main.css and add the following styles:
-
-        #test-view {
-          width:500px;
-          height:500px;
-          background-color: red;
-        }
-  This simply makes our custom view visible
-
-5. Open the iOS Simulator and try pinching the red box
+4. Open js/app.js and play around with the application. You can find docs in [gesture.js](https://github.com/sproutcore/sproutcore-touch/blob/master/packages/sproutcore-touch/lib/system/gesture.js)
    
 # How to Run Unit Tests
 
