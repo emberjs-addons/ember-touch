@@ -114,57 +114,57 @@ end
 ## STARTER KIT ##
 
 namespace :starter_kit do
-  sproutcore_output = "tmp/starter-kit/js/libs/sproutcore-touch-#{SC_VERSION}.js"
-  sproutcore_min_output = "tmp/starter-kit/js/libs/sproutcore-touch-#{SC_VERSION}.min.js"
+  sproutcore_output = "tmp/touch-starter-kit/js/libs/sproutcore-touch-#{SC_VERSION}.js"
+  sproutcore_min_output = "tmp/touch-starter-kit/js/libs/sproutcore-touch-#{SC_VERSION}.min.js"
 
-  task :pull => "tmp/starter-kit" do
-    Dir.chdir("tmp/starter-kit") do
+  task :pull => "tmp/touch-starter-kit" do
+    Dir.chdir("tmp/touch-starter-kit") do
       sh "git pull origin master"
     end
   end
 
   task :clean => :pull do
-    Dir.chdir("tmp/starter-kit") do
+    Dir.chdir("tmp/touch-starter-kit") do
       rm_rf Dir["js/libs/sproutcore*.js"]
     end
   end
 
-  task "dist/starter-kit.#{SC_VERSION}.zip" => ["tmp/starter-kit/index.html"] do
+  task "dist/touch-starter-kit.#{SC_VERSION}.zip" => ["tmp/touch-starter-kit/index.html"] do
     mkdir_p "dist"
 
     Dir.chdir("tmp") do
-      sh %{zip -r ../dist/starter-kit.#{SC_VERSION}.zip starter-kit -x "starter-kit/.git/*"}
+      sh %{zip -r ../dist/touch-starter-kit.#{SC_VERSION}.zip touch-starter-kit -x "touch-starter-kit/.git/*"}
     end
   end
 
-  task sproutcore_output => ["tmp/starter-kit", "dist/sproutcore-touch.js"] do
+  task sproutcore_output => ["tmp/touch-starter-kit", "dist/sproutcore-touch.js"] do
     sh "cp dist/sproutcore-touch.js #{sproutcore_output}"
   end
 
-  task sproutcore_min_output => ["tmp/starter-kit", "dist/sproutcore-touch.min.js"] do
+  task sproutcore_min_output => ["tmp/touch-starter-kit", "dist/sproutcore-touch.min.js"] do
     sh "cp dist/sproutcore-touch.min.js #{sproutcore_min_output}"
   end
 
-  file "tmp/starter-kit" do
+  file "tmp/touch-starter-kit" do
     mkdir_p "tmp"
 
     Dir.chdir("tmp") do
-      sh "git clone git://github.com/sproutcore/starter-kit.git -b sproutcore-touch"
+      sh "git clone git://github.com/sproutcore/starter-kit.git -b sproutcore-touch touch-starter-kit"
     end
   end
 
-  file "tmp/starter-kit/index.html" => [sproutcore_output, sproutcore_min_output] do
-    index = File.read("tmp/starter-kit/index.html")
+  file "tmp/touch-starter-kit/index.html" => [sproutcore_output, sproutcore_min_output] do
+    index = File.read("tmp/touch-starter-kit/index.html")
     index.gsub! %r{<script src="js/libs/sproutcore-touch-\d\.\d.*</script>},
       %{<script src="js/libs/sproutcore-touch-#{SC_VERSION}.min.js"></script>}
 
-    File.open("tmp/starter-kit/index.html", "w") { |f| f.write index }
+    File.open("tmp/touch-starter-kit/index.html", "w") { |f| f.write index }
   end
 
-  task :index => "tmp/starter-kit/index.html"
+  task :index => "tmp/touch-starter-kit/index.html"
 
   desc "Build the SproutCore Touch starter kit"
-  task :build => "dist/starter-kit.#{SC_VERSION}.zip"
+  task :build => "dist/touch-starter-kit.#{SC_VERSION}.zip"
 end
 
 desc "Clean build artifacts from previous builds"
