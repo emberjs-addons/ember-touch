@@ -1,0 +1,3 @@
+[submodule "packages/accelerated-effects"]
+	path = packages/accelerated-effects
+	url = https://github.com/jtaby/AcceleratedEffects.git
