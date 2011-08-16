@@ -11,10 +11,10 @@
   },
 
   "dependencies": {
-    "spade"            : "~> 1.0",
-    "jquery"           : "~> 1.6",
-    "jqTransform"      : "~> 1.0",
-    "sproutcore-views" : "2.0.beta.3"
+    "spade"                 : "~> 1.0",
+    "jquery"                : "~> 1.6",
+    "accelerated-effects"   : "~> 1.0",
+    "sproutcore-views"      : "2.0.beta.3"
   },
 
   "dependencies:development": {
