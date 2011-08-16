@@ -4,6 +4,7 @@
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
+require('sproutcore-touch/system/gestures');
 require('sproutcore-touch/system/gesture_manager');
 require('sproutcore-touch/system/touch_list');
 
