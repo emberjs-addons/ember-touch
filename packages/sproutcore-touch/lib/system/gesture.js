@@ -20,8 +20,7 @@ var sigFigs = 100;
   management, and provides some utility methods and some required methods all
   gesture recognizers are expected to implement.
 
-  Overview
-  =========
+  ## Overview
 
   Gestures coalesce multiple touch events to a single higher-level gesture
   event. For example, a tap gesture recognizer takes information about a
@@ -32,27 +31,26 @@ var sigFigs = 100;
 
   Gesture events follow the format:
 
-    * [GESTURE_NAME]Start - Sent when a gesture has gathered enough information
+    * *[GESTURE_NAME]* Start - Sent when a gesture has gathered enough information
         to begin tracking the gesture
 
-    * [GESTURE_NAME]Change - Sent when a gesture has already started and has
+    * *[GESTURE_NAME]* Change - Sent when a gesture has already started and has
         received touchmove events that cause its state to change
 
-    * [GESTURE_NAME]End - Sent when a touchend event is received and the gesture
+    * *[GESTURE_NAME]* End - Sent when a touchend event is received and the gesture
         recognizer decides that the gesture is finished.
 
-    * [GESTURE_NAME]Cancel - Sent when a touchcancel event is received.
+    * *[GESTURE_NAME]* Cancel - Sent when a touchcancel event is received.
 
-  There are two types of gesturess: Discrete and Continuous gestures. In contrast
+  There are two types of gestures: Discrete and Continuous gestures. In contrast
   to continuous gestures, discrete gestures don't have any change events. Rather,
-  the start and end events are the only one that gets sent.
+  the end event is the only one that gets sent to the view.
 
-  Usage
-  =======
+  ## Usage
 
-  While you wouldn't use SC.Gesture directly, all its subclasses have the same
-  API. For example, to implement pinch on a view, you implement pinchChange and
-  optionally pinchStart, pinchEnd and pinchCancel.
+  While you wouldn't use SC.Gesture directly, all its subclasses implement the 
+  same API. For example, to implement pinch on a view, you implement one or more 
+  of the pinch events. For example:
 
       var myView = SC.View.create({
         pinchStart: function(recognizer) {
@@ -61,7 +59,9 @@ var sigFigs = 100;
 
         pinchChange: function(recognizer) {
           var scale = recognizer.get('scale');
-          this.$().css('-webkit-transform','scale3d('+scale+','+scale+',1)');
+          this.$().css('scale',function(index, value) {
+            return recognizer.get('scale') * value
+          });
         },
 
         pinchEnd: function(recognizer) {
@@ -77,8 +77,21 @@ var sigFigs = 100;
   gesture, but pinchChange() will get called repeatedly called every time
   one of the touches moves.
 
-  Creating Custom Gesture Recognizers
-  ======
+  ## Customizing Gesture Recognizers
+
+  Some of the gesture recognizers include properties that can be customized by 
+  the user for a specific instance of a view. For example, a pan gesture defaults 
+  to being a one-finger gesture, but in some scenarios, it must be defined as a 
+  two-finger gesture. In that case, you can override defaults by specifying an 
+  Options hash. 
+
+      var myView = SC.View.create({
+        panOptions: {
+          numberOfRequiredTouches: 2
+        }
+      });      
+
+  ## Creating Custom Gesture Recognizers
 
   SC.Gesture also defines an API which its subclasses can implement to build
   custom gestures. The methods are:
@@ -112,26 +125,22 @@ var sigFigs = 100;
 
   In all the callbacks, you can use the `touches` protected property to access the
   touches hash. The touches hash is keyed on the identifiers of the touches, and the
-  values are the jQuery.Event objects.
-
-  You can also use the numberOfActiveTouches property to inspect how many touches
-  are active, this is mostly useful in shouldBegin since every other callback can
-  assume that there are as many active touches as specified in the 
+  values are the jQuery.Event objects. You can also access the length property to inspect 
+  how many touches are active, this is mostly useful in shouldBegin since every other 
+  callback can assume that there are as many active touches as specified in the 
   numberOfRequiredTouches property.
 
-  Discrete vs Continuous Gestures
-  =======
+  ## Discrete vs Continuous Gestures
 
   There are two main classes of gesture recognizers: Discrete and Continuous 
-  gestures. Discrete gestures do not get Change events sent, since they represent
-  a single, instantaneous event, rather than a continuous motion. If you are 
-  implementing your own discrete gesture recognizer, you must set the 
-  isDiscreteGesture property to yes, and SC.Gesture will adapt its behavior.
+  gestures. Discrete gestures do not get Start, Change nor Cancel events sent, 
+  since they represent a single, instantaneous event, rather than a continuous 
+  motion. If you are implementing your own discrete gesture recognizer, you must 
+  set the isDiscreteGesture property to yes, and SC.Gesture will adapt its behavior.
 
   Discrete gestures use the shouldEnd callback to either accept or decline the gesture
-  event. If it is delined, then the gesture will enter a Cancelled state and trigger
-  the Cancel event on the view.
-
+  event. If it is declined, then the gesture will enter a Cancelled state.
+  
   @extends SC.Object
 */
 

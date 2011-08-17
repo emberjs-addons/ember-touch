@@ -22,9 +22,11 @@ var sigFigs = 100;
 
     var myview = SC.View.create({
       elementId: 'gestureTest',
-      pinchChange: function(recognizer) {
-        var scale = recognizer.get('scale');
-        this.$().css('-webkit-transform','scale3d('+scale+','+scale+',1)');
+      
+      pinchChange: function(rec) {
+        this.$().css('scale',function(index, value) {
+          return rec.get('scale') * value
+        });
       }
     })
 

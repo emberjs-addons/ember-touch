@@ -23,9 +23,13 @@ var x = 0;
 
     var myview = SC.View.create({
       elementId: 'gestureTest',
-      panChange: function(recognizer) {
-        var translation = recognizer.get('translation');
-        this.$().css('-webkit-transform','translate3d('+translate.x+'px,'+translate.y+'px,0)');
+      
+      panChange: function(rec) {
+        var val = rec.get('translation');
+        this.$().css({
+          translateX: '%@=%@'.fmt((val.x < 0)? '-' : '+',Math.abs(val.x)),
+          translateY: '%@=%@'.fmt((val.y < 0)? '-' : '+',Math.abs(val.y))
+        });
       }
     })
 
