@@ -1,22 +1,36 @@
 {
-  "name": "sproutcore-touch-project",
-  "bpm": "1.0.0",
+  "name": "sproutcore-touch",
+  "summary": "SproutCore Touch",
+  "description": "The SproutCore touch system",
+  "homepage": "http://sproutcore.com",
+  "author": "Majd Taby",
+  "version": "2.0.beta",
+
+  "directories": {
+    "lib"       : "./lib"
+  },
+
   "dependencies": {
-    "sproutcore-touch": "2.0.beta"
+    "spade"                 : "~> 1.0",
+    "jquery"                : "~> 1.6",
+    "accelerated-effects"   : "1.0.beta",
+    "sproutcore-views"      : "2.0.beta.3"
   },
+
   "dependencies:development": {
-    "spade-qunit": "~> 1.0.0"
+    "spade-qunit"      : "~> 1.0.0"
   },
+  
   "bpm:build": {
+    
     "bpm_libs.js": {
-      "minifier": "uglify-js"
+      "directories": ["lib"],
+      "modes":        "*"
     },
-    "sproutcore-touch.js": {
-      "minifier": "uglify-js",
-      "include": [
-        "spade",
-        "sproutcore-touch"
-      ]
+    
+    "sproutcore-touch/bpm_tests.js": {
+      "directories": ["tests"],
+      "modes": ["debug"]
     }
   }
 }
