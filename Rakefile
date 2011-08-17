@@ -47,10 +47,10 @@ end
 
 namespace :sproutcore do
     task :touch => compile_package_task("sproutcore-touch")
-    task :acceleratedeffects => compile_package_task("accelerated-effects")
+    task :TransformJS => compile_package_task("TransformJS")
 end
 
-task :build => ["sproutcore:touch","sproutcore:acceleratedeffects"]
+task :build => ["sproutcore:touch","sproutcore:TransformJS"]
 
 file "dist/sproutcore-touch.js" => :build do
   puts "Generating sproutcore-touch.js"
@@ -58,7 +58,7 @@ file "dist/sproutcore-touch.js" => :build do
   mkdir_p "dist"
 
   File.open("dist/sproutcore-touch.js", "w") do |file|
-    file.puts strip_require("tmp/static/accelerated-effects.js")
+    file.puts strip_require("tmp/static/TransformJS.js")
     file.puts strip_require("tmp/static/sproutcore-touch.js")
   end
 end

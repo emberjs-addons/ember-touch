@@ -13,7 +13,7 @@
   "dependencies": {
     "spade"                 : "~> 1.0",
     "jquery"                : "~> 1.6",
-    "accelerated-effects"   : "1.0.beta",
+    "TransformJS"           : "1.0.beta",
     "sproutcore-views"      : "2.0.beta.3"
   },
 
