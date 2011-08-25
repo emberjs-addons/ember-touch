@@ -1,0 +1,14 @@
+{
+  "name": "sproutcore-touch-project",
+  "bpm":  "1.0.0",
+  
+  "dependencies": {
+    "sproutcore-touch": "=> 0"
+  },
+  
+  "bpm:build": {
+    "bpm_libs.js": {
+      "minifier": "uglify-js"
+    }
+  }
+}
