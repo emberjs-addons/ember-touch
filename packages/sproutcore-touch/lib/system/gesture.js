@@ -241,10 +241,14 @@ SC.Gesture = SC.Object.extend(
   // Utilities
 
   /** @private */
-  attemptGestureEventDelivery: function(evt, view, eventName) {
+  attemptGestureEventDelivery: function(evt, view, eventName, stopPropagation) {
+    if (stopPropagation === undefined) {
+      var stopPropagation = true;
+    }
+
     if (this.notifyViewOfGestureEvent(view, eventName) === false) {
       this.eventWasRejected();
-    } else {
+    } else if(stopPropagation) {
       evt.preventDefault();
     }
   },
@@ -361,7 +365,6 @@ SC.Gesture = SC.Object.extend(
       if (get(this, 'gestureIsDiscrete') && this.shouldBegin()) {
         set(this, 'state', SC.Gesture.BEGAN);
         this.didBegin();
-        this.attemptGestureEventDelivery(evt, view, get(this, 'name')+'Start');
       } else {
         set(this, 'state', SC.Gesture.POSSIBLE);
         this.didBecomePossible();
@@ -401,7 +404,7 @@ SC.Gesture = SC.Object.extend(
         // updated information in the Start event
         this.didChange();
 
-        this.attemptGestureEventDelivery(evt, view, get(this, 'name')+'Start');
+        this.attemptGestureEventDelivery(evt, view, get(this, 'name')+'Start',(this.get('isDiscreteGesture'))? true: false);
       }
 
     // Discrete gestures don't fire changed events
