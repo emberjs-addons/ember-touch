@@ -11,23 +11,17 @@ var view;
 var application;
 var translation;
 var numEnded = 0;
-var startCalled = false;
 var endCalled = false;
 
 module("Tap Test",{
   setup: function() {
     numEnded = 0;
-    startCalled = false;
     endCalled = false;
 
     application = SC.Application.create();
 
     view = SC.View.create({
       elementId: 'gestureTest',
-
-      tapStart: function(recognizer) {
-        startCalled = true;
-      },
 
       tapEnd: function(recognizer) {
         endCalled = true;
@@ -88,7 +82,6 @@ test("when touch ends, tap should fire", function() {
 
   var gestures = get(get(view, 'eventManager'), 'gestures');
 
-  ok(startCalled, 'tapStart should be called on the view');
   ok(gestures, "gestures should exist");
   equals(gestures.length,1);
   equals(get(gestures[0], 'state'),SC.Gesture.BEGAN, "gesture should be began");

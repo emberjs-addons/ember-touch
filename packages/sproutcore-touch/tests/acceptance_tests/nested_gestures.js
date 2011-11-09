@@ -17,8 +17,6 @@ var panStartWasCalled = false;
 var panChangeWasCalled = false;
 var panEndWasCalled = false;
 
-var tapStartWasCalled = false;
-var tapCancelWasCalled = false;
 var tapEndWasCalled = false;
 
 module("Nested gesture recognizers", {
@@ -33,8 +31,6 @@ module("Nested gesture recognizers", {
     panChangeWasCalled = false;
     panEndWasCalled = false;
 
-    tapStartWasCalled = false;
-    tapCancelWasCalled = false;
     tapEndWasCalled = false;
 
     application.PinchPanView = SC.ContainerView.extend({
@@ -87,14 +83,6 @@ module("Nested gesture recognizers", {
       nestedView: application.PinchPanView.extend({
       elementId: 'nested-div',
         classNames: ['nestedId'],
-
-        tapStart: function(recognizer) {
-          tapStartWasCalled = true;
-        },
-
-        tapCancel: function(recognizer) {
-          tapCancelWasCalled = true;
-        },
 
         tapEnd: function(recognizer) {
           tapEndWasCalled = true;
@@ -153,8 +141,6 @@ test("Tap on the nested div", function() {
       break;
     }
   }
-
-  ok(tapStartWasCalled, 'tap start should have been called');
 
   // ===================================
   // lift finger
@@ -331,7 +317,6 @@ test("one finger down on nested one, other on outer", function() {
     }
   }
 
-  ok(tapStartWasCalled, 'tap start should have been called');
 
   // ====================================
   // put second finger on outer div
@@ -555,9 +540,7 @@ test("one finger down on container view, other on nested view", function() {
 
   equals(outerdiv.scale,2,'double the scale');
 
-  equals(tapStartWasCalled, false, 'tapStart should not have been called');
   equals(tapEndWasCalled, false, 'tapEnd should not have been called');
-  equals(tapCancelWasCalled, false, 'tapCancel should not have been called');
 
   // ===================================
   // lift finger

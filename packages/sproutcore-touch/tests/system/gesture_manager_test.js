@@ -54,6 +54,12 @@ module("Gesture Manager",{
 });
 
 test("manager should re-dispatch events to all gestures", function() {
+
+  SC.run( function() {
+
+     view.append(); 
+
+  });
   var evt = {};
   manager.touchStart(evt, view);
   equals(numStart,2,"dispatch start event to all gestures");
