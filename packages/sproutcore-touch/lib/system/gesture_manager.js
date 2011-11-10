@@ -56,6 +56,7 @@ SC.GestureManager = SC.Object.extend({
         var gestures = get(manager, 'gestures');
 
         for (var i=0, l=gestures.length; i<l; i++) {
+
           if (get(gestures[i], 'state') === SC.Gesture.WAITING_FOR_TOUCHES) {
             foundManager = manager;
           }
@@ -127,7 +128,7 @@ SC.GestureManager = SC.Object.extend({
   */
   _invokeEvent: function(eventName, eventObject, view) {
     var gestures = get(this, 'gestures'),
-        gesture, result = true;
+        gesture, result = true, wasCalled = false;
 
     this._redispatchQueue = {};
 
@@ -136,10 +137,23 @@ SC.GestureManager = SC.Object.extend({
       handler = gesture[eventName];
 
       if (SC.typeOf(handler) === 'function') {
+
         result = handler.call(gesture, eventObject, view, this);
+        wasCalled = true;
       }
     };
+    if ( !wasCalled ) { // redispath the gesture to the parentView
 
+      var parentView = get(view, 'parentView');
+      if ( parentView ) {
+        var manager = get(parentView, 'eventManager');
+
+        if (manager !== undefined && manager !== null) {
+          manager._invokeEvent(eventName, eventObject, parentView);
+        }
+        
+      }
+    }
     this._flushReDispatchQueue();
 
     return result;
