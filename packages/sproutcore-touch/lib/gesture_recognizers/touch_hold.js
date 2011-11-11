@@ -46,13 +46,12 @@ SC.TouchHoldGestureRecognizer = SC.Gesture.extend({
   holdPeriod: 2000,
 
   moveThreshold: 50,
+
   //..................................................
   // Private Methods and Properties
 
   /** @private */
   gestureIsDiscrete: true,
-  //gestureIsDiscrete: false,
-  
 
   _endInterval: null,
 
