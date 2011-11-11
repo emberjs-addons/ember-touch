@@ -455,12 +455,9 @@ SC.Gesture = SC.Object.extend(
 
       }
 
-    } else {
-
-      manager.redispatchEventToView(view,'touchmove', evt);
-
     }
 
+    manager.redispatchEventToView(view,'touchmove', evt);
 
   },
 
