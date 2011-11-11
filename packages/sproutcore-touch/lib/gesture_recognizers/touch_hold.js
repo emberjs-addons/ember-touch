@@ -79,7 +79,7 @@ SC.TouchHoldGestureRecognizer = SC.Gesture.extend({
 
   },
 
-  didDiscreteChange: function() {
+  didChange: function() {
 
     var currentLocation = this.centerPointForTouches(get(this.touches,'touches'));
 
@@ -117,7 +117,7 @@ SC.TouchHoldGestureRecognizer = SC.Gesture.extend({
 
     this._disableEndFired();
     
-    if ( this.state === SC.Gesture.BEGAN ) {
+    if ( this.state === SC.Gesture.BEGAN || this.state === SC.Gesture.CHANGED ) {
 
       set(this, 'state', SC.Gesture.ENDED)
 

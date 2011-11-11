@@ -112,19 +112,16 @@ var sigFigs = 100;
         This callback gets called whenever a tracked touch gets a touchEnd event.
 
     * **didBegin** - Called when the gesture enters a began state. Called before the
-       view receives the Start event.
+       view receives the Start event on continuous gestures.
 
-    * **didChange** - Called when the gesture enters a began state, and when one of the
-        touches moves. Called before the view receives the Change event.
-
-    * **didDiscreteChange** - Called when a discrete gesture enters a began state, and when one
-        of the touches moves. Discrete gesture won't trigger Change event.
+    * **didChange** - Called when the gesture enters a changed state, and when one of the
+        touches moves. Called before the view receives the Change event on continuos gestures.
 
     * **didEnd** - Called when the gesture enters an ended state. Called before the
        view receives the End event.
 
     * **didCancel** - Called when the gesture enters a cancelled state. Called before the
-       view receives the Cancel event.
+       view receives the Cancel event on continuos gestures.
 
   In all the callbacks, you can use the `touches` protected property to access the
   touches hash. The touches hash is keyed on the identifiers of the touches, and the
@@ -139,7 +136,7 @@ var sigFigs = 100;
   gestures. Discrete gestures do not get Start, Change nor Cancel events sent, 
   since they represent a single, instantaneous event, rather than a continuous 
   motion. If you are implementing your own discrete gesture recognizer, you must 
-  set the isDiscreteGesture property to yes, and SC.Gesture will adapt its behavior.
+  set the gestureIsDiscrete property to yes, and SC.Gesture will adapt its behavior.
 
   Discrete gestures use the shouldEnd callback to either accept or decline the gesture
   event. If it is declined, then the gesture will enter a Cancelled state.
@@ -251,16 +248,18 @@ SC.Gesture = SC.Object.extend(
   // Utilities
 
   /** @private */
-  attemptGestureEventDelivery: function(evt, view, eventName, stopPropagation) {
-    if (stopPropagation === undefined) {
-      var stopPropagation = true;
-    }
+  
+  /**
+    Notify the View of the event and trigger eventWasRejected if the view don't implement the API 
+    or return false
 
-    if (this.notifyViewOfGestureEvent(view, eventName) === false) {
+  */
+  attemptGestureEventDelivery: function(evt, view, eventName) {
+
+    var wasNotified =  this.notifyViewOfGestureEvent(view, eventName);
+    if ( !wasNotified ) {
       this.eventWasRejected();
-    } else if(stopPropagation && evt) {
-      evt.preventDefault();
-    }
+    }             
 
   },
 
@@ -330,7 +329,7 @@ SC.Gesture = SC.Object.extend(
   */
   notifyViewOfGestureEvent: function(view, eventName, data) {
     var handler = view[eventName];
-    var result = true;
+    var result = false;
 
     if (SC.typeOf(handler) === 'function') {
       result = handler.call(view, this, data);
@@ -372,16 +371,21 @@ SC.Gesture = SC.Object.extend(
       set(this ,'state', SC.Gesture.WAITING_FOR_TOUCHES);
 
     } else {
+      if ( this.gestureIsDiscrete ) {
+
       // Discrete gestures may skip the possible step if they're ready to begin
-      if (get(this, 'gestureIsDiscrete') && this.shouldBegin()) {
-        set(this, 'state', SC.Gesture.BEGAN);
-        set(this, 'onBeganGestureView', view);
-        this.didBegin();
+        if ( this.shouldBegin() ) {
+          set(this, 'state', SC.Gesture.BEGAN);
+          set(this, 'onBeganGestureView', view);
+          this.didBegin();
+        }
+
       } else {
         set(this, 'state', SC.Gesture.POSSIBLE);
         this.didBecomePossible();
       }
     }
+
 
     manager.redispatchEventToView(view,'touchstart', evt);
   },
@@ -407,7 +411,8 @@ SC.Gesture = SC.Object.extend(
       _touches.updateTouch(touch);
     }
 
-    if (state === SC.Gesture.POSSIBLE) {
+    if (state === SC.Gesture.POSSIBLE && !this.gestureIsDiscrete) {
+
       if (this.shouldBegin()) {
         set(this, 'state', SC.Gesture.BEGAN);
         set(this, 'onBeganGestureView', view);
@@ -417,28 +422,29 @@ SC.Gesture = SC.Object.extend(
         // updated information in the Start event
         this.didChange();
 
-        this.attemptGestureEventDelivery(evt, view, get(this, 'name')+'Start', false);
+        //this.attemptGestureEventDelivery(evt, view, get(this, 'name')+'Start', false);
+        this.attemptGestureEventDelivery(evt, view, get(this, 'name')+'Start');
       }
 
     } else if (state === SC.Gesture.BEGAN || state === SC.Gesture.CHANGED)  {
 
-      // Discrete gestures don't fire changed events
-      if ( !get(this, 'gestureIsDiscrete') ) {
+      set(this, 'state', SC.Gesture.CHANGED);
+      this.didChange();
 
-        set(this, 'state', SC.Gesture.CHANGED);
-        this.didChange();
+      // Discrete gestures don't fire changed events
+      if ( !this.gestureIsDiscrete ) {
 
         this.attemptGestureEventDelivery(evt, view, get(this, 'name')+'Change');
-
-      } else {
-
-        this.didDiscreteChange();
 
       }
 
     } else {
+
       manager.redispatchEventToView(view,'touchmove', evt);
+
     }
+
+
   },
 
   /** @private */
@@ -458,10 +464,10 @@ SC.Gesture = SC.Object.extend(
     }
 
     // Discrete gestures need to cancel if they shouldn't end successfully
-    if (get(this, 'gestureIsDiscrete')) {
+    if ( this.gestureIsDiscrete ) {
 
       // Discrete gestures use shouldEnd to either accept or decline the gesture.
-      if (state === SC.Gesture.BEGAN && this.shouldEnd()) {
+      if (( state === SC.Gesture.BEGAN || state === SC.Gesture.CHANGED) && this.shouldEnd()) {
 
         set(this, 'state', SC.Gesture.ENDED);
         this.didEnd();
@@ -471,11 +477,11 @@ SC.Gesture = SC.Object.extend(
 
         set(this, 'state', SC.Gesture.CANCELLED);
         this.didCancel();
-        this.attemptGestureEventDelivery(evt, view, get(this, 'name')+'Cancel');
 
       } 
     } 
     else {
+
       if (( state === SC.Gesture.BEGAN || state === SC.Gesture.CHANGED) && this.shouldEnd()) {
 
         set(this, 'state', SC.Gesture.ENDED);
@@ -492,20 +498,30 @@ SC.Gesture = SC.Object.extend(
 
   /** @private */
   touchCancel: function(evt, view, manager) {
-    if (this.state !== SC.Gesture.CANCELLED) {
-      this._resetState();
+    var state = get(this, 'state');
+
+    if ( state !== SC.Gesture.CANCELLED) {
+
       set(this, 'state', SC.Gesture.CANCELLED);
-      this.notifyViewOfGestureEvent(view,get(this, 'name')+'Cancel');
+      this.didCancel();
+
+      if ( !this.gestureIsDiscrete ) {
+        this.notifyViewOfGestureEvent(view,get(this, 'name')+'Cancel');
+      }
+
     } else {
       manager.redispatchEventToView(view,'touchcancel', evt);
     }
+
+    this._resetState();
+
   }
 
 });
 
 SC.Gesture.WAITING_FOR_TOUCHES = 0;
-SC.Gesture.POSSIBLE = 1;
+SC.Gesture.POSSIBLE = 1; // only continuous
 SC.Gesture.BEGAN = 2;
-SC.Gesture.CHANGED = 3;
+SC.Gesture.CHANGED = 3; 
 SC.Gesture.ENDED = 4;
 SC.Gesture.CANCELLED = 5;
