@@ -124,7 +124,7 @@ SC.TouchHoldGestureRecognizer = SC.Gesture.extend({
       var view = get(this, 'onBeganGestureView');
       var eventName = get(this, 'name')+'End';
 
-      this.attemptGestureEventDelivery(undefined, view, eventName, undefined);
+      this.attemptGestureEventDelivery(view, eventName);
 
       //this._resetState(); // let be executed on touchEnd
       

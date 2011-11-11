@@ -163,6 +163,12 @@ SC.Gesture = SC.Object.extend(
   */
   name: null,
 
+  /**
+    The current event which is being managed.
+
+  */
+  currentEventObject: null,
+  
   /** 
     Specifies whether a gesture is discrete or continuous.
 
@@ -254,7 +260,7 @@ SC.Gesture = SC.Object.extend(
     or return false
 
   */
-  attemptGestureEventDelivery: function(evt, view, eventName) {
+  attemptGestureEventDelivery: function(view, eventName) {
 
     var wasNotified =  this.notifyViewOfGestureEvent(view, eventName);
     if ( !wasNotified ) {
@@ -422,8 +428,7 @@ SC.Gesture = SC.Object.extend(
         // updated information in the Start event
         this.didChange();
 
-        //this.attemptGestureEventDelivery(evt, view, get(this, 'name')+'Start', false);
-        this.attemptGestureEventDelivery(evt, view, get(this, 'name')+'Start');
+        this.attemptGestureEventDelivery(view, get(this, 'name')+'Start');
       }
 
     } else if (state === SC.Gesture.BEGAN || state === SC.Gesture.CHANGED)  {
@@ -434,7 +439,7 @@ SC.Gesture = SC.Object.extend(
       // Discrete gestures don't fire changed events
       if ( !this.gestureIsDiscrete ) {
 
-        this.attemptGestureEventDelivery(evt, view, get(this, 'name')+'Change');
+        this.attemptGestureEventDelivery(view, get(this, 'name')+'Change');
 
       }
 
@@ -471,7 +476,7 @@ SC.Gesture = SC.Object.extend(
 
         set(this, 'state', SC.Gesture.ENDED);
         this.didEnd();
-        this.attemptGestureEventDelivery(evt, view, get(this, 'name')+'End');
+        this.attemptGestureEventDelivery( view, get(this, 'name')+'End');
       // if already finished do nothing
       } else if ( state !== SC.Gesture.ENDED && state !== SC.Gesture.CANCELLED ) { 
 
@@ -487,7 +492,7 @@ SC.Gesture = SC.Object.extend(
         set(this, 'state', SC.Gesture.ENDED);
         this.didEnd();
 
-        this.attemptGestureEventDelivery(evt, view, get(this, 'name')+'End');
+        this.attemptGestureEventDelivery( view, get(this, 'name')+'End');
       } 
 
       manager.redispatchEventToView(view,'touchend', evt);
@@ -525,3 +530,7 @@ SC.Gesture.BEGAN = 2;
 SC.Gesture.CHANGED = 3; 
 SC.Gesture.ENDED = 4;
 SC.Gesture.CANCELLED = 5;
+
+//TODO: 
+//- think about multiple events handling at the same time currentEventObject
+//- check meaning of manager.redispatEventToView

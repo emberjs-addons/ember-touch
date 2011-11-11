@@ -137,7 +137,7 @@ SC.GestureManager = SC.Object.extend({
       handler = gesture[eventName];
 
       if (SC.typeOf(handler) === 'function') {
-
+        set( gesture, 'currentEventObject', eventObject);
         result = handler.call(gesture, eventObject, view, this);
         wasCalled = true;
       }
