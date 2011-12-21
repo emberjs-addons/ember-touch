@@ -2,7 +2,7 @@
 
 ## Overview
 Ember Touch lays the groundwork for a comprehensive touch and
-gesture system that sits on top of [EmberJS](github.com/emberjs/ember.js).
+gesture system that sits on top of [EmberJS](https://github.com/emberjs/ember.js).
 
 Along with providing support for custom gesture recognizers, Ember
 Touch ships with some pre-built gestures: Pinch, Pan, Tap, TouchHold and
@@ -20,7 +20,7 @@ Improvements, issues, bugs, contributions.....
 
 # Wiki
 
-[Read Sproutcore-Touch Wiki](github.com/emberjs-addons/sproutcore-touch/wiki/Documentation)
+[Read Sproutcore-Touch Wiki](https://github.com/emberjs-addons/sproutcore-touch/wiki/Documentation)
 
 
 # Usage
