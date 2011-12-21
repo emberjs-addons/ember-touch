@@ -8,14 +8,15 @@ Along with providing support for custom gesture recognizers, Ember
 Touch ships with some pre-built gestures: Pinch, Pan, Tap, TouchHold and
 Press.
 
-Consult the gesture.js file for instructions on building your own gestures as well
-as using the built-in one.
+Consult the gesture.js file for instructions on building your own gestures as well as using the built-in one.
 
-Touch ember views can also be used with other UI, libraries (ex: iScroll 4 ) which also handles touch events.
+Touch ember views can also be used with other UI libraries (ex: iScroll 4 ) which also handles touch events.
 
 # TODO
 
-1. More testing and improvements.
+Test gestures on multiple touch devices.
+
+Improvements, submit bugs, contributions.....
 
 # Usage
 
@@ -24,15 +25,15 @@ Touch ember views can also be used with other UI, libraries (ex: iScroll 4 ) whi
 2. Add gesture support to your views just by adding specific methods (
    tapEnd, touchHoldStart, touchHoldEnd....)
 
-3. Tests your views on multi touch devices or testing with jqunit.
+3. Tests your views on multi touch devices or qunit.
    
 # How to Run Unit Tests
 
-1. Install Ruby 1.9.2. There are many resources on the web can help; one of the best is [rvm](http://rvm.beginrescueend.com/).
+run __rackup__ 
 
-3. Run `gem install bpm --pre` to install bpm, the browser package
-   manager.
+Test the whole suite  http://localhost:9292/tests/index.html
 
-4. To start the development server, run `bpm preview`
+Test only a specific test file (add test param: test location without extension) http://localhost:9292/tests/index.html?test=system/view_test
 
-5. Then visit: `http://localhost:4020/assets/spade-qunit/index.html?package=sproutcore-touch`
+If you want to test against other ember.js version, deployed the js on its package directory.
+

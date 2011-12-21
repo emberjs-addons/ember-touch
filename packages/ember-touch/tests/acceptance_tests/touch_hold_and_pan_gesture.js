@@ -2,6 +2,7 @@ var set = Em.set;
 var get = Em.get;
 var view;
 var application;
+var content = [];
 
 var panStartWasCalled = false;
 var panChangeWasCalled = false;
@@ -22,7 +23,7 @@ module("Acceptance Touch Hold and Pan Gesture", {
 
     application.View = Em.CollectionView.extend({
       
-      content: [0, 1, 2, 3, 4],
+      content: Ember.A([0, 1, 2, 3, 4]),
 
       scale: 1,
 
@@ -67,6 +68,7 @@ module("Acceptance Touch Hold and Pan Gesture", {
 
     });
 
+
     Em.run(function() {
       view = application.View.create();
       view.append();
@@ -84,6 +86,8 @@ module("Acceptance Touch Hold and Pan Gesture", {
 test("Performing the Pan gesture on the TapView, trigger the pan gesture on  PanView", function() {
 
   var touchEvent;
+
+
   var id =view.$().children()[0].id;
   var viewElement = view.$();
   var element = view.$('#'+id );
@@ -135,6 +139,7 @@ test("Performing the Pan gesture on the TapView, trigger the pan gesture on  Pan
   ok( panEndWasCalled, 'pan End Was called ');
 
 });
+
 
 
 test("When TouchHold is followed by Pan on the same element, both gestures are recognized", function() {

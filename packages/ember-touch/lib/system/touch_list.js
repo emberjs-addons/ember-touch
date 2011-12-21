@@ -1,5 +1,5 @@
 // ==========================================================================
-// Project:  SproutCore Touch
+// Project:  Ember Touch
 // Copyright: ©2011 Strobe Inc. and contributors.
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
@@ -79,8 +79,9 @@ Em.TouchList = Em.Object.extend({
     return ret;
   },
 
-  length: function() {
+  length: Ember.computed(function() {
     var touches = get(this, 'touches');
     return touches.length;
-  }.property('touches').cacheable()
+  }).property('touches').cacheable()
+
 });
