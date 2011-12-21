@@ -1,5 +1,5 @@
-var set = SC.set;
-var get = SC.get;
+var set = Em.set;
+var get = Em.get;
 var view;
 var application;
 
@@ -18,9 +18,9 @@ module("Acceptance Touch Hold and Pan Gesture", {
     panEndWasCalled = false;
     touchHoldEndWasCalled = false;
 
-    application = SC.Application.create();
+    application = Em.Application.create();
 
-    application.View = SC.CollectionView.extend({
+    application.View = Em.CollectionView.extend({
       
       content: [0, 1, 2, 3, 4],
 
@@ -50,7 +50,7 @@ module("Acceptance Touch Hold and Pan Gesture", {
         this.translate = recognizer.get('translation');
       },
 
-      itemViewClass:  SC.View.extend({
+      itemViewClass:  Em.View.extend({
 
         classNameBindings: ['selected'],
 
@@ -67,7 +67,7 @@ module("Acceptance Touch Hold and Pan Gesture", {
 
     });
 
-    SC.run(function() {
+    Em.run(function() {
       view = application.View.create();
       view.append();
     });

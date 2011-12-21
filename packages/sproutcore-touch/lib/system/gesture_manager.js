@@ -6,28 +6,28 @@
 
 require('sproutcore-touch/system/gesture');
 
-var get = SC.get;
-var set = SC.set;
+var get = Em.get;
+var set = Em.set;
 
 /**
   @class
 
   Manages multiplegesture recognizers that are associated with a view.
-  This class is instantiated automatically by SC.View and you wouldn't
+  This class is instantiated automatically by Em.View and you wouldn't
   interact with it yourself.
 
-  SC.GestureManager mainly acts as a composite for the multiple gesture
+  Em.GestureManager mainly acts as a composite for the multiple gesture
   recognizers associated with a view. Whenever it gets a touch event, it
   relays it to the gestures. The other main resposibility of
-  SC.GestureManager is to handle re-dispatching of events to the view.
+  Em.GestureManager is to handle re-dispatching of events to the view.
 
-  @extends SC.Object
+  @extends Em.Object
 */
-SC.GestureManager = SC.Object.extend({
+Em.GestureManager = Em.Object.extend({
 
   /**
     An array containing all the gesture recognizers associated with a
-    view. This is set automatically by SC.View.
+    view. This is set automatically by Em.View.
 
     @default null
     @type Array
@@ -57,7 +57,7 @@ SC.GestureManager = SC.Object.extend({
 
         for (var i=0, l=gestures.length; i<l; i++) {
 
-          if (get(gestures[i], 'state') === SC.Gesture.WAITING_FOR_TOUCHES) {
+          if (get(gestures[i], 'state') === Em.Gesture.WAITING_FOR_TOUCHES) {
             foundManager = manager;
           }
         }
@@ -136,7 +136,7 @@ SC.GestureManager = SC.Object.extend({
       gesture = gestures[i];
       handler = gesture[eventName];
 
-      if (SC.typeOf(handler) === 'function') {
+      if (Em.typeOf(handler) === 'function') {
         set( gesture, 'currentEventObject', eventObject);
         result = handler.call(gesture, eventObject, view, this);
         wasCalled = true;

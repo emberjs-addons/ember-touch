@@ -4,17 +4,17 @@
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-var set = SC.set;
-var get = SC.get;
+var set = Em.set;
+var get = Em.get;
 
 var application;
 var manager;
 var numStart, numMove, numEnd, numCancel;
 
-var view = SC.View.create();
-var manager = SC.GestureManager.create()
+var view = Em.View.create();
+var manager = Em.GestureManager.create()
 
-var gesture = SC.Object.extend({
+var gesture = Em.Object.extend({
   touchStart: function(evt, view, manager) {
     numStart++;            
     if (view) manager.redispatchEventToView(view, 'touchstart')
@@ -37,9 +37,9 @@ module("Gesture Manager",{
   setup: function() {
     numStart = numMove = numEnd = numCancel = 0;
 
-    application = SC.Application.create();
+    application = Em.Application.create();
 
-    manager = SC.GestureManager.create({
+    manager = Em.GestureManager.create({
       gestures: [
         gesture.create(),
         gesture.create()
@@ -55,7 +55,7 @@ module("Gesture Manager",{
 
 test("manager should re-dispatch events to all gestures", function() {
 
-  SC.run( function() {
+  Em.run( function() {
 
      view.append(); 
 
@@ -77,7 +77,7 @@ test("manager should re-dispatch events to all gestures", function() {
 test("manager should re-dispatch event to view", function() {
   var numViewStart =  numViewMove = numViewEnd = numViewCancel = 0;
 
-  var view = SC.View.create({
+  var view = Em.View.create({
     eventManager: manager,
 
     touchStart: function(evt, view, manager) {
@@ -94,7 +94,7 @@ test("manager should re-dispatch event to view", function() {
     }
   });
 
-  SC.run(function() {
+  Em.run(function() {
     view.append();
   });
 

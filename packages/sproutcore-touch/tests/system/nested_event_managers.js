@@ -4,13 +4,13 @@
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-var set = SC.set;
-var get = SC.get;
+var set = Em.set;
+var get = Em.get;
 var application;
 
 module("Nested event managers", {
   setup: function() {
-    application = SC.Application.create();
+    application = Em.Application.create();
   },
 
   teardown: function() {
@@ -20,14 +20,14 @@ module("Nested event managers", {
 
 test("Nested event managers should get called appropriately", function() {
 
-  SC.Gestures.register('nestedEventManagerTestGesture',SC.Gesture.extend({
+  Em.Gestures.register('nestedEventManagerTestGesture',Em.Gesture.extend({
     touchStart: function(evt, view, manager) {
       this.notifyViewOfGestureEvent(view, 'nestedEventManagerTestGestureStart');
       manager.redispatchEventToView(view,'touchstart');
     }
   }));
 
-  SC.Gestures.register('nestedViewTestGesture',SC.Gesture.extend({
+  Em.Gestures.register('nestedViewTestGesture',Em.Gesture.extend({
     touchStart: function(evt, view, manager) {
       this.notifyViewOfGestureEvent(view, 'nestedViewTestGestureStart');
       manager.redispatchEventToView(view,'touchstart');
@@ -36,11 +36,11 @@ test("Nested event managers should get called appropriately", function() {
 
   var callNumber = 0;
 
-  var view = SC.ContainerView.create({
+  var view = Em.ContainerView.create({
 
     childViews: ['nestedView'],
 
-    nestedView: SC.View.extend({
+    nestedView: Em.View.extend({
       elementId: 'nestedTestView',
 
       nestedViewTestGestureStart: function() {
@@ -65,7 +65,7 @@ test("Nested event managers should get called appropriately", function() {
     }
   });
 
-  SC.run(function(){
+  Em.run(function(){
     view.append();
   });
 
@@ -75,8 +75,8 @@ test("Nested event managers should get called appropriately", function() {
   equals(gestures.length,1);
 
   $('#nestedTestView').trigger('touchstart');
-  SC.Gestures.unregister('nestedViewTestGesture');
-  SC.Gestures.unregister('nestedEventManagerTestGestureStart');
+  Em.Gestures.unregister('nestedViewTestGesture');
+  Em.Gestures.unregister('nestedEventManagerTestGestureStart');
 
 });
 

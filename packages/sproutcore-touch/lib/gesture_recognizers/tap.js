@@ -6,8 +6,8 @@
 
 require('sproutcore-touch/system/gesture');
 
-var get = SC.get;
-var set = SC.set;
+var get = Em.get;
+var set = Em.set;
 
 /**
   @class
@@ -16,7 +16,7 @@ var set = SC.set;
   of wiggle-room between a start and end of a touch. Taps are discrete gestures
   so only tapEnd() will get fired on a view.
 
-    var myview = SC.View.create({
+    var myview = Em.View.create({
       elementId: 'gestureTest',
 
       tapEnd: function(recognizer) {
@@ -27,7 +27,7 @@ var set = SC.set;
   You can specify how many touches the gesture requires to start using the numberOfRequiredTouches
   property, which you can set in the panOptions hash:
 
-    var myview = SC.View.create({
+    var myview = Em.View.create({
       tapOptions: {
         numberOfTaps: 3
       }
@@ -37,9 +37,9 @@ var set = SC.set;
   And you can also specify the number of taps required for the gesture to fire using the numberOfTaps
   property.
 
-  @extends SC.Gesture
+  @extends Em.Gesture
 */
-SC.TapGestureRecognizer = SC.Gesture.extend({
+Em.TapGestureRecognizer = Em.Gesture.extend({
 
   /**
     The translation value which represents the current amount of movement that has been applied
@@ -111,4 +111,4 @@ SC.TapGestureRecognizer = SC.Gesture.extend({
   }
 });
 
-SC.Gestures.register('tap', SC.TapGestureRecognizer);
+Em.Gestures.register('tap', Em.TapGestureRecognizer);

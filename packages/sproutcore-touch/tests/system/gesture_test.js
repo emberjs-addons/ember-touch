@@ -4,12 +4,12 @@
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-var set = SC.set;
-var get = SC.get;
+var set = Em.set;
+var get = Em.get;
 
-var gesture = SC.Gesture.create();
+var gesture = Em.Gesture.create();
 
-module("SC.Gesture");
+module("Em.Gesture");
 
 test("distance", function() {
   var distance;
@@ -42,7 +42,7 @@ test("centerPoint", function() {
 
 test("notifyViewOfGestureEvent", function() {
   var numCalled = 0, dataCalled, gestureCalled;
-  var view = SC.Object.create({
+  var view = Em.Object.create({
     touchStart: function(recognizer, data) {
       dataCalled = data;
       gestureCalled = recognizer

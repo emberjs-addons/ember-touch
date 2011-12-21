@@ -4,21 +4,21 @@
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-var get = SC.get;
-var set = SC.set;
+var get = Em.get;
+var set = Em.set;
 
 /** 
   @class
   
-  Extends SC.View by making the init method gesture-aware.
+  Extends Em.View by making the init method gesture-aware.
 
-  @extends SC.Object
+  @extends Em.Object
 */
-SC.View.reopen(
-/** @scope SC.View.prototype */{
+Em.View.reopen(
+/** @scope Em.View.prototype */{
 
   /**
-    The SC.GestureManager instance which will manager the gestures of the view.    
+    The Em.GestureManager instance which will manager the gestures of the view.    
     This object is automatically created and set at init-time.
 
     @default null
@@ -33,7 +33,7 @@ SC.View.reopen(
   init: function() {
     this._super();
 
-    var knownGestures = SC.Gestures.knownGestures();
+    var knownGestures = Em.Gestures.knownGestures();
     var eventManager = get(this, 'eventManager');
 
     if (knownGestures && !eventManager) {
@@ -56,7 +56,7 @@ SC.View.reopen(
         }
       }
 
-      var manager = SC.GestureManager.create({
+      var manager = Em.GestureManager.create({
         gestures: gestures
       });
 

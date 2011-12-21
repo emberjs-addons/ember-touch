@@ -4,22 +4,22 @@
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-var set = SC.set;
-var get = SC.get;
+var set = Em.set;
+var get = Em.get;
 
-module("SC.View extensions", {
+module("Em.View extensions", {
   setup: function() {
-    SC.Gestures.register('viewTestGesture',SC.Object.extend());
+    Em.Gestures.register('viewTestGesture',Em.Object.extend());
   },
 
   teardown: function() {
-    SC.Gestures.unregister('viewTestGesture');
+    Em.Gestures.unregister('viewTestGesture');
   }  
 });
 
 test("should detect gesture", function() {
 
-  var view = SC.View.create({
+  var view = Em.View.create({
     viewTestGestureStart: function() {
 
     },
@@ -43,7 +43,7 @@ test("should detect gesture", function() {
 
 test("should apply options", function() {
 
-  var view = SC.View.create({
+  var view = Em.View.create({
     viewTestGestureOptions: {
       numberOfRequiredTouches: 4
     },

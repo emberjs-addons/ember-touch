@@ -4,8 +4,8 @@
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-var set = SC.set;
-var get = SC.get;
+var set = Em.set;
+var get = Em.get;
 
 var view;
 var application;
@@ -16,9 +16,9 @@ module("Pan Test",{
   setup: function() {
     numEnded = 0;
 
-    application = SC.Application.create();
+    application = Em.Application.create();
 
-    view = SC.View.create({
+    view = Em.View.create({
       elementId: 'gestureTest',
 
       panStart: function(recognizer) {
@@ -38,7 +38,7 @@ module("Pan Test",{
       }
     });
 
-    SC.run(function(){
+    Em.run(function(){
       view.append();
     });
   },
@@ -71,7 +71,7 @@ test("one start event should put it in waiting state", function() {
 
   ok(gestures);
   equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),SC.Gesture.WAITING_FOR_TOUCHES, "gesture should be waiting");
+  equals(get(gestures[0], 'state'),Em.Gesture.WAITING_FOR_TOUCHES, "gesture should be waiting");
 });
 
 test("two start events should put it in possible state", function() {
@@ -98,7 +98,7 @@ test("two start events should put it in possible state", function() {
 
   ok(gestures);
   equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),SC.Gesture.POSSIBLE, "gesture should be possible");
+  equals(get(gestures[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be possible");
 });
 
 test("If the touches move, the translation should reflect the change", function() {
@@ -118,7 +118,7 @@ test("If the touches move, the translation should reflect the change", function(
   };
 
   view.$().trigger(touchEvent);
-  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),SC.Gesture.POSSIBLE, "gesture should be possible");
+  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be possible");
 
   touchEvent = new jQuery.Event();
   touchEvent.type='touchmove';
@@ -137,7 +137,7 @@ test("If the touches move, the translation should reflect the change", function(
 
   view.$().trigger(touchEvent);
 
-  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),SC.Gesture.BEGAN, "gesture should be BEGAN");
+  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.BEGAN, "gesture should be BEGAN");
 
   equals(translation.x,5,'changed x value');
 
@@ -157,7 +157,7 @@ test("If the touches move, the translation should reflect the change", function(
   };
 
   view.$().trigger(touchEvent);
-  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),SC.Gesture.CHANGED, "gesture should be CHANGED");
+  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.CHANGED, "gesture should be CHANGED");
 
   equals(translation.y,5,'changed y value');
 
@@ -172,7 +172,7 @@ test("If the touches move, the translation should reflect the change", function(
   };
 
   view.$().trigger(touchEvent);
-  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),SC.Gesture.ENDED, "gesture should be ENDED");
+  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.ENDED, "gesture should be ENDED");
 
   touchEvent = new jQuery.Event();
   touchEvent.type='touchend';
@@ -181,7 +181,7 @@ test("If the touches move, the translation should reflect the change", function(
   };
 
   view.$().trigger(touchEvent);
-  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),SC.Gesture.ENDED, "gesture should be ENDED");
+  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.ENDED, "gesture should be ENDED");
 
   equals(numEnded,1,"panEnd should be called once");
 });

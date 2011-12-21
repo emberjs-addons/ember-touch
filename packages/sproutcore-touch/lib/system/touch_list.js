@@ -4,8 +4,8 @@
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-var get = SC.get;
-var set = SC.set;
+var get = Em.get;
+var set = Em.set;
 
 /**
   @class
@@ -14,7 +14,7 @@ var set = SC.set;
   Used to manage and maintain a list of active touches related to a gesture 
   recognizer.
 */
-SC.TouchList = SC.Object.extend({
+Em.TouchList = Em.Object.extend({
   touches: null,
 
   timestamp: null,

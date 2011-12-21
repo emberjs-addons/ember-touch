@@ -1,6 +1,6 @@
 
-var set = SC.set;
-var get = SC.get;
+var set = Em.set;
+var get = Em.get;
 
 var view;
 var application;
@@ -11,9 +11,9 @@ module("Press Test",{
   setup: function() {
     endCalled = false;
 
-    application = SC.Application.create();
+    application = Em.Application.create();
 
-    view = SC.View.create({
+    view = Em.View.create({
       
       elementId: 'gestureTest',
 
@@ -26,7 +26,7 @@ module("Press Test",{
       }
     });
 
-    SC.run(function(){
+    Em.run(function(){
       view.append();
     });
   },
@@ -60,7 +60,7 @@ test("one start event should put it in began state", function() {
 
   ok(gestures);
   equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),SC.Gesture.BEGAN, "gesture should be began");
+  equals(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
 });
 
 test("when touch ends, touchpressEnd should fire", function() {
@@ -80,7 +80,7 @@ test("when touch ends, touchpressEnd should fire", function() {
 
   ok(gestures, "gestures should exist");
   equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),SC.Gesture.BEGAN, "gesture should be began");
+  equals(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
 
   stop();  
   
@@ -102,7 +102,7 @@ test("when touch ends, touchpressEnd should fire", function() {
       ok(endCalled,'touch press should be ended');
       ok(gestures, "gestures should exist");
       equals(gestures.length,1,"there should be one gesture");
-      equals(get(gestures[0], 'state'),SC.Gesture.ENDED, "gesture should be ended");
+      equals(get(gestures[0], 'state'),Em.Gesture.ENDED, "gesture should be ended");
 
       start();  
 
@@ -128,7 +128,7 @@ test("when touch ends before pressPeriodThreshold, touchpressEnd should not fire
 
   ok(gestures, "gestures should exist");
   equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),SC.Gesture.BEGAN, "gesture should be began");
+  equals(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
 
 
   touchEvent = new jQuery.Event();
@@ -147,7 +147,7 @@ test("when touch ends before pressPeriodThreshold, touchpressEnd should not fire
   ok(!endCalled,'touch press should not be ended');
   ok(gestures, "gestures should exist");
   equals(gestures.length,1,"there should be one gesture");
-  equals(get(gestures[0], 'state'),SC.Gesture.CANCELLED, "gesture should be ended");
+  equals(get(gestures[0], 'state'),Em.Gesture.CANCELLED, "gesture should be ended");
 
 
 });

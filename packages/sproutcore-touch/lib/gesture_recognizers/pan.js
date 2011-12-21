@@ -6,8 +6,8 @@
 
 require('sproutcore-touch/system/gesture');
 
-var get = SC.get;
-var set = SC.set;
+var get = Em.get;
+var set = Em.set;
 var x = 0;
 
 /**
@@ -21,7 +21,7 @@ var x = 0;
   which can be applied as a CSS transform directly. Translation values are hashes
   which contain an x and a y value.
 
-    var myview = SC.View.create({
+    var myview = Em.View.create({
       elementId: 'gestureTest',
       
       panChange: function(rec) {
@@ -36,16 +36,16 @@ var x = 0;
   You can specify how many touches the gesture requires to start using the numberOfRequiredTouches
   property, which you can set in the panOptions hash:
 
-    var myview = SC.View.create({
+    var myview = Em.View.create({
       panOptions: {
         numberOfRequiredTouches: 3
       }
       ...
     })
 
-  @extends SC.Gesture
+  @extends Em.Gesture
 */
-SC.PanGestureRecognizer = SC.Gesture.extend({
+Em.PanGestureRecognizer = Em.Gesture.extend({
 
   /**
     The translation value which represents the current amount of movement that has been applied
@@ -123,4 +123,4 @@ SC.PanGestureRecognizer = SC.Gesture.extend({
   }
 });
 
-SC.Gestures.register('pan', SC.PanGestureRecognizer);
+Em.Gestures.register('pan', Em.PanGestureRecognizer);

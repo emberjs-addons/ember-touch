@@ -4,24 +4,24 @@
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-var get = SC.get;
-var set = SC.set;
+var get = Em.get;
+var set = Em.set;
 
 /**
   @class
 
   Registry of known gestures in the system. This is a singleton class, and is
-  used by SC.View to analyze instances of SC.View for gesture support.
+  used by Em.View to analyze instances of Em.View for gesture support.
 
   You will not use this class yourself. Rather, gesture recognizers will call
-  SC.Gestures.register(name, recognizer) when they want to make the system aware
+  Em.Gestures.register(name, recognizer) when they want to make the system aware
   of them.
 
   @private
-  @extends SC.Object
+  @extends Em.Object
 */
-SC.Gestures = SC.Object.create(
-/** @scope SC.Gestures.prototype */{
+Em.Gestures = Em.Object.create(
+/** @scope Em.Gestures.prototype */{
 
   _registeredGestures: null,
 
@@ -35,11 +35,11 @@ SC.Gestures = SC.Object.create(
     Registers a gesture recognizer to the system. The gesture recognizer is
     identified by the name parameter, which must be globally unique.
   */
-  register: function(name, /** SC.Gesture */recognizer) {
+  register: function(name, /** Em.Gesture */recognizer) {
     var registeredGestures = this._registeredGestures;
 
     if (registeredGestures[name] !== undefined) {
-      throw new SC.Error(name+" already exists as a registered gesture recognizers. Gesture recognizers must have globally unique names.");
+      throw new Em.Error(name+" already exists as a registered gesture recognizers. Gesture recognizers must have globally unique names.");
     }
 
     registeredGestures[name] = recognizer;

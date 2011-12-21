@@ -1,5 +1,5 @@
-var set = SC.set;
-var get = SC.get;
+var set = Em.set;
+var get = Em.get;
 
 var application;
 var view;
@@ -10,7 +10,7 @@ var tapEndWasCalled = false;
 module("Nested Gestures on childs are redispatched to parents", {
 
   setup: function() {
-    application = SC.Application.create();
+    application = Em.Application.create();
 
 
     tapEndWasCalled = false;
@@ -26,7 +26,7 @@ module("Nested Gestures on childs are redispatched to parents", {
 
 test(" Gesture event on a childview should be attended by the parent when the child don't recognize the gesture.", function() {
 
-  View = SC.ContainerView.extend({
+  View = Em.ContainerView.extend({
     elementId: 'main',
     childViews: ['nestedChildView'],
 
@@ -34,7 +34,7 @@ test(" Gesture event on a childview should be attended by the parent when the ch
       tapEndWasCalled = true;
     },
 
-    nestedChildView: SC.ContainerView.extend({
+    nestedChildView: Em.ContainerView.extend({
       elementId: 'nestedchild'
 
     })
@@ -42,7 +42,7 @@ test(" Gesture event on a childview should be attended by the parent when the ch
   });
 
   view = View.create();
-  SC.run(function() {
+  Em.run(function() {
     view.append();
   });
 
@@ -85,7 +85,7 @@ test(" Gesture event on a childview should be attended by the parent when the ch
 
 test(" Gesture event on a grandchildview should be attended by the parent when the childrens don't recognize the gesture.", function() {
 
-  View = SC.ContainerView.extend({
+  View = Em.ContainerView.extend({
 
     elementId: 'main',
     childViews: ['nestedChildView'],
@@ -94,12 +94,12 @@ test(" Gesture event on a grandchildview should be attended by the parent when t
       tapEndWasCalled = true;
     },
 
-    nestedChildView: SC.ContainerView.extend({
+    nestedChildView: Em.ContainerView.extend({
       elementId: 'nestedchild',
 
       childViews: ['nestedGrandChildView'],
 
-      nestedGrandChildView: SC.ContainerView.extend({
+      nestedGrandChildView: Em.ContainerView.extend({
         elementId: 'nestedgrandchild'
 
       })
@@ -109,7 +109,7 @@ test(" Gesture event on a grandchildview should be attended by the parent when t
   });
 
   view = View.create();
-  SC.run(function() {
+  Em.run(function() {
     view.append();
   });
 

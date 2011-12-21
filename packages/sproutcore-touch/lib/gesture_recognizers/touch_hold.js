@@ -1,7 +1,7 @@
 require('sproutcore-touch/system/gesture');
 
-var get = SC.get;
-var set = SC.set;
+var get = Em.get;
+var set = Em.set;
 
 /**
   @class
@@ -12,7 +12,7 @@ var set = SC.set;
 
   TouchHold are discrete gestures so only touchHoldEnd() will get fired on a view.
 
-    var myview = SC.View.create({
+    var myview = Em.View.create({
       elementId: 'gestureTest',
       
       touchHoldEnd: function(recognizer) {
@@ -24,7 +24,7 @@ var set = SC.set;
   property, a minimum "period" the finger must be held to automatically trigger the end event 
   and "moveThreshold" which allows to move the finger a specific number of pixels
 
-    var myview = SC.View.create({
+    var myview = Em.View.create({
       touchHoldOptions: {
         holdPeriod: 500,
         moveThreshold: 10
@@ -33,9 +33,9 @@ var set = SC.set;
     })
 
 
-  @extends SC.Gesture
+  @extends Em.Gesture
 */
-SC.TouchHoldGestureRecognizer = SC.Gesture.extend({
+Em.TouchHoldGestureRecognizer = Em.Gesture.extend({
 
   /**
     The minimum period (ms) that the fingers must be held to trigger the event.
@@ -94,7 +94,7 @@ SC.TouchHoldGestureRecognizer = SC.Gesture.extend({
     // the touch leaves the DOM element
     if ( !isValidMovement ) {
       this._disableEndFired();
-      set(this, 'state', SC.Gesture.CANCELLED);
+      set(this, 'state', Em.Gesture.CANCELLED);
 
       //this._resetState(); // let be executed on touchEnd
     }
@@ -116,9 +116,9 @@ SC.TouchHoldGestureRecognizer = SC.Gesture.extend({
 
     this._disableEndFired();
     
-    if ( this.state === SC.Gesture.BEGAN || this.state === SC.Gesture.CHANGED ) {
+    if ( this.state === Em.Gesture.BEGAN || this.state === Em.Gesture.CHANGED ) {
 
-      set(this, 'state', SC.Gesture.ENDED)
+      set(this, 'state', Em.Gesture.ENDED)
 
       var view = get(this, 'onBeganGestureView');
       var eventName = get(this, 'name')+'End';
@@ -138,10 +138,10 @@ SC.TouchHoldGestureRecognizer = SC.Gesture.extend({
   },
 
   toString: function() {
-    return SC.TouchHoldGestureRecognizer+'<'+SC.guidFor(this)+'>';
+    return Em.TouchHoldGestureRecognizer+'<'+Em.guidFor(this)+'>';
   }
 
 });
 
-SC.Gestures.register('touchHold', SC.TouchHoldGestureRecognizer);
+Em.Gestures.register('touchHold', Em.TouchHoldGestureRecognizer);
 

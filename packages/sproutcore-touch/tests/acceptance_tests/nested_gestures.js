@@ -4,8 +4,8 @@
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-var set = SC.set;
-var get = SC.get;
+var set = Em.set;
+var get = Em.get;
 var outerdiv;
 var application;
 
@@ -21,7 +21,7 @@ var tapEndWasCalled = false;
 
 module("Nested gesture recognizers", {
   setup: function() {
-    application = SC.Application.create();
+    application = Em.Application.create();
 
     pinchStartWasCalled = false;
     pinchChangeWasCalled = false;
@@ -33,7 +33,7 @@ module("Nested gesture recognizers", {
 
     tapEndWasCalled = false;
 
-    application.PinchPanView = SC.ContainerView.extend({
+    application.PinchPanView = Em.ContainerView.extend({
       scale: 1,
 
       translate: {
@@ -94,7 +94,7 @@ module("Nested gesture recognizers", {
       })
     });
 
-    SC.run(function() {
+    Em.run(function() {
       outerdiv = application.OuterView.create();
       outerdiv.append();
     });
@@ -131,13 +131,13 @@ test("Tap on the nested div", function() {
   for (var i=0, l=gestures.length; i<l; i++) {
     switch (gestures[i], 'name'){
       case 'pinch': 
-        equals(get(gestures[i], 'state'), SC.Gesture.WAITING_FOR_TOUCHES, 'pinch should be waiting for touches');
+        equals(get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pinch should be waiting for touches');
       break;
       case 'pan': 
-        equals(get(gestures[i], 'state'), SC.Gesture.WAITING_FOR_TOUCHES, 'pan should be waiting for touches');
+        equals(get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pan should be waiting for touches');
       break;
       case 'tap': 
-        equals(get(gestures[i], 'state'), SC.Gesture.BEGAN, 'tap should be started');
+        equals(get(gestures[i], 'state'), Em.Gesture.BEGAN, 'tap should be started');
       break;
     }
   }
@@ -162,13 +162,13 @@ test("Tap on the nested div", function() {
   for (var i=0, l=gestures.length; i<l; i++) {
     switch (gestures[i], 'name'){
       case 'pinch': 
-        equals(get(gestures[i], 'state'), SC.Gesture.ENDED, 'pinch should be ended');
+        equals(get(gestures[i], 'state'), Em.Gesture.ENDED, 'pinch should be ended');
       break;
       case 'pan': 
-        equals(get(gestures[i], 'state'), SC.Gesture.ENDED, 'pan should be ended');
+        equals(get(gestures[i], 'state'), Em.Gesture.ENDED, 'pan should be ended');
       break;
       case 'tap': 
-        equals(get(gestures[i], 'state'), SC.Gesture.ENDED, 'tap should be ended');
+        equals(get(gestures[i], 'state'), Em.Gesture.ENDED, 'tap should be ended');
       break;
     }
   }
@@ -225,12 +225,12 @@ test("Simultaneous pinch and pan on the outer div", function() {
   equals(gestures.length, 2, 'should be two gestures defined');
 
   if (get(gestures[0], 'name') === 'pinch') {
-    equals(get(gestures[0], 'state'), SC.Gesture.POSSIBLE, 'pinch should be possible');
-    equals(get(gestures[1], 'state'), SC.Gesture.BEGAN, 'pan should have started');
+    equals(get(gestures[0], 'state'), Em.Gesture.POSSIBLE, 'pinch should be possible');
+    equals(get(gestures[1], 'state'), Em.Gesture.BEGAN, 'pan should have started');
   } 
   else if (get(gestures[0], 'name') === 'pan') {
-    equals(get(gestures[0], 'state'), SC.Gesture.BEGAN, 'pinch should be possible');
-    equals(get(gestures[1], 'state'), SC.Gesture.POSSIBLE, 'pan should have started');
+    equals(get(gestures[0], 'state'), Em.Gesture.BEGAN, 'pinch should be possible');
+    equals(get(gestures[1], 'state'), Em.Gesture.POSSIBLE, 'pan should have started');
   }
 
   ok(panStartWasCalled, "Pan start was called");
@@ -264,12 +264,12 @@ test("Simultaneous pinch and pan on the outer div", function() {
 
   // I don't know what order they're in
   if (get(gestures[0], 'name') === 'pinch') {
-    equals(get(gestures[0], 'state'), SC.Gesture.BEGAN, 'pinch should be possible');
-    equals(get(gestures[1], 'state'), SC.Gesture.CHANGED, 'pan should have started');
+    equals(get(gestures[0], 'state'), Em.Gesture.BEGAN, 'pinch should be possible');
+    equals(get(gestures[1], 'state'), Em.Gesture.CHANGED, 'pan should have started');
   } 
   else if (get(gestures[0], 'name') === 'pan') {
-    equals(get(gestures[0], 'state'), SC.Gesture.CHANGED, 'pinch should be possible');
-    equals(get(gestures[1], 'state'), SC.Gesture.BEGAN, 'pan should have started');
+    equals(get(gestures[0], 'state'), Em.Gesture.CHANGED, 'pinch should be possible');
+    equals(get(gestures[1], 'state'), Em.Gesture.BEGAN, 'pan should have started');
   }
 
   ok(panChangeWasCalled, "panChange was called");
@@ -306,13 +306,13 @@ test("one finger down on nested one, other on outer", function() {
   for (var i=0, l=gestures.length; i<l; i++) {
     switch (gestures[i], 'name'){
       case 'pinch': 
-        equals(get(gestures[i], 'state'), SC.Gesture.WAITING_FOR_TOUCHES, 'pinch should be waiting for touches');
+        equals(get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pinch should be waiting for touches');
       break;
       case 'pan': 
-        equals(get(gestures[i], 'state'), SC.Gesture.WAITING_FOR_TOUCHES, 'pan should be waiting for touches');
+        equals(get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pan should be waiting for touches');
       break;
       case 'tap': 
-        equals(get(gestures[i], 'state'), SC.Gesture.BEGAN, 'tap should be started');
+        equals(get(gestures[i], 'state'), Em.Gesture.BEGAN, 'tap should be started');
       break;
     }
   }
@@ -341,10 +341,10 @@ test("one finger down on nested one, other on outer", function() {
   for (var i=0, l=gestures.length; i<l; i++) {
     switch (gestures[i], 'name'){
       case 'pinch': 
-        equals(get(gestures[i], 'state'), SC.Gesture.POSSIBLE, 'pinch should be waiting for touches');
+        equals(get(gestures[i], 'state'), Em.Gesture.POSSIBLE, 'pinch should be waiting for touches');
       break;
       case 'pan': 
-        equals(get(gestures[i], 'state'), SC.Gesture.POSSIBLE, 'pan should be waiting for touches');
+        equals(get(gestures[i], 'state'), Em.Gesture.POSSIBLE, 'pan should be waiting for touches');
       break;
     }
   }
@@ -376,10 +376,10 @@ test("one finger down on nested one, other on outer", function() {
   for (var i=0, l=gestures.length; i<l; i++) {
     switch (gestures[i], 'name'){
       case 'pinch': 
-        equals(get(gestures[i], 'state'), SC.Gesture.BEGAN, 'pinch should be waiting for touches');
+        equals(get(gestures[i], 'state'), Em.Gesture.BEGAN, 'pinch should be waiting for touches');
       break;
       case 'pan': 
-        equals(get(gestures[i], 'state'), SC.Gesture.BEGAN, 'pan should be waiting for touches');
+        equals(get(gestures[i], 'state'), Em.Gesture.BEGAN, 'pan should be waiting for touches');
       break;
     }
   }
@@ -417,13 +417,13 @@ test("one finger down on nested one, other on outer", function() {
   for (var i=0, l=gestures.length; i<l; i++) {
     switch (gestures[i], 'name'){
       case 'pinch': 
-        equals(get(gestures[i], 'state'), SC.Gesture.ENDED, 'pinch should be ended');
+        equals(get(gestures[i], 'state'), Em.Gesture.ENDED, 'pinch should be ended');
       break;
       case 'pan': 
-        equals(get(gestures[i], 'state'), SC.Gesture.ENDED, 'pan should be ended');
+        equals(get(gestures[i], 'state'), Em.Gesture.ENDED, 'pan should be ended');
       break;
       case 'tap': 
-        equals(get(gestures[i], 'state'), SC.Gesture.ENDED, 'tap should be ended');
+        equals(get(gestures[i], 'state'), Em.Gesture.ENDED, 'tap should be ended');
       break;
     }
   }
@@ -455,10 +455,10 @@ test("one finger down on container view, other on nested view", function() {
   for (var i=0, l=gestures.length; i<l; i++) {
     switch (gestures[i], 'name'){
       case 'pinch': 
-        equals(get(gestures[i], 'state'), SC.Gesture.WAITING_FOR_TOUCHES, 'pinch should be waiting for touches');
+        equals(get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pinch should be waiting for touches');
       break;
       case 'pan': 
-        equals(get(gestures[i], 'state'), SC.Gesture.WAITING_FOR_TOUCHES, 'pan should be waiting for touches');
+        equals(get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pan should be waiting for touches');
       break;
     }
   }
@@ -486,13 +486,13 @@ test("one finger down on container view, other on nested view", function() {
   for (var i=0, l=gestures.length; i<l; i++) {
     switch (gestures[i], 'name'){
       case 'pinch': 
-        equals(get(gestures[i], 'state'), SC.Gesture.POSSIBLE, 'pinch should be waiting for touches');
+        equals(get(gestures[i], 'state'), Em.Gesture.POSSIBLE, 'pinch should be waiting for touches');
       break;
       case 'pan': 
-        equals(get(gestures[i], 'state'), SC.Gesture.POSSIBLE, 'pan should be waiting for touches');
+        equals(get(gestures[i], 'state'), Em.Gesture.POSSIBLE, 'pan should be waiting for touches');
       break;
       case 'tap': 
-        equals(get(gestures[i], 'state'), SC.Gesture.POSSIBLE, 'tap should be possible');
+        equals(get(gestures[i], 'state'), Em.Gesture.POSSIBLE, 'tap should be possible');
       break;
     }
   }
@@ -524,10 +524,10 @@ test("one finger down on container view, other on nested view", function() {
   for (var i=0, l=gestures.length; i<l; i++) {
     switch (gestures[i], 'name'){
       case 'pinch': 
-        equals(get(gestures[i], 'state'), SC.Gesture.BEGAN, 'pinch should be waiting for touches');
+        equals(get(gestures[i], 'state'), Em.Gesture.BEGAN, 'pinch should be waiting for touches');
       break;
       case 'pan': 
-        equals(get(gestures[i], 'state'), SC.Gesture.BEGAN, 'pan should be waiting for touches');
+        equals(get(gestures[i], 'state'), Em.Gesture.BEGAN, 'pan should be waiting for touches');
       break;
     }
   }
@@ -567,13 +567,13 @@ test("one finger down on container view, other on nested view", function() {
   for (var i=0, l=gestures.length; i<l; i++) {
     switch (gestures[i], 'name'){
       case 'pinch': 
-        equals(get(gestures[i], 'state'), SC.Gesture.ENDED, 'pinch should be ended');
+        equals(get(gestures[i], 'state'), Em.Gesture.ENDED, 'pinch should be ended');
       break;
       case 'pan': 
-        equals(get(gestures[i], 'state'), SC.Gesture.ENDED, 'pan should be ended');
+        equals(get(gestures[i], 'state'), Em.Gesture.ENDED, 'pan should be ended');
       break;
       case 'tap': 
-        equals(get(gestures[i], 'state'), SC.Gesture.ENDED, 'tap should be ended');
+        equals(get(gestures[i], 'state'), Em.Gesture.ENDED, 'tap should be ended');
       break;
     }
   }

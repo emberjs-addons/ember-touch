@@ -4,8 +4,8 @@
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-var set = SC.set;
-var get = SC.get;
+var set = Em.set;
+var get = Em.get;
 
 var view;
 var application;
@@ -16,9 +16,9 @@ module("Pinch Test",{
   setup: function() {
     numEnded = 0;
 
-    application = SC.Application.create();
+    application = Em.Application.create();
 
-    view = SC.View.create({
+    view = Em.View.create({
       elementId: 'gestureTest',
 
       pinchStart: function(recognizer) {
@@ -38,7 +38,7 @@ module("Pinch Test",{
       }
     });
 
-    SC.run(function(){
+    Em.run(function(){
       view.append();
     });
   },
@@ -74,7 +74,7 @@ test("one start event should put it in waiting state", function() {
 
   ok(gestures);
   equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),SC.Gesture.WAITING_FOR_TOUCHES, "gesture should be waiting");
+  equals(get(gestures[0], 'state'),Em.Gesture.WAITING_FOR_TOUCHES, "gesture should be waiting");
 });
 
 test("two start events should put it in possible state", function() {
@@ -101,7 +101,7 @@ test("two start events should put it in possible state", function() {
 
   ok(gestures);
   equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),SC.Gesture.POSSIBLE, "gesture should be possible");
+  equals(get(gestures[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be possible");
 });
 
 test("If the touches move, the scale should reflect the change", function() {
@@ -126,7 +126,7 @@ test("If the touches move, the scale should reflect the change", function() {
 
   ok(gestures);
   equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),SC.Gesture.POSSIBLE, "gesture should be ended");
+  equals(get(gestures[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be ended");
 
   touchEvent = new jQuery.Event();
   touchEvent.type='touchmove';
@@ -141,7 +141,7 @@ test("If the touches move, the scale should reflect the change", function() {
   view.$().trigger(touchEvent);
 
   gestures = get(get(view, 'eventManager'), 'gestures');
-  equals(get(gestures[0], 'state'),SC.Gesture.BEGAN, "gesture should be began");
+  equals(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
 
   equals(scale,0.5,'scale should be halved');
 
@@ -163,7 +163,7 @@ test("If the touches move, the scale should reflect the change", function() {
   view.$().trigger(touchEvent);
 
   gestures = get(get(view, 'eventManager'), 'gestures');
-  equals(get(gestures[0], 'state'),SC.Gesture.CHANGED, "gesture should be changed");
+  equals(get(gestures[0], 'state'),Em.Gesture.CHANGED, "gesture should be changed");
 
   equals(scale,2,'scale should be doubled again');
 
@@ -192,7 +192,7 @@ test("If the touches move, the scale should reflect the change", function() {
   view.$().trigger(touchEvent);
 
   gestures = get(get(view, 'eventManager'), 'gestures');
-  equals(get(gestures[0], 'state'),SC.Gesture.ENDED, "gesture should be ended");
+  equals(get(gestures[0], 'state'),Em.Gesture.ENDED, "gesture should be ended");
 
   equals(numEnded,1,"pinchEnd should be called once");
 

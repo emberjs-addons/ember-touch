@@ -4,8 +4,8 @@
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-var set = SC.set;
-var get = SC.get;
+var set = Em.set;
+var get = Em.get;
 
 var view;
 var application;
@@ -18,9 +18,9 @@ module("Tap Test",{
     numEnded = 0;
     endCalled = false;
 
-    application = SC.Application.create();
+    application = Em.Application.create();
 
-    view = SC.View.create({
+    view = Em.View.create({
       elementId: 'gestureTest',
 
       tapEnd: function(recognizer) {
@@ -28,7 +28,7 @@ module("Tap Test",{
       }
     });
 
-    SC.run(function(){
+    Em.run(function(){
       view.append();
     });
   },
@@ -63,7 +63,7 @@ test("one start event should put it in began state", function() {
 
   ok(gestures);
   equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),SC.Gesture.BEGAN, "gesture should be began");
+  equals(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
 });
 
 test("when touch ends, tap should fire", function() {
@@ -84,7 +84,7 @@ test("when touch ends, tap should fire", function() {
 
   ok(gestures, "gestures should exist");
   equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),SC.Gesture.BEGAN, "gesture should be began");
+  equals(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
 
   touchEvent = new jQuery.Event();
   touchEvent.type='touchend';
@@ -102,7 +102,7 @@ test("when touch ends, tap should fire", function() {
   ok(endCalled,'tap should be ended');
   ok(gestures, "gestures should exist");
   equals(gestures.length,1,"there should be one gesture");
-  equals(get(gestures[0], 'state'),SC.Gesture.ENDED, "gesture should be ended");
+  equals(get(gestures[0], 'state'),Em.Gesture.ENDED, "gesture should be ended");
 
 
 });

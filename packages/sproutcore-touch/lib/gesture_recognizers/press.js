@@ -1,8 +1,8 @@
 
 require('sproutcore-touch/system/gesture');
 
-var get = SC.get;
-var set = SC.set;
+var get = Em.get;
+var set = Em.set;
 
 /**
   @class
@@ -13,7 +13,7 @@ var set = SC.set;
 
   Presss are discrete gestures so only tapEnd() will get fired on a view.
 
-    var myview = SC.View.create({
+    var myview = Em.View.create({
       elementId: 'gestureTest',
       
       pressEnd: function(recognizer) {
@@ -24,7 +24,7 @@ var set = SC.set;
   You can specify how many touches the gesture requires to start using the numberOfRequiredTouches
   property, and a minimum pressPeriodThreshold which you can set in the pressHoldOptions hash:
 
-    var myview = SC.View.create({
+    var myview = Em.View.create({
       pressOptions: {
         pressPeriodThreshold: 500
       }
@@ -32,9 +32,9 @@ var set = SC.set;
     })
 
 
-  @extends SC.Gesture
+  @extends Em.Gesture
 */
-SC.PressGestureRecognizer = SC.Gesture.extend({
+Em.PressGestureRecognizer = Em.Gesture.extend({
 
   /**
     The minimum period (ms) that the fingers must be held to recognize the gesture end.
@@ -109,10 +109,10 @@ SC.PressGestureRecognizer = SC.Gesture.extend({
   },
 
   toString: function() {
-    return SC.PressGestureRecognizer+'<'+SC.guidFor(this)+'>';
+    return Em.PressGestureRecognizer+'<'+Em.guidFor(this)+'>';
   }
 
 });
 
-SC.Gestures.register('press', SC.PressGestureRecognizer);
+Em.Gestures.register('press', Em.PressGestureRecognizer);
 

@@ -4,14 +4,14 @@
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-var set = SC.set;
-var get = SC.get;
+var set = Em.set;
+var get = Em.get;
 var application = null;
 var view;
 
 module("Test Gesture Recognizer",{
   setup: function() {
-    application = SC.Application.create();
+    application = Em.Application.create();
   },
 
   teardown: function() {
@@ -21,7 +21,7 @@ module("Test Gesture Recognizer",{
 });
 
 test("gesturable views that implement pinch methods get a pinch recognizer", function() {
-  var view = SC.View.create({
+  var view = Em.View.create({
     pinchStart: function(evt) {
 
     },
@@ -37,12 +37,12 @@ test("gesturable views that implement pinch methods get a pinch recognizer", fun
 
   ok(gestures,'Should have a gestures property');
   equals(gestures.length,1,'Should have one gesture');
-  ok(gestures[0] instanceof SC.PinchGestureRecognizer,'gesture should be pinch');
+  ok(gestures[0] instanceof Em.PinchGestureRecognizer,'gesture should be pinch');
 });
 
 test("when finger touches inside, gesture should be in waiting state", function() {
   var numStart = 0;
-  view = SC.View.create({
+  view = Em.View.create({
     elementId: 'gestureTest',
 
     pinchStart: function(evt) {
@@ -54,7 +54,7 @@ test("when finger touches inside, gesture should be in waiting state", function(
     }
   });
 
-  SC.run(function(){
+  Em.run(function(){
     view.append();
   });
 
@@ -76,14 +76,14 @@ test("when finger touches inside, gesture should be in waiting state", function(
 
   ok(gestures);
   equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),SC.Gesture.WAITING_FOR_TOUCHES, "gesture should be waiting");
+  equals(get(gestures[0], 'state'),Em.Gesture.WAITING_FOR_TOUCHES, "gesture should be waiting");
 
   view.$().trigger('touchend')
 });
 
 test("when 2 fingers touch inside, gesture should be in possible state", function() {
   var numStart = 0;
-  view = SC.View.create({
+  view = Em.View.create({
     elementId: 'gestureTest',
 
     pinchStart: function(evt) {
@@ -95,7 +95,7 @@ test("when 2 fingers touch inside, gesture should be in possible state", functio
     }
   });
 
-  SC.run(function(){
+  Em.run(function(){
     view.append();
   });
 
@@ -121,14 +121,14 @@ test("when 2 fingers touch inside, gesture should be in possible state", functio
 
   ok(gestures);
   equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),SC.Gesture.POSSIBLE, "gesture should be possible");
+  equals(get(gestures[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be possible");
 
   view.$().trigger('touchend')
 });
 
 test("when 2 fingers move closer together, gesture should be in BEGAN state", function() {
   var numStart = 0, numChange = 0,startScale, changeScale;
-  view = SC.View.create({
+  view = Em.View.create({
     elementId: 'gestureTest',
 
     pinchStart: function(recognizer) {
@@ -143,7 +143,7 @@ test("when 2 fingers move closer together, gesture should be in BEGAN state", fu
 
   });
 
-  SC.run(function(){
+  Em.run(function(){
     view.append();
   });
 
@@ -172,7 +172,7 @@ test("when 2 fingers move closer together, gesture should be in BEGAN state", fu
 
   ok(gestures);
   equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),SC.Gesture.POSSIBLE, "gesture should be possible");
+  equals(get(gestures[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be possible");
 
   // =====================================
   // Double its size
@@ -190,7 +190,7 @@ test("when 2 fingers move closer together, gesture should be in BEGAN state", fu
 
   view.$().trigger(touchEvent);
 
-  equals(get(gestures[0], 'state'),SC.Gesture.BEGAN, "gesture should be began");
+  equals(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
   equals(numStart,1,"pinchStart called once");
   equals(startScale,2,"scale should be doubled");
 
@@ -225,7 +225,7 @@ test("when 2 fingers move closer together, gesture should be in BEGAN state", fu
   };
   view.$().trigger(touchEvent)
 
-  equals(get(gestures[0], 'state'),SC.Gesture.ENDED, "gesture should be ended");
+  equals(get(gestures[0], 'state'),Em.Gesture.ENDED, "gesture should be ended");
 
   // =====================================
   // Start again
@@ -262,7 +262,7 @@ test("when 2 fingers move closer together, gesture should be in BEGAN state", fu
   view.$().trigger(touchEvent);
 
   equals(numStart,1,"pinchStart called once")
-  equals(get(gestures[0], 'state'),SC.Gesture.BEGAN, "gesture should be began");
+  equals(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
   equals(startScale,2,"scale should be doubled again");
 
   // =====================================
@@ -280,7 +280,7 @@ test("when 2 fingers move closer together, gesture should be in BEGAN state", fu
 
   view.$().trigger(touchEvent);
 
-  equals(get(gestures[0], 'state'),SC.Gesture.CHANGED, "gesture should be changed");
+  equals(get(gestures[0], 'state'),Em.Gesture.CHANGED, "gesture should be changed");
   equals(changeScale,0.5,"scale should be halved");
 
 });
@@ -317,14 +317,14 @@ test("when 2 fingers move closer together, gesture should be in BEGAN state", fu
 
 window.shit = function () {
 
-  var app = SC.Application.create();
+  var app = Em.Application.create();
 
-  SC.run(function(){
-    var myview = SC.ContainerView.create({
+  Em.run(function(){
+    var myview = Em.ContainerView.create({
       elementId: 'gestureTest',
       childViews: ['nestedView'],
 
-      nestedView: SC.View.extend({
+      nestedView: Em.View.extend({
         elementId: 'nestedView',
 
         translate: {

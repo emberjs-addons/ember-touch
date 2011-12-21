@@ -6,8 +6,8 @@
 
 require('sproutcore-touch/system/gesture');
 
-var get = SC.get;
-var set = SC.set;
+var get = Em.get;
+var set = Em.set;
 
 var sigFigs = 100;
 
@@ -20,7 +20,7 @@ var sigFigs = 100;
   For pinchChange events, the pinch gesture recognizer includes a scale property
   which can be applied as a CSS transform directly.
 
-    var myview = SC.View.create({
+    var myview = Em.View.create({
       elementId: 'gestureTest',
       
       pinchChange: function(rec) {
@@ -33,7 +33,7 @@ var sigFigs = 100;
   You can specify how many touches the gesture requires to start using the numberOfRequiredTouches
   property, which you can set in the pinchOptions hash:
 
-    var myview = SC.View.create({
+    var myview = Em.View.create({
       pinchOptions: {
         numberOfRequiredTouches: 3
       }
@@ -41,9 +41,9 @@ var sigFigs = 100;
     })
 
 
-  @extends SC.Gesture
+  @extends Em.Gesture
 */
-SC.PinchGestureRecognizer = SC.Gesture.extend({
+Em.PinchGestureRecognizer = Em.Gesture.extend({
 
   /**
     The scale value which represents the current amount of scaling that has been applied
@@ -133,4 +133,4 @@ SC.PinchGestureRecognizer = SC.Gesture.extend({
   }
 });
 
-SC.Gestures.register('pinch', SC.PinchGestureRecognizer);
+Em.Gestures.register('pinch', Em.PinchGestureRecognizer);
