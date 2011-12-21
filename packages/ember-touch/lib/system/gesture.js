@@ -4,9 +4,9 @@
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-require('sproutcore-touch/system/gestures');
-require('sproutcore-touch/system/gesture_manager');
-require('sproutcore-touch/system/touch_list');
+require('ember-touch/system/gestures');
+require('ember-touch/system/gesture_manager');
+require('ember-touch/system/touch_list');
 
 var get = Em.get;
 var set = Em.set;

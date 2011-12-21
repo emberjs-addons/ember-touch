@@ -1,5 +1,5 @@
 
-require('sproutcore-touch/system/gesture');
+require('ember-touch/system/gesture');
 
 var get = Em.get;
 var set = Em.set;

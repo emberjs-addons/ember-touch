@@ -1,8 +1,8 @@
 {
-  "name": "sproutcore-touch",
-  "summary": "SproutCore Touch",
-  "description": "The SproutCore touch system",
-  "homepage": "http://sproutcore.com",
+  "name": "ember-touch",
+  "summary": "Ember Touch",
+  "description": "The Ember touch system",
+  "homepage": "http://emberjs.com",
   "author": "Majd Taby",
   "version": "2.0.beta.1",
 
@@ -13,7 +13,6 @@
   "dependencies": {
     "spade"                 : "~> 1.0",
     "jquery"                : "~> 1.6",
-    "TransformJS"           : "1.0.beta.2",
     "sproutcore-views"      : "2.0.beta.3"
   },
 

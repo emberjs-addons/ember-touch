@@ -45,34 +45,32 @@ def compile_package_task(package)
   SproutCore::Compiler::CombineTask.with_tasks js_tasks, "#{SproutCore::Compiler.intermediate}/#{package}"
 end
 
-namespace :sproutcore do
-    task :touch => compile_package_task("sproutcore-touch")
-    task :TransformJS => compile_package_task("TransformJS")
+namespace :ember do
+    task :touch => compile_package_task("ember-touch")
 end
 
-task :build => ["sproutcore:touch","sproutcore:TransformJS"]
+task :build => ["ember:touch"]
 
-file "dist/sproutcore-touch.js" => :build do
-  puts "Generating sproutcore-touch.js"
+file "dist/ember-touch.js" => :build do
+  puts "Generating ember-touch.js"
 
   mkdir_p "dist"
 
-  File.open("dist/sproutcore-touch.js", "w") do |file|
-    file.puts strip_require("tmp/static/TransformJS.js")
-    file.puts strip_require("tmp/static/sproutcore-touch.js")
+  File.open("dist/ember-touch.js", "w") do |file|
+    file.puts strip_require("tmp/static/ember-touch.js")
   end
 end
 
-# Minify dist/sproutcore-touch.js to dist/sproutcore-touch.min.js
-file "dist/sproutcore-touch.min.js" => "dist/sproutcore-touch.js" do
-  puts "Generating sproutcore-touch.min.js"
+# Minify dist/ember-touch.js to dist/ember-touch.min.js
+file "dist/ember-touch.min.js" => "dist/ember-touch.js" do
+  puts "Generating ember-touch.min.js"
   
-  File.open("dist/sproutcore.prod.js", "w") do |file|
-    file.puts strip_sc_assert("dist/sproutcore-touch.js")
+  File.open("dist/ember.prod.js", "w") do |file|
+    file.puts strip_sc_assert("dist/ember-touch.js")
   end
 
-  File.open("dist/sproutcore-touch.min.js", "w") do |file|
-    file.puts uglify("dist/sproutcore-touch.js")
+  File.open("dist/ember-touch.min.js", "w") do |file|
+    file.puts uglify("dist/ember-touch.js")
   end
 end
 
@@ -85,22 +83,22 @@ task :bump_version, :version do |t, args|
 
   File.open("VERSION", "w") { |file| file.write version }
 
-  # Bump the version of subcomponents required by the "umbrella" sproutcore
+  # Bump the version of subcomponents required by the "umbrella" ember
   # package.
-  contents = File.read("packages/sproutcore-touch/package.json")
-  contents.gsub! %r{"sproutcore-(\w+)": .*$} do
-    %{"sproutcore-#{$1}": "#{version}"}
+  contents = File.read("packages/ember-touch/package.json")
+  contents.gsub! %r{"ember-(\w+)": .*$} do
+    %{"ember-#{$1}": "#{version}"}
   end
 
-  File.open("packages/sproutcore-touch/package.json", "w") do |file|
+  File.open("packages/ember-touch/package.json", "w") do |file|
     file.write contents
   end
 
   # Bump the version of each component package
-  Dir["packages/sproutcore*/package.json", "package.json"].each do |package|
+  Dir["packages/ember*/package.json", "package.json"].each do |package|
     contents = File.read(package)
     contents.gsub! %r{"version": .*$}, %{"version": "#{version}",}
-    contents.gsub! %r{"(sproutcore-?\w*)": [^\n\{,]*(,?)$} do
+    contents.gsub! %r{"(ember-?\w*)": [^\n\{,]*(,?)$} do
       %{"#{$1}": "#{version}"#{$2}}
     end
 
@@ -114,8 +112,8 @@ end
 ## STARTER KIT ##
 
 namespace :starter_kit do
-  sproutcore_output = "tmp/touch-starter-kit/js/libs/sproutcore-touch-#{SC_VERSION}.js"
-  sproutcore_min_output = "tmp/touch-starter-kit/js/libs/sproutcore-touch-#{SC_VERSION}.min.js"
+  ember_output = "tmp/touch-starter-kit/js/libs/ember-touch-#{SC_VERSION}.js"
+  ember_min_output = "tmp/touch-starter-kit/js/libs/ember-touch-#{SC_VERSION}.min.js"
 
   task :pull => "tmp/touch-starter-kit" do
     Dir.chdir("tmp/touch-starter-kit") do
@@ -125,7 +123,7 @@ namespace :starter_kit do
 
   task :clean => :pull do
     Dir.chdir("tmp/touch-starter-kit") do
-      rm_rf Dir["js/libs/sproutcore*.js"]
+      rm_rf Dir["js/libs/ember*.js"]
     end
   end
 
@@ -137,33 +135,33 @@ namespace :starter_kit do
     end
   end
 
-  task sproutcore_output => ["tmp/touch-starter-kit", "dist/sproutcore-touch.js"] do
-    sh "cp dist/sproutcore-touch.js #{sproutcore_output}"
+  task ember_output => ["tmp/touch-starter-kit", "dist/ember-touch.js"] do
+    sh "cp dist/ember-touch.js #{ember_output}"
   end
 
-  task sproutcore_min_output => ["tmp/touch-starter-kit", "dist/sproutcore-touch.min.js"] do
-    sh "cp dist/sproutcore-touch.min.js #{sproutcore_min_output}"
+  task ember_min_output => ["tmp/touch-starter-kit", "dist/ember-touch.min.js"] do
+    sh "cp dist/ember-touch.min.js #{ember_min_output}"
   end
 
   file "tmp/touch-starter-kit" do
     mkdir_p "tmp"
 
     Dir.chdir("tmp") do
-      sh "git clone git://github.com/sproutcore/starter-kit.git -b sproutcore-touch touch-starter-kit"
+      sh "git clone git://github.com/ember/starter-kit.git -b ember-touch touch-starter-kit"
     end
   end
 
-  file "tmp/touch-starter-kit/index.html" => [sproutcore_output, sproutcore_min_output] do
+  file "tmp/touch-starter-kit/index.html" => [ember_output, ember_min_output] do
     index = File.read("tmp/touch-starter-kit/index.html")
-    index.gsub! %r{<script src="js/libs/sproutcore-touch-\d\.\d.*</script>},
-      %{<script src="js/libs/sproutcore-touch-#{SC_VERSION}.min.js"></script>}
+    index.gsub! %r{<script src="js/libs/ember-touch-\d\.\d.*</script>},
+      %{<script src="js/libs/ember-touch-#{SC_VERSION}.min.js"></script>}
 
     File.open("tmp/touch-starter-kit/index.html", "w") { |f| f.write index }
   end
 
   task :index => "tmp/touch-starter-kit/index.html"
 
-  desc "Build the SproutCore Touch starter kit"
+  desc "Build the ember Touch starter kit"
   task :build => "dist/touch-starter-kit.#{SC_VERSION}.zip"
 end
 
@@ -172,5 +170,5 @@ task :clean do
   sh "rm -rf tmp && rm -rf dist"
 end
 
-task :default => ["dist/sproutcore-touch.min.js"]
+task :default => ["dist/ember-touch.min.js"]
 
