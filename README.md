@@ -16,7 +16,12 @@ Touch ember views can also be used with other UI libraries (ex: iScroll 4 ) whic
 
 Test gestures on multiple touch devices.
 
-Improvements, submit bugs, contributions.....
+Improvements, issues, bugs, contributions.....
+
+# Wiki
+
+[Read Sproutcore-Touch Wiki](github.com/emberjs-addons/sproutcore-touch/wiki/Documentation)
+
 
 # Usage
 
