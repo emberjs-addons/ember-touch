@@ -131,6 +131,7 @@ Em.PinchGestureRecognizer = Em.Gesture.extend({
   eventWasRejected: function() {
     set(this, 'scale', this._previousScale);
   }
+
 });
 
 Em.Gestures.register('pinch', Em.PinchGestureRecognizer);
