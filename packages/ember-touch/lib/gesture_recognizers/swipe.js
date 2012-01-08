@@ -121,7 +121,6 @@ Em.SwipeGestureRecognizer = Em.Gesture.extend({
 
     var isValidMovement = false;
 
-    //if ( this.direction === Em.SwipeGestureDirection.Right ) {
     if ( ( this.direction & Em.SwipeGestureDirection.Right ) != 0 ) {
       
       isValidMovement = ( (x0-x) > this.swipeThreshold);
@@ -155,7 +154,7 @@ Em.SwipeGestureRecognizer = Em.Gesture.extend({
       var view = get(this, 'onBeganGestureView');
       var eventName = get(this, 'name')+'End';
       this.attemptGestureEventDelivery(view, eventName);
-      //this._resetState(); // let be executed on touchEnd
+      this._resetState(); 
       
     }
 
@@ -177,7 +176,7 @@ Em.SwipeGestureRecognizer = Em.Gesture.extend({
     var view = get(this, 'onBeganGestureView');
     var eventName = get(this, 'name')+'Cancel';
     this.attemptGestureEventDelivery(view, eventName);
-    //this._resetState(); // let be executed on touchEnd
+    this._resetState(); 
     
   },
 

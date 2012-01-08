@@ -34,7 +34,7 @@ Improvements, issues, bugs, contributions.....
    
 # How to Run Unit Tests
 
-run __rackup__ 
+run __bundle exec rackup__ 
 
 Test the whole suite  http://localhost:9292/tests/index.html
 
