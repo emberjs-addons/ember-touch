@@ -20,7 +20,7 @@ Improvements, issues, bugs, contributions.....
 
 # Wiki
 
-[Read Sproutcore-Touch Wiki](https://github.com/emberjs-addons/sproutcore-touch/wiki/Documentation)
+[Read Sproutcore-Touch Wiki](https://github.com/ppcano/sproutcore-touch/wiki)
 
 
 # Usage
