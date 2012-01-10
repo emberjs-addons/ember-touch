@@ -32,7 +32,7 @@ var get = Em.get; var set = Em.set;
 
     var myview = Em.View.create({
       swipeOptions: {
-        direction: Em.SwipeGestureDirection.Left | Em.SwipeGestureDirection.Right,
+        direction: Em.OneGestureDirection.Left | Em.OneGestureDirection.Right,
         cancelPeriod: 100,
         swipeThreshold: 10
       }
@@ -42,12 +42,6 @@ var get = Em.get; var set = Em.set;
   @extends Em.Gesture
 */
 
-Em.SwipeGestureDirection = {
-  Right: 1,
-  Left: 2, 
-  Down: 4,
-  Up: 8
-}
 
 Em.SwipeGestureRecognizer = Em.Gesture.extend({
   
@@ -60,7 +54,14 @@ Em.SwipeGestureRecognizer = Em.Gesture.extend({
   cancelPeriod: 100,
   swipeThreshold: 50,
 
-  direction: Em.SwipeGestureDirection.Right,
+  /*
+    You should set up depending on your device factor and view behaviors.
+    Distance is calculated separately on vertical and horizontal directions depending 
+    on the direction property.
+  */
+  initThreshold: 5,
+
+  direction: Em.OneGestureDirection.Right,
 
   //..................................................
   // Private Methods and Properties
@@ -78,10 +79,10 @@ Em.SwipeGestureRecognizer = Em.Gesture.extend({
     @private
     @type Number
   */
-  _initThreshold: 5,
 
 
   didBecomePossible: function() {
+
     this._previousLocation = this.centerPointForTouches(get(this.touches,'touches'));
   },
 
@@ -94,8 +95,24 @@ Em.SwipeGestureRecognizer = Em.Gesture.extend({
     var x0 = currentLocation.x;
     var y0 = currentLocation.y;
 
-    var distance = Math.sqrt((x -= x0) * x + (y -= y0) * y);
-    return distance >= this._initThreshold;
+  //  var distance = Math.sqrt((x -= x0) * x + (y -= y0) * y);
+
+    var shouldBegin = false;
+
+    if ( this.direction & Em.OneGestureDirection.Right ) {
+      shouldBegin = ( (x0-x) > this.initThreshold);
+    } 
+    if ( !shouldBegin && ( this.direction & Em.OneGestureDirection.Left )  ) {
+      shouldBegin = ( (x-x0) > this.initThreshold);
+    } 
+    if ( !shouldBegin && ( this.direction & Em.OneGestureDirection.Down )  ) {
+      shouldBegin = ( (y0-y) > this.initThreshold);
+    } 
+    if ( !shouldBegin && ( this.direction & Em.OneGestureDirection.Up ) ) {
+      shouldBegin = ( (y-y0) > this.initThreshold);
+    }
+
+    return shouldBegin;
   },
 
   didBegin: function() {
@@ -121,28 +138,28 @@ Em.SwipeGestureRecognizer = Em.Gesture.extend({
 
     var isValidMovement = false;
 
-    if ( ( this.direction & Em.SwipeGestureDirection.Right ) != 0 ) {
+    if ( this.direction & Em.OneGestureDirection.Right ) {
       
       isValidMovement = ( (x0-x) > this.swipeThreshold);
-      this.swipeDirection = Em.SwipeGestureDirection.Right; 
+      this.swipeDirection = Em.OneGestureDirection.Right; 
 
     } 
-    if ( !isValidMovement && ( ( this.direction & Em.SwipeGestureDirection.Left ) != 0 ) ) {
+    if ( !isValidMovement && ( this.direction & Em.OneGestureDirection.Left )  ) {
       
       isValidMovement = ( (x-x0) > this.swipeThreshold);
-      this.swipeDirection = Em.SwipeGestureDirection.Left; 
+      this.swipeDirection = Em.OneGestureDirection.Left; 
 
     } 
-    if ( !isValidMovement && ( ( this.direction & Em.SwipeGestureDirection.Down ) != 0 ) ) {
+    if ( !isValidMovement && ( this.direction & Em.OneGestureDirection.Down )  ) {
 
       isValidMovement = ( (y0-y) > this.swipeThreshold);
-      this.swipeDirection = Em.SwipeGestureDirection.Down; 
+      this.swipeDirection = Em.OneGestureDirection.Down; 
 
     } 
-    if ( !isValidMovement && ( ( this.direction & Em.SwipeGestureDirection.Up ) != 0 ) ) {
+    if ( !isValidMovement && ( this.direction & Em.OneGestureDirection.Up ) ) {
 
       isValidMovement = ( (y-y0) > this.swipeThreshold);
-      this.swipeDirection = Em.SwipeGestureDirection.Up; 
+      this.swipeDirection = Em.OneGestureDirection.Up; 
 
     }
 
@@ -151,9 +168,8 @@ Em.SwipeGestureRecognizer = Em.Gesture.extend({
       this._disableCancelFired();
       set(this, 'state', Em.Gesture.ENDED)
 
-      var view = get(this, 'onBeganGestureView');
       var eventName = get(this, 'name')+'End';
-      this.attemptGestureEventDelivery(view, eventName);
+      this.attemptGestureEventDelivery(eventName);
       this._resetState(); 
       
     }
@@ -173,9 +189,8 @@ Em.SwipeGestureRecognizer = Em.Gesture.extend({
     this._disableCancelFired();
     set(this, 'state', Em.Gesture.CANCELLED);
 
-    var view = get(this, 'onBeganGestureView');
     var eventName = get(this, 'name')+'Cancel';
-    this.attemptGestureEventDelivery(view, eventName);
+    this.attemptGestureEventDelivery(eventName);
     this._resetState(); 
     
   },

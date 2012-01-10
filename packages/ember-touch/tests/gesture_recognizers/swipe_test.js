@@ -18,9 +18,10 @@ module("Swipe Test",{
     view = Em.View.create({
 
       swipeOptions: {
-        direction: Em.SwipeGestureDirection.Right,
+        direction: Em.OneGestureDirection.Right,
         cancelPeriod: cancelPeriod,
-        swipeThreshold: swipeThreshold
+        swipeThreshold: swipeThreshold,
+        simultaneously: true
       },
 
       swipeStart: function(recognizer) {
@@ -261,7 +262,7 @@ test("Recognizes multiple directions (Left and Right) ", function() {
 
   var view2 = Em.View.create({
     swipeOptions: {
-      direction: Em.SwipeGestureDirection.Left | Em.SwipeGestureDirection.Right,
+      direction: Em.OneGestureDirection.Left | Em.OneGestureDirection.Right,
       cancelPeriod: cancelPeriod,
       swipeThreshold: swipeThreshold
     },
@@ -271,10 +272,10 @@ test("Recognizes multiple directions (Left and Right) ", function() {
     },
     swipeEnd: function(recognizer) {
 
-      if ( recognizer.swipeDirection === Em.SwipeGestureDirection.Left )
+      if ( recognizer.swipeDirection === Em.OneGestureDirection.Left )
         isLeft = true;
 
-      if ( recognizer.swipeDirection === Em.SwipeGestureDirection.Right )
+      if ( recognizer.swipeDirection === Em.OneGestureDirection.Right )
         isRight = true;
 
     },
@@ -382,7 +383,7 @@ test("Recognizes multiple directions (Up and Down) ", function() {
 
   var view2 = Em.View.create({
     swipeOptions: {
-      direction: Em.SwipeGestureDirection.Up | Em.SwipeGestureDirection.Down | Em.SwipeGestureDirection.Left | Em.SwipeGestureDirection.Right,
+      direction: Em.OneGestureDirection.Up | Em.OneGestureDirection.Down | Em.OneGestureDirection.Left | Em.OneGestureDirection.Right,
 
       cancelPeriod: cancelPeriod,
       swipeThreshold: swipeThreshold
@@ -393,10 +394,10 @@ test("Recognizes multiple directions (Up and Down) ", function() {
     },
     swipeEnd: function(recognizer) {
 
-      if ( recognizer.swipeDirection === Em.SwipeGestureDirection.Up )
+      if ( recognizer.swipeDirection === Em.OneGestureDirection.Up )
         isUp = true;
 
-      if ( recognizer.swipeDirection === Em.SwipeGestureDirection.Down )
+      if ( recognizer.swipeDirection === Em.OneGestureDirection.Down )
         isDown = true;
 
     },

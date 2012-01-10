@@ -144,6 +144,8 @@ var sigFigs = 100;
   @extends Em.Object
 */
 
+
+
 Em.Gesture = Em.Object.extend(
   /** @scope Em.Gesture.prototype */{
 
@@ -168,6 +170,12 @@ Em.Gesture = Em.Object.extend(
 
   */
   currentEventObject: null,
+
+  /** 
+    View in which the gesture must be recognized.
+    Assigned on startup.
+  */
+  view: null,
   
   /** 
     Specifies whether a gesture is discrete or continuous.
@@ -179,6 +187,18 @@ Em.Gesture = Em.Object.extend(
 
 
   preventDefaultOnChange: false,
+
+
+  /**
+    When true is guaranteed to allow simultaneous recognition. When false, the gesture  
+    should not be recognized when there is other active gesture whose simultaneously is disabled.
+
+    @type Boolean
+    @default true
+  */
+  simultaneously: true,
+
+  appGestureManager:null,
 
   /** 
     You can use the `touches` protected property to access the touches hash. The touches 
@@ -215,7 +235,6 @@ Em.Gesture = Em.Object.extend(
 
     @type Em.View
   */
-  onBeganGestureView: null,
 
   init: function() {
     this._super();
@@ -227,6 +246,8 @@ Em.Gesture = Em.Object.extend(
 
   /** @private */
   didBecomePossible: function() { },
+
+
 
   /** @private */
   shouldBegin: function() {
@@ -257,15 +278,34 @@ Em.Gesture = Em.Object.extend(
   // Utilities
 
   /** @private */
+
+
+  simultaneouslyAllowed: function() {
+
+    var result = true;
+
+    if ( !this.simultaneously ) {
+
+      if ( !this.manager.appGestureManager.get('isBlocked') ) {
+
+        this.manager.appGestureManager.block(this.view); 
+
+      } else {
+        result = false;
+      }
+
+    }
+    return result;
+  },
   
   /**
     Notify the View of the event and trigger eventWasRejected if the view don't implement the API 
     or return false
 
   */
-  attemptGestureEventDelivery: function(view, eventName) {
+  attemptGestureEventDelivery: function(eventName) {
 
-    var wasNotified =  this.notifyViewOfGestureEvent(view, eventName);
+    var wasNotified =  this.notifyViewOfGestureEvent(eventName);
     if ( !wasNotified ) {
       this.eventWasRejected();
     }             
@@ -336,12 +376,12 @@ Em.Gesture = Em.Object.extend(
 
     @private
   */
-  notifyViewOfGestureEvent: function(view, eventName, data) {
-    var handler = view[eventName];
+  notifyViewOfGestureEvent: function(eventName, data) {
+    var handler = this.view[eventName];
     var result = false;
 
     if (Em.typeOf(handler) === 'function') {
-      result = handler.call(view, this, data);
+      result = handler.call(this.view, this, data);
     }
 
     return result;
@@ -360,7 +400,7 @@ Em.Gesture = Em.Object.extend(
   // Touch event handlers
 
   /** @private */
-  touchStart: function(evt, view, manager) {
+  touchStart: function(evt) {
     var targetTouches = evt.originalEvent.targetTouches;
     var _touches = this.touches;
     var state = get(this, 'state');
@@ -371,7 +411,12 @@ Em.Gesture = Em.Object.extend(
     for (var i=0, l=targetTouches.length; i<l; i++) {
       var touch = targetTouches[i];
 
-      if(_touches.touchWithId(touch.identifier) === null && _touches.get('length') < get(this, 'numberOfRequiredTouches')) {
+      if(_touches.touchWithId(touch.identifier) === null  ) {
+
+        if ( _touches.get('length') === get(this, 'numberOfRequiredTouches')  ) {
+          // restart touches, otherwise a gesture could state on possible state forever 
+          _touches.removeAllTouches();
+        }
         _touches.addTouch(touch);
       }
     }
@@ -383,9 +428,9 @@ Em.Gesture = Em.Object.extend(
       if ( this.gestureIsDiscrete ) {
 
       // Discrete gestures may skip the possible step if they're ready to begin
-        if ( this.shouldBegin() ) {
+        //
+        if (this.shouldBegin() && this.simultaneouslyAllowed()  ) {
           set(this, 'state', Em.Gesture.BEGAN);
-          set(this, 'onBeganGestureView', view);
           this.didBegin();
         }
 
@@ -396,17 +441,17 @@ Em.Gesture = Em.Object.extend(
     }
 
 
-    manager.redispatchEventToView(view,'touchstart', evt);
+    this.manager.redispatchEventToView('touchstart', evt);
   },
 
   /** @private */
-  touchMove: function(evt, view, manager) {
+  touchMove: function(evt) {
     var state = get(this, 'state');
 
     if (state === Em.Gesture.WAITING_FOR_TOUCHES || state === Em.Gesture.ENDED || state === Em.Gesture.CANCELLED) {
 
       // Nothing to do here
-      manager.redispatchEventToView(view,'touchmove', evt);
+      this.manager.redispatchEventToView('touchmove', evt);
       return;
     }
 
@@ -423,9 +468,9 @@ Em.Gesture = Em.Object.extend(
 
     if (state === Em.Gesture.POSSIBLE && !this.gestureIsDiscrete) {
 
-      if (this.shouldBegin()) {
+      if (this.shouldBegin() && this.simultaneouslyAllowed()  ) {
+
         set(this, 'state', Em.Gesture.BEGAN);
-        set(this, 'onBeganGestureView', view);
         this.didBegin();
 
         // Give the gesture a chance to update its state so the view can get 
@@ -436,7 +481,7 @@ Em.Gesture = Em.Object.extend(
           evt.preventDefault();
         }
 
-        this.attemptGestureEventDelivery(view, get(this, 'name')+'Start');
+        this.attemptGestureEventDelivery(get(this, 'name')+'Start');
       }
 
     } else if (state === Em.Gesture.BEGAN || state === Em.Gesture.CHANGED)  {
@@ -451,18 +496,18 @@ Em.Gesture = Em.Object.extend(
       // Discrete gestures don't fire changed events
       if ( !this.gestureIsDiscrete ) {
 
-        this.attemptGestureEventDelivery(view, get(this, 'name')+'Change');
+        this.attemptGestureEventDelivery( get(this, 'name')+'Change');
 
       }
 
     }
 
-    manager.redispatchEventToView(view,'touchmove', evt);
+    this.manager.redispatchEventToView('touchmove', evt);
 
   },
 
   /** @private */
-  touchEnd: function(evt, view, manager) {
+  touchEnd: function(evt) {
     var state = get(this, 'state');
     var _touches = this.touches;
     set(_touches, 'timestamp', Date.now());
@@ -485,7 +530,7 @@ Em.Gesture = Em.Object.extend(
 
           set(this, 'state', Em.Gesture.ENDED);
           this.didEnd();
-          this.attemptGestureEventDelivery( view, get(this, 'name')+'End');
+          this.attemptGestureEventDelivery( get(this, 'name')+'End');
 
         } else {
 
@@ -497,7 +542,7 @@ Em.Gesture = Em.Object.extend(
       } else {
 
         // if already finished do nothing redispatch to view
-        manager.redispatchEventToView(view,'touchend', evt);
+        this.manager.redispatchEventToView('touchend', evt);
 
       }
     } 
@@ -510,11 +555,12 @@ Em.Gesture = Em.Object.extend(
           set(this, 'state', Em.Gesture.ENDED);
           this.didEnd();
 
-          this.attemptGestureEventDelivery( view, get(this, 'name')+'End');
+          this.attemptGestureEventDelivery( get(this, 'name')+'End');
 
         } else { 
 
-          manager.redispatchEventToView(view,'touchend', evt);
+          this.manager.redispatchEventToView('touchend', evt);
+
 
         }
       }
@@ -524,7 +570,7 @@ Em.Gesture = Em.Object.extend(
   },
 
   /** @private */
-  touchCancel: function(evt, view, manager) {
+  touchCancel: function(evt) {
     var state = get(this, 'state');
 
     if ( state !== Em.Gesture.CANCELLED) {
@@ -533,18 +579,67 @@ Em.Gesture = Em.Object.extend(
       this.didCancel();
 
       if ( !this.gestureIsDiscrete ) {
-        this.notifyViewOfGestureEvent(view,get(this, 'name')+'Cancel');
+        this.notifyViewOfGestureEvent( get(this, 'name')+'Cancel');
       }
 
     } else {
-      manager.redispatchEventToView(view,'touchcancel', evt);
+      this.manager.redispatchEventToView('touchcancel', evt);
     }
 
     this._resetState();
 
+  },
+
+  /*  debug Utils */
+  /*
+  _stateChanged: Em.observer(function(){
+    var state = get(this, 'state');
+    console.log( this.toString() + ' ' + this._stateToString( state ) ); 
+  }, 'state'),
+  */
+  _stateToString: function(state) {
+
+    var result = 'NONE';
+    switch (state ) {
+        case Em.Gesture.WAITING_FOR_TOUCHES:
+            result = 'WAITING_FOR_TOUCHES';
+            break;
+        case Em.Gesture.POSSIBLE:
+            result = 'POSSIBLE';
+            break;
+        case Em.Gesture.BEGAN:
+            result = 'BEGAN';
+            break;
+        case Em.Gesture.CHANGED:
+            result = 'CHANGED';
+            break;
+        case Em.Gesture.ENDED:
+            result = 'ENDED';
+            break;
+        case Em.Gesture.CANCELLED:
+            result = 'CANCELLED';
+            break;
+    }
+
+    return result;
+
   }
 
+
 });
+
+Em.GestureDirection = {
+  Vertical: 1,
+  Horizontal: 2
+}
+
+
+Em.OneGestureDirection = {
+  Right: 1,
+  Left: 2, 
+  Down: 4,
+  Up: 8
+}
 
 Em.Gesture.WAITING_FOR_TOUCHES = 0;
 Em.Gesture.POSSIBLE = 1; // only continuous
@@ -556,3 +651,7 @@ Em.Gesture.CANCELLED = 5;
 //TODO: 
 //- think about multiple events handling at the same time currentEventObject
 //- check meaning of manager.redispatEventToView
+//- emberjs.event_manager. dispatchEvent should pass the view? I think is not necesary cause of the view has its own manager, 
+//  so manager should have assigned its view.
+//  testing directions on pan and swipe gestures
+//  LifeCycle of Em.AppGestureManager

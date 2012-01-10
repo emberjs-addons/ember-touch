@@ -120,10 +120,9 @@ Em.TouchHoldGestureRecognizer = Em.Gesture.extend({
 
       set(this, 'state', Em.Gesture.ENDED)
 
-      var view = get(this, 'onBeganGestureView');
       var eventName = get(this, 'name')+'End';
 
-      this.attemptGestureEventDelivery(view, eventName);
+      this.attemptGestureEventDelivery(eventName);
 
       //this._resetState(); // let be executed on touchEnd
       

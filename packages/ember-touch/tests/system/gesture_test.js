@@ -50,7 +50,9 @@ test("notifyViewOfGestureEvent", function() {
     }
   });
 
-  gesture.notifyViewOfGestureEvent(view, 'touchStart', 10);
+  set(gesture, 'view', view);
+
+  gesture.notifyViewOfGestureEvent('touchStart', 10);
 
   equals(numCalled,1,'called once');
   equals(dataCalled,10,'data passed through');

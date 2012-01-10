@@ -5,6 +5,7 @@
 // ==========================================================================
 
 require('ember-touch/system/gesture');
+require('ember-touch/system/app_gesture_manager');
 
 var get = Em.get;
 var set = Em.set;
@@ -33,6 +34,7 @@ Em.GestureManager = Em.Object.extend({
     @type Array
   */
   gestures: null,
+  view: null,
 
   /**
     Internal hash used to keep a list of the events that need to be
@@ -44,10 +46,10 @@ Em.GestureManager = Em.Object.extend({
   */
   _redispatchQueue: null,
 
-  _redispatchToNearestParentViewWaitingForTouches: function(evt, view) {
+  _redispatchToNearestParentViewWaitingForTouches: function(evt) {
     var foundManager = null,
         successful = false;
-    var view = get(view, 'parentView');
+    var view = get(this.view, 'parentView');
 
     while(view) {
       var manager = get(view, 'eventManager');
@@ -82,11 +84,11 @@ Em.GestureManager = Em.Object.extend({
     @return Boolen
   */
   touchStart: function(evt, view) {
-    if (this._redispatchToNearestParentViewWaitingForTouches(evt, view)) {
+    if (this._redispatchToNearestParentViewWaitingForTouches(evt)) {
       return;
     }
 
-    return this._invokeEvent('touchStart',evt, view);
+    return this._invokeEvent('touchStart',evt);
   },
 
   /**
@@ -96,7 +98,7 @@ Em.GestureManager = Em.Object.extend({
     @return Boolen
   */
   touchMove: function(evt, view) {
-    return this._invokeEvent('touchMove',evt, view);
+    return this._invokeEvent('touchMove',evt);
   },
 
   /**
@@ -106,7 +108,7 @@ Em.GestureManager = Em.Object.extend({
     @return Boolen
   */
   touchEnd: function(evt, view) {
-    return this._invokeEvent('touchEnd',evt, view);
+    return this._invokeEvent('touchEnd',evt);
   },
 
   /**
@@ -116,7 +118,7 @@ Em.GestureManager = Em.Object.extend({
     @return Boolen
   */
   touchCancel: function(evt, view) {
-    return this._invokeEvent('touchCancel',evt, view);
+    return this._invokeEvent('touchCancel',evt);
   },
 
   /**
@@ -126,7 +128,10 @@ Em.GestureManager = Em.Object.extend({
     @private
     @return Boolean
   */
-  _invokeEvent: function(eventName, eventObject, view) {
+  _invokeEvent: function(eventName, eventObject) {
+
+    var view = this.view;
+
     var gestures = get(this, 'gestures'),
         gesture, result = true, wasCalled = false;
 
@@ -138,7 +143,7 @@ Em.GestureManager = Em.Object.extend({
 
       if (Em.typeOf(handler) === 'function') {
         set( gesture, 'currentEventObject', eventObject);
-        result = handler.call(gesture, eventObject, view, this);
+        result = handler.call(gesture, eventObject);
         wasCalled = true;
       }
     };
@@ -165,8 +170,9 @@ Em.GestureManager = Em.Object.extend({
     view. This method is used by the gesture recognizers when they
     want to let the view respond to the original events.
   */
-  redispatchEventToView: function(view, eventName, eventObject) {
+  redispatchEventToView: function(eventName, eventObject) {
     var queue = this._redispatchQueue;
+    var view = this.view;
 
     if (queue[eventName] === undefined) {
       queue[eventName] = [];

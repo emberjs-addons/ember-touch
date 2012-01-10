@@ -56,6 +56,20 @@ Em.PanGestureRecognizer = Em.Gesture.extend({
   */
   translation: null,
 
+
+  /**
+    The pixel distance that the fingers need to move before this gesture is recognized.
+    You should set up depending on your device factor and view behaviors.
+    Distance is calculated separately on vertical and horizontal directions depending 
+    on the direction property.
+
+    @private
+    @type Number
+  */
+  initThreshold: 5,
+
+  direction:  Em.GestureDirection.Horizontal | Em.GestureDirection.Vertical , 
+
   //..................................................
   // Private Methods and Properties
 
@@ -75,13 +89,6 @@ Em.PanGestureRecognizer = Em.Gesture.extend({
   */
   _previousTranslation: null,
 
-  /**
-    The pixel distance that the fingers need to move before this gesture is recognized.
-
-    @private
-    @type Number
-  */
-  _translationThreshold: 5,
 
   init: function() {
     this._super();
@@ -89,6 +96,7 @@ Em.PanGestureRecognizer = Em.Gesture.extend({
   },
 
   didBecomePossible: function() {
+
     this._previousLocation = this.centerPointForTouches(get(this.touches,'touches'));
   },
 
@@ -101,8 +109,22 @@ Em.PanGestureRecognizer = Em.Gesture.extend({
     var x0 = currentLocation.x;
     var y0 = currentLocation.y;
 
-    var distance = Math.sqrt((x -= x0) * x + (y -= y0) * y);
-    return distance >= this._translationThreshold;
+    var shouldBegin = false;
+    //shouldBegin = Math.sqrt( (x - x0)*(x - x0) + (y - y0)*(y - y0)   ) >= this.initThreshold;
+    
+    if ( this.direction & Em.GestureDirection.Vertical ) {
+
+      shouldBegin = Math.abs( y - y0 ) >= this.initThreshold;
+
+    } 
+    if (!shouldBegin && ( this.direction & Em.GestureDirection.Horizontal ) ) {
+
+      shouldBegin = Math.abs( x - x0 ) >= this.initThreshold;
+
+    }
+
+    return shouldBegin;
+
   },
 
   didChange: function() {
@@ -120,7 +142,12 @@ Em.PanGestureRecognizer = Em.Gesture.extend({
 
   eventWasRejected: function() {
     set(this, 'translation', this._previousTranslation);
+  },
+
+  toString: function() {
+    return Em.PanGestureRecognizer+'<'+Em.guidFor(this)+'>';
   }
+
 });
 
 Em.Gestures.register('pan', Em.PanGestureRecognizer);

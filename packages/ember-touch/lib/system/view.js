@@ -39,6 +39,11 @@ Em.View.reopen(
     if (knownGestures && !eventManager) {
       var gestures = [];
 
+      var manager = Em.GestureManager.create({
+        appGestureManager: Em.AppGestureManager
+      });
+
+
       for (var gesture in knownGestures) {
         if (this[gesture+'Start'] || this[gesture+'Change'] || this[gesture+'End']) {
 
@@ -51,18 +56,26 @@ Em.View.reopen(
 
           optionsHash.name = gesture;
           optionsHash.view = this;
+          optionsHash.manager = manager;
 
           gestures.push(knownGestures[gesture].create(optionsHash));
         }
       }
-
-      var manager = Em.GestureManager.create({
-        gestures: gestures
-      });
+      
+      //gestures: gestures,
+      set(manager, 'view', this);
+      set(manager, 'gestures', gestures);
 
       set(this, 'eventManager', manager);
  
     }
+  },
+
+  unblockGestureRecognizer: function() {
+
+    var eventManager = get(this, 'eventManager');
+    eventManager.appGestureManager.unblock(this);
+
   }
 
 });

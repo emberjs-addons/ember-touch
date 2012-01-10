@@ -53,8 +53,8 @@ module("Gesture Manager",{
   }
 });
 
-test("manager should re-dispatch events to all gestures", function() {
-
+test("UNUSED: manager should re-dispatch events to all gestures", function() {
+/*
   Em.run( function() {
 
      view.append(); 
@@ -72,9 +72,11 @@ test("manager should re-dispatch events to all gestures", function() {
 
   manager.touchCancel(evt, view);
   equals(numCancel,2,"dispatch cancel event to all gestures");
+*/
 });
 
-test("manager should re-dispatch event to view", function() {
+test("UNUSED:manager should re-dispatch event to view", function() {
+/*
   var numViewStart =  numViewMove = numViewEnd = numViewCancel = 0;
 
   var view = Em.View.create({
@@ -113,4 +115,6 @@ test("manager should re-dispatch event to view", function() {
   view.$().trigger('touchcancel');
   equals(numCancel,2,"cancel event goes to event manager");
   equals(numViewCancel,1,"redispatch cancel event back to view");
+*/
 });
+
