@@ -291,7 +291,13 @@ Em.Gesture = Em.Object.extend(
         this.manager.appGestureManager.block(this.view); 
 
       } else {
-        result = false;
+
+        // normally, when blocked it must return false. 
+        // But it could find the case, in which, the gesture did not unblock 
+        // ( cause of missing events/ or code developer ). 
+        // on this case, i want the same view can recognize again the gesture
+        
+        result = this.manager.appGestureManager.wasBlockedBy(this.view); 
       }
 
     }

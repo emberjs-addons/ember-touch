@@ -28,6 +28,12 @@ Em.AppGestureManager = Em.Object.create({
 
   }).property('_isBlocked'),
 
+  wasBlockedBy: function ( view ) {
+
+    return view === this.get('_blockerView');
+
+  },
+
 
   block: function( view ) {
 

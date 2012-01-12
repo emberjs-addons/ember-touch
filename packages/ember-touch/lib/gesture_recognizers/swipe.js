@@ -70,7 +70,7 @@ Em.SwipeGestureRecognizer = Em.Gesture.extend({
   swipeDirection: null,
   _initialLocation: null,
   _previousLocation: null,
-  _cancelInterval: null,
+  _cancelTimeout: null,
 
 
   /**
@@ -121,7 +121,7 @@ Em.SwipeGestureRecognizer = Em.Gesture.extend({
 
     var that = this;
 
-    this._cancelInterval = window.setInterval( function() {
+    this._cancelTimeout = window.setTimeout( function() {
       that._cancelFired(that);
     }, this.cancelPeriod);
 
@@ -180,6 +180,7 @@ Em.SwipeGestureRecognizer = Em.Gesture.extend({
   shouldEnd: function() {
     
     this._cancelFired();
+
     return  false;
 
   },
@@ -197,7 +198,7 @@ Em.SwipeGestureRecognizer = Em.Gesture.extend({
 
   _disableCancelFired: function() {
 
-     window.clearInterval(this._cancelInterval);
+     window.clearTimeout( this._cancelTimeout );
 
   },
 

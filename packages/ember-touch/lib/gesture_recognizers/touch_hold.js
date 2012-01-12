@@ -53,7 +53,7 @@ Em.TouchHoldGestureRecognizer = Em.Gesture.extend({
   /** @private */
   gestureIsDiscrete: true,
 
-  _endInterval: null,
+  _endTimeout: null,
 
   _targetElement: null,
 
@@ -70,7 +70,7 @@ Em.TouchHoldGestureRecognizer = Em.Gesture.extend({
     set(this,'_target', target ); 
 
     var that = this;
-    this._endInterval = window.setInterval( function() {
+    this._endTimeout = window.setTimeout( function() {
 
       that._endFired(that);
 
@@ -132,7 +132,7 @@ Em.TouchHoldGestureRecognizer = Em.Gesture.extend({
 
   _disableEndFired: function() {
 
-     window.clearInterval(this._endInterval);
+     window.clearTimeout(this._endTimeout);
 
   },
 
