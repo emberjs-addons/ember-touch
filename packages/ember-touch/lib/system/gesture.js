@@ -165,12 +165,6 @@ Em.Gesture = Em.Object.extend(
   */
   name: null,
 
-  /**
-    The current event which is being managed.
-
-  */
-  currentEventObject: null,
-
   /** 
     View in which the gesture must be recognized.
     Assigned on startup.
@@ -446,7 +440,6 @@ Em.Gesture = Em.Object.extend(
       }
     }
 
-
     this.manager.redispatchEventToView('touchstart', evt);
   },
 
@@ -518,6 +511,7 @@ Em.Gesture = Em.Object.extend(
     var _touches = this.touches;
     set(_touches, 'timestamp', Date.now());
 
+
     var changedTouches = (evt && evt.originalEvent ) ? evt.originalEvent.changedTouches : undefined;
     if ( changedTouches ) {
       // Update touches hash
@@ -530,6 +524,8 @@ Em.Gesture = Em.Object.extend(
     if ( this.gestureIsDiscrete ) {
 
       if ( state === Em.Gesture.BEGAN || state === Em.Gesture.CHANGED ) {
+
+
         // Discrete gestures use shouldEnd to either accept or decline the gesture.
         // Discrete gestures need to cancel if they shouldn't end successfully
         if ( this.shouldEnd() ) {
@@ -544,33 +540,28 @@ Em.Gesture = Em.Object.extend(
           this.didCancel();
 
         }
-
-      } else {
-
-        // if already finished do nothing redispatch to view
-        this.manager.redispatchEventToView('touchend', evt);
-
       }
-    } 
-    else {
+
+    }  else {
 
       if ( state === Em.Gesture.BEGAN || state === Em.Gesture.CHANGED ) {
 
         if ( this.shouldEnd() ) {
+
 
           set(this, 'state', Em.Gesture.ENDED);
           this.didEnd();
 
           this.attemptGestureEventDelivery( get(this, 'name')+'End');
 
-        } else { 
-
-          this.manager.redispatchEventToView('touchend', evt);
-
-
         }
+
       }
+
     }
+
+
+    this.manager.redispatchEventToView('touchend', evt);
 
     this._resetState();
   },

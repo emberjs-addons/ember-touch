@@ -142,11 +142,11 @@ Em.GestureManager = Em.Object.extend({
       handler = gesture[eventName];
 
       if (Em.typeOf(handler) === 'function') {
-        set( gesture, 'currentEventObject', eventObject);
         result = handler.call(gesture, eventObject);
         wasCalled = true;
       }
     };
+
     if ( !wasCalled ) { // redispath the gesture to the parentView
 
       var parentView = get(view, 'parentView');
@@ -160,7 +160,6 @@ Em.GestureManager = Em.Object.extend({
       }
     }
     this._flushReDispatchQueue();
-
     return result;
   },
 
