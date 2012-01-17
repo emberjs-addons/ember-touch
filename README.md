@@ -23,6 +23,10 @@ Improvements, issues, bugs, contributions.....
 [Read Sproutcore-Touch Wiki](https://github.com/ppcano/sproutcore-touch/wiki)
 
 
+# Ember-Touch in Action ( Examples )
+
+[Mobile Ember Kit](https://github.com/ppcano/ember-mk)
+
 # Usage
 
 1. Rake command will build ember-touch.js on the dist folder in order to be used on your project.
