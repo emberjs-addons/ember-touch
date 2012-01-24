@@ -87,7 +87,6 @@ Em.TapGestureRecognizer = Em.Gesture.extend({
   },
 
   shouldBegin: function() {
-    //console.log('should begin....length '+ get(this.touches,'length')+  ' of ' + get(this, 'numberOfRequiredTouches') );
 
     return get(this.touches,'length') === get(this, 'numberOfRequiredTouches');
 
@@ -97,8 +96,6 @@ Em.TapGestureRecognizer = Em.Gesture.extend({
 
     this._initialLocation = this.centerPointForTouches(get(this.touches,'touches'));
     this._internalTouches.addTouch( this.touches[0] );
-
-    //console.log('begginig****** '+ get(this._internalTouches,'length')+  ' of ' + get(this, 'numberOfTaps') );
 
     this._waitingForMoreTouches = get(this._internalTouches,'length') < get(this, 'numberOfTaps');
 
@@ -124,8 +121,6 @@ Em.TapGestureRecognizer = Em.Gesture.extend({
 
     var distance = Math.sqrt((x -= x0) * x + (y -= y0) * y);
 
-
-    //console.log('should end: ' + result + ' ** waiting ' + this._waitingForMoreTouches + '  ' + get(this.touches,'length')+  ' of ' + get(this, 'numberOfTaps') );
     return (Math.abs(distance) < this.tapThreshold) && !this._waitingForMoreTouches;
     
   },
@@ -134,7 +129,6 @@ Em.TapGestureRecognizer = Em.Gesture.extend({
 
   didEnd: function() {
 
-    //console.log('didEnd...'); 
     window.clearTimeout( this._waitingTimeout );
 
 
@@ -146,8 +140,6 @@ Em.TapGestureRecognizer = Em.Gesture.extend({
 
   _waitingFired: function() {
 
-    console.log('canceling waitingFired...'); 
-    
     // clean internalState
     this._initialLocation = null;
     this._internalTouches.removeAllTouches();
