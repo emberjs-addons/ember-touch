@@ -147,7 +147,7 @@ test("when touch ends before pressPeriodThreshold, touchpressEnd should not fire
   ok(!endCalled,'touch press should not be ended');
   ok(gestures, "gestures should exist");
   equals(gestures.length,1,"there should be one gesture");
-  equals(get(gestures[0], 'state'),Em.Gesture.CANCELLED, "gesture should be ended");
+  equals(get(gestures[0], 'state'),Em.Gesture.CANCELLED, "gesture should be canceled");
 
 
 });

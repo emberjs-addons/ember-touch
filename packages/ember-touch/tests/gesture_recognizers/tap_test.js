@@ -107,3 +107,76 @@ test("when touch ends, tap should fire", function() {
 
 });
 
+test("accepts multiple numberOfTaps", function() {
+
+  var gestures;
+  var touchEvent;
+  var wasCalled = false;
+  var view2 = Em.View.create({
+
+    tapOptions: {
+      numberOfTaps: 2,
+      delayBetweenTaps: 1000
+    },
+
+    tapEnd: function(recognizer) {
+      wasCalled = true;
+    }
+
+  });
+
+  Em.run(function(){
+    view2.append();
+  });
+
+  touchEvent = new jQuery.Event('touchstart');
+  touchEvent['originalEvent'] = {
+    targetTouches: [{
+      pageX: 0,
+      pageY: 10
+    }]
+  };
+  view2.$().trigger(touchEvent);
+
+
+  gestures = get(get(view2, 'eventManager'), 'gestures');
+  equals(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
+
+  touchEvent = new jQuery.Event('touchend');
+  touchEvent['originalEvent'] = {
+    changedTouches: [{
+      pageX: 0,
+      pageY: 10
+    }]
+  };
+  view2.$().trigger(touchEvent);
+
+  gestures = get(get(view2, 'eventManager'), 'gestures');
+  equals(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
+
+  ok(!wasCalled,'tap was not ended');
+
+
+  touchEvent = new jQuery.Event('touchstart');
+  touchEvent['originalEvent'] = {
+    targetTouches: [{
+      pageX: 0,
+      pageY: 10
+    }]
+  };
+  view2.$().trigger(touchEvent);
+
+  touchEvent = new jQuery.Event('touchend');
+  touchEvent['originalEvent'] = {
+    changedTouches: [{
+      pageX: 0,
+      pageY: 10
+    }]
+  };
+  view2.$().trigger(touchEvent);
+
+  ok(wasCalled,'tap was called');
+
+
+});
+

@@ -527,19 +527,14 @@ Em.Gesture = Em.Object.extend(
 
 
         // Discrete gestures use shouldEnd to either accept or decline the gesture.
-        // Discrete gestures need to cancel if they shouldn't end successfully
         if ( this.shouldEnd() ) {
 
           set(this, 'state', Em.Gesture.ENDED);
           this.didEnd();
           this.attemptGestureEventDelivery( get(this, 'name')+'End');
 
-        } else {
+        }  
 
-          set(this, 'state', Em.Gesture.CANCELLED);
-          this.didCancel();
-
-        }
       }
 
     }  else {

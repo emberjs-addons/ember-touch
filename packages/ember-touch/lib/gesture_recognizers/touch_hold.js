@@ -107,6 +107,8 @@ Em.TouchHoldGestureRecognizer = Em.Gesture.extend({
   shouldEnd: function() {
     
     this._disableEndFired();
+    set(this, 'state', Em.Gesture.CANCELLED);
+    this.didCancel();
 
     return  false;
 

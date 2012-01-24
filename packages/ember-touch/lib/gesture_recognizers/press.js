@@ -85,8 +85,14 @@ Em.PressGestureRecognizer = Em.Gesture.extend({
     var nowTimestamp = get(this.touches,'timestamp');
     var isValidHoldPeriod = (nowTimestamp - this._initialTimestamp ) >= this.pressPeriodThreshold;
 
-    return  isValidDistance && isValidHoldPeriod;
+    var result = isValidDistance && isValidHoldPeriod;
 
+    if  ( !result ) {
+      set(this, 'state', Em.Gesture.CANCELLED);
+      this.didCancel();
+    }
+
+    return result;
   },
 
   didEnd: function() {

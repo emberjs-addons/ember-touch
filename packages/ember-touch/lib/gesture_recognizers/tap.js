@@ -29,13 +29,22 @@ var set = Em.set;
 
     var myview = Em.View.create({
       tapOptions: {
-        numberOfTaps: 3
+        numberOfRequiredTouches: 3
       }
       ...
     })
 
   And you can also specify the number of taps required for the gesture to fire using the numberOfTaps
   property.
+
+
+    var myview = Em.View.create({
+      tapOptions: {
+        numberOfTaps: 3,
+        delayBetweenTaps: 150
+      }
+      ...
+    })
 
   @extends Em.Gesture
 */
@@ -50,11 +59,12 @@ Em.TapGestureRecognizer = Em.Gesture.extend({
   */
   numberOfTaps: 1,
 
+  delayBetweenTaps: 500,
+
+  tapThreshold: 10,
+
   //..................................................
   // Private Methods and Properties
-
-  /** @private */
-  MULTITAP_DELAY: 150,
 
   /** @private */
   gestureIsDiscrete: true,
@@ -63,28 +73,48 @@ Em.TapGestureRecognizer = Em.Gesture.extend({
   _initialLocation: null,
 
   /** @private */
-  _waitingInterval: null,
+  _waitingTimeout: null,
 
   /** @private */
   _waitingForMoreTouches: false,
 
-  /** @private */
-  _moveThreshold: 10,
+  _internalTouches: null,
+
+  init: function(){
+    this._super();
+    this._internalTouches = Em.TouchList.create(); 
+    ember_assert( get(this, 'numberOfRequiredTouches')===1, 'TODO: still not prepared for higher number' );
+  },
 
   shouldBegin: function() {
+    //console.log('should begin....length '+ get(this.touches,'length')+  ' of ' + get(this, 'numberOfRequiredTouches') );
+
     return get(this.touches,'length') === get(this, 'numberOfRequiredTouches');
+
   },
 
   didBegin: function() {
-    this._initialLocation = this.centerPointForTouches(get(this.touches,'touches'));
 
-    if (get(this.touches,'length') < get(this, 'numberOfTaps')) {
-      this._waitingForMoreTouches = true;
-      this._waitingInterval = window.setInterval(this._intervalFired,this.MULTITAP_DELAY);
-    }
+    this._initialLocation = this.centerPointForTouches(get(this.touches,'touches'));
+    this._internalTouches.addTouch( this.touches[0] );
+
+    //console.log('begginig****** '+ get(this._internalTouches,'length')+  ' of ' + get(this, 'numberOfTaps') );
+
+    this._waitingForMoreTouches = get(this._internalTouches,'length') < get(this, 'numberOfTaps');
+
+    if ( this._waitingForMoreTouches ) {
+
+      var that = this;
+      this._waitingTimeout = window.setTimeout( function() {
+        that._waitingFired(that);
+      }, this.delayBetweenTaps);
+
+    } 
+
   },
 
   shouldEnd: function() {
+
     var currentLocation = this.centerPointForTouches(get(this.touches,'touches'));
 
     var x = this._initialLocation.x;
@@ -94,21 +124,48 @@ Em.TapGestureRecognizer = Em.Gesture.extend({
 
     var distance = Math.sqrt((x -= x0) * x + (y -= y0) * y);
 
-    return (Math.abs(distance) < this._moveThreshold) && !this._waitingForMoreTouches;
+
+    //console.log('should end: ' + result + ' ** waiting ' + this._waitingForMoreTouches + '  ' + get(this.touches,'length')+  ' of ' + get(this, 'numberOfTaps') );
+    return (Math.abs(distance) < this.tapThreshold) && !this._waitingForMoreTouches;
+    
   },
+
+
 
   didEnd: function() {
+
+    //console.log('didEnd...'); 
+    window.clearTimeout( this._waitingTimeout );
+
+
+    // clean internalState
     this._initialLocation = null;
+    this._internalTouches.removeAllTouches();
+
   },
 
-  didCancel: function() {
+  _waitingFired: function() {
+
+    console.log('canceling waitingFired...'); 
+    
+    // clean internalState
     this._initialLocation = null;
+    this._internalTouches.removeAllTouches();
+
+    // set state for the gesture manager
+    set(this, 'state', Em.Gesture.CANCELLED);
+    var eventName = get(this, 'name')+'Cancel';
+    this.attemptGestureEventDelivery(eventName);
+    this._resetState(); 
+
   },
 
-  _intervalFired: function() {
-    window.clearInterval(this._waitingInterval);
-    _waitingForMoreTouches = false;
+
+  toString: function() {
+    return Em.TapGestureRecognizer+'<'+Em.guidFor(this)+'>';
   }
+
 });
 
 Em.Gestures.register('tap', Em.TapGestureRecognizer);
+
