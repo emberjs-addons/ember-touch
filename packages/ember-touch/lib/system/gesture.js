@@ -440,7 +440,6 @@ Em.Gesture = Em.Object.extend(
       }
     }
 
-    this.manager.redispatchEventToView('touchstart', evt);
   },
 
   /** @private */
@@ -450,7 +449,6 @@ Em.Gesture = Em.Object.extend(
     if (state === Em.Gesture.WAITING_FOR_TOUCHES || state === Em.Gesture.ENDED || state === Em.Gesture.CANCELLED) {
 
       // Nothing to do here
-      this.manager.redispatchEventToView('touchmove', evt);
       return;
     }
 
@@ -501,7 +499,6 @@ Em.Gesture = Em.Object.extend(
 
     }
 
-    this.manager.redispatchEventToView('touchmove', evt);
 
   },
 
@@ -555,9 +552,6 @@ Em.Gesture = Em.Object.extend(
 
     }
 
-
-    this.manager.redispatchEventToView('touchend', evt);
-
     this._resetState();
   },
 
@@ -574,9 +568,7 @@ Em.Gesture = Em.Object.extend(
         this.notifyViewOfGestureEvent( get(this, 'name')+'Cancel');
       }
 
-    } else {
-      this.manager.redispatchEventToView('touchcancel', evt);
-    }
+    } 
 
     this._resetState();
 

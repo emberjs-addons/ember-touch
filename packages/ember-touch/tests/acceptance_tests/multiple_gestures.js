@@ -47,11 +47,8 @@ test("when finger touches inside, gesture should be in waiting state", function(
 
     pinchStart: function(evt) {
       //numStart++;
-    },
-
-    touchStart: function(evt) {
-      numStart++;
     }
+
   });
 
   Em.run(function(){
@@ -69,8 +66,6 @@ test("when finger touches inside, gesture should be in waiting state", function(
   };
 
   view.$().trigger(touchEvent);
-
-  equals(numStart,1,"touchStart called once")
 
   var gestures = get(get(view, 'eventManager'), 'gestures');
 
@@ -285,108 +280,3 @@ test("when 2 fingers move closer together, gesture should be in BEGAN state", fu
 
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-window.shit = function () {
-
-  var app = Em.Application.create();
-
-  Em.run(function(){
-    var myview = Em.ContainerView.create({
-      elementId: 'gestureTest',
-      childViews: ['nestedView'],
-
-      nestedView: Em.View.extend({
-        elementId: 'nestedView',
-
-        translate: {
-          x: 0,
-          y: 0
-        },
-
-        panChange: function(recognizer) {
-          this.translate = get(recognizer, 'translation');
-          this._applyTransforms();
-        },
-
-        _applyTransforms: function() {
-          var string = 'translate3d('+this.translate.x+'px,'+this.translate.y+'px,0)';
-          this.$().css('-webkit-transform',string);
-        }
-
-      }),
-
-      scale: 1,
-
-      pinchChange: function(recognizer) {
-        this.scale = get(recognizer, 'scale');
-        this._applyTransforms();
-      },
-
-      _applyTransforms: function() {
-        var string = ' scale3d('+this.scale+','+this.scale+',1)';
-        this.$().css('-webkit-transform',string);
-      },
-
-      tapStart: function(recognizer) {
-        $('#gestureTest').css('background','green');
-      },
-
-      tapEnd: function(recognizer) {
-        $('#gestureTest').css('background','yellow');
-      },
-
-      tapCancel: function(recognizer) {
-        $('#gestureTest').css('background','red');
-      }
-    }).append();
-  });
-
-   $('#gestureTest').css({
-      background: 'red',
-      position: 'absolute',
-      top: 100,
-      left: 100,
-      width: 400,
-      height: 800,
-      '-webkit-tranform': 'translate3d(0,0,0)'
-   });
-
-   $('#nestedView').css({
-      background: 'blue',
-      position: 'absolute',
-      top: 100,
-      left: 100,
-      width: 200,
-      height: 200,
-      '-webkit-tranform': 'translate3d(0,0,0)'
-   });
-};

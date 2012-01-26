@@ -37,57 +37,12 @@ Em.GestureManager = Em.Object.extend({
   view: null,
 
   /**
-    Internal hash used to keep a list of the events that need to be
-    re-dispatched to the views. It's used so we don't re-dispatch
-    the same event multiple times to the same view.
-
-    @default null
-    @type Array
-  */
-  _redispatchQueue: null,
-
-  _redispatchToNearestParentViewWaitingForTouches: function(evt) {
-    var foundManager = null,
-        successful = false;
-    var view = get(this.view, 'parentView');
-
-    while(view) {
-      var manager = get(view, 'eventManager');
-
-      if (manager !== undefined && manager !== null) {
-        var gestures = get(manager, 'gestures');
-
-        for (var i=0, l=gestures.length; i<l; i++) {
-
-          if (get(gestures[i], 'state') === Em.Gesture.WAITING_FOR_TOUCHES) {
-            foundManager = manager;
-          }
-        }
-
-        if (foundManager) {
-          successful = true;
-          foundManager.touchStart(evt, view);
-          break;
-        }
-      }
-      
-      view = get(view, 'parentView');
-    }
-
-    return successful;
-  },
-
-  /**
     Relays touchStart events to all the gesture recognizers to the
     specified view
 
     @return Boolen
   */
   touchStart: function(evt, view) {
-    if (this._redispatchToNearestParentViewWaitingForTouches(evt)) {
-      return;
-    }
-
     return this._invokeEvent('touchStart',evt);
   },
 
@@ -123,19 +78,18 @@ Em.GestureManager = Em.Object.extend({
 
   /**
     Relays an event to the gesture recognizers. Used internally
-    by the touch event listeners.
+    by the touch event listeners. Propagates the event to the parentViews.
 
     @private
     @return Boolean
   */
   _invokeEvent: function(eventName, eventObject) {
 
-    var view = this.view;
+    var gestures = this.get('gestures')
+        , gesture
+        , handler
+        , result = true;
 
-    var gestures = get(this, 'gestures'),
-        gesture, result = true, wasCalled = false;
-
-    this._redispatchQueue = {};
 
     for (var i=0, l=gestures.length; i < l; i++) {
       gesture = gestures[i];
@@ -143,78 +97,20 @@ Em.GestureManager = Em.Object.extend({
 
       if (Em.typeOf(handler) === 'function') {
         result = handler.call(gesture, eventObject);
-        wasCalled = true;
       }
     };
-
-    if ( !wasCalled ) { // redispath the gesture to the parentView
-
-      var parentView = get(view, 'parentView');
-      if ( parentView ) {
-        var manager = get(parentView, 'eventManager');
-
-        if (manager !== undefined && manager !== null) {
-          manager._invokeEvent(eventName, eventObject, parentView);
-        }
-        
-      }
+    
+    // browser delivers the event to the DOM element
+    // bubble the event to the parentView
+    var parentView = this.view.get('parentView');
+    if ( parentView ) {
+      var manager = parentView.get('eventManager');
+      if ( manager ) { manager._invokeEvent(eventName, eventObject); }
+      
     }
-    this._flushReDispatchQueue();
+
     return result;
-  },
 
-  /**
-    Similar to _invokeEvent, but instead of invoking the event
-    to the gesture recognizers, it re-dispatches the event to the
-    view. This method is used by the gesture recognizers when they
-    want to let the view respond to the original events.
-  */
-  redispatchEventToView: function(eventName, eventObject) {
-    var queue = this._redispatchQueue;
-    var view = this.view;
-
-    if (queue[eventName] === undefined) {
-      queue[eventName] = [];
-    }
-    else {
-      var views = queue[eventName];
-
-      for (var i=0, l=views.length; i<l; i++) {
-        if (view === views[i].view) {
-          return;
-        }
-      }
-    }
-
-    var originalEvent = null;
-    if (eventObject && eventObject.originalEvent) originalEvent = eventObject.originalEvent;
-
-    queue[eventName].push({
-      view: view,
-      originalEvent: originalEvent
-    });
-  },
-
-  /**
-    This method is used internally by _invokeEvent. It re-dispatches
-    events to the view if the gestures decided they want to.
-  */
-  _flushReDispatchQueue: function() {
-    var queue = this._redispatchQueue;
-
-    for (var eventName in queue) {
-      var views = queue[eventName];
-
-      for (var i=0, l=views.length; i<l; i++) {
-        var view = views[i].view;
-        var event = jQuery.Event(eventName);
-
-        event.originalEvent = views[i].originalEvent;
-
-        // Trigger event so it bubbles up the hierarchy
-        view.$().trigger(event, this);
-      }
-    }
   }
 
 });
