@@ -224,15 +224,30 @@ Em.Gesture = Em.Object.extend(
   */
   numberOfRequiredTouches: 1,
 
-  /** 
-    View which received the event to trigger the Em.Gesture.BEGAN state.
-
-    @type Em.View
+	/**
+   Assign a gesture delegate based on the delegate name.
   */
+  delegateName: null,
+ 
+  /*	
+	Apply a delegate to customize an application's gesture-recognition behavior. 
+  */
+  delegate: null, 
+
 
   init: function() {
     this._super();
     this.touches = Em.TouchList.create();
+
+    var delegateName =  this.get('delegateName');
+    var delegate =  this.get('delegate');
+
+    if (!delegate && delegateName ) {
+      var delegate = Em.GestureDelegates.find(delegateName);
+      ember_assert('empty delegate, attempting to set up delegate based on delegateName', delegate);
+      this.set('delegate', delegate);
+    }
+
   },
 
   //..............................................

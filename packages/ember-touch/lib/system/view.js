@@ -62,7 +62,7 @@ Em.View.reopen(
         }
       }
       
-      //gestures: gestures,
+
       set(manager, 'view', this);
       set(manager, 'gestures', gestures);
 

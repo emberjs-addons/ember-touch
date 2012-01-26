@@ -96,9 +96,15 @@ Em.GestureManager = Em.Object.extend({
       handler = gesture[eventName];
 
       if (Em.typeOf(handler) === 'function') {
-        result = handler.call(gesture, eventObject);
+
+        var gestureDelegate = gesture.get('delegate');
+        if ( !gestureDelegate || gestureDelegate.shouldReceiveTouch( gesture, this.view, eventObject )  ) {
+          result = handler.call(gesture, eventObject);
+        } 
+
+
       }
-    };
+   };
     
     // browser delivers the event to the DOM element
     // bubble the event to the parentView
