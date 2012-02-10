@@ -90,6 +90,11 @@ Em.GestureManager = Em.Object.extend({
         , handler
         , result = true;
 
+    // view could response directly to touch events
+    handler = this.view[eventName];
+    if (Em.typeOf(handler) === 'function') {
+      handler.call(this.view, eventObject);
+    }
 
     for (var i=0, l=gestures.length; i < l; i++) {
       gesture = gestures[i];
