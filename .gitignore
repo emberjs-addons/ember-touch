@@ -1,4 +1,6 @@
 .bpm
+.bundle
+bin/
 *.bpkg
 Gemfile.lock
 spade-boot.js
@@ -7,7 +9,9 @@ docs/output
 lib/*/tests/all.js
 lib/*/tests/qunit*
 test_*.html
+tests/source
 tmp
-dist
+dist/
 .DS_Store
+NERD_tre*
 assets
