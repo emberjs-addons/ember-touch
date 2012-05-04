@@ -83,7 +83,7 @@ Em.TapGestureRecognizer = Em.Gesture.extend({
   init: function(){
     this._super();
     this._internalTouches = Em.TouchList.create(); 
-    ember_assert( get(this, 'numberOfRequiredTouches')===1, 'TODO: still not prepared for higher number' );
+    Em.assert( get(this, 'numberOfRequiredTouches')===1, 'TODO: still not prepared for higher number' );
   },
 
   shouldBegin: function() {

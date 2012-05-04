@@ -244,7 +244,7 @@ Em.Gesture = Em.Object.extend(
 
     if (!delegate && delegateName ) {
       var delegate = Em.GestureDelegates.find(delegateName);
-      ember_assert('empty delegate, attempting to set up delegate based on delegateName', delegate);
+      Em.assert('empty delegate, attempting to set up delegate based on delegateName', delegate);
       this.set('delegate', delegate);
     }
 

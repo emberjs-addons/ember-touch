@@ -43,7 +43,7 @@ Em.AppGestureManager = Em.Object.create({
 
 
     if (  view.get('simultaneosly') ) {
-      // ember_assert
+      // Em.assert
       throw Error('a view with simultaneosly property true, cannot block the gesture recognizer');
     }
 
@@ -58,7 +58,7 @@ Em.AppGestureManager = Em.Object.create({
       throw Error('unblock, the gesture recognizer when the recognizer was not blocked. Did you unblock after Start? ');
     }
 
-    if (  view.get('simultaneosly') ) { // ember_assert
+    if (  view.get('simultaneosly') ) { // Em.assert
       throw Error('a view with simultaneosly property true, cannot unblock the gesture recognizer');
     }
 
