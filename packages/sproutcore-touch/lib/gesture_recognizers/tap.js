@@ -80,7 +80,11 @@ SC.TapGestureRecognizer = SC.Gesture.extend({
 
     if (get(this.touches,'length') < get(this, 'numberOfTaps')) {
       this._waitingForMoreTouches = true;
-      this._waitingInterval = window.setInterval(this._intervalFired,this.MULTITAP_DELAY);
+
+      var self = this;
+      this._waitingInterval = window.setInterval(function() {
+        self._intervalFired();
+      }, this.MULTITAP_DELAY);
     }
   },
 
@@ -107,7 +111,7 @@ SC.TapGestureRecognizer = SC.Gesture.extend({
 
   _intervalFired: function() {
     window.clearInterval(this._waitingInterval);
-    _waitingForMoreTouches = false;
+    this._waitingForMoreTouches = false;
   }
 });
 
