@@ -1,9 +1,3 @@
-// ==========================================================================
-// Project:  SproutCore Runtime
-// Copyright: ©2011 Strobe Inc. and contributors.
-// License:   Licensed under MIT license (see license.js)
-// ==========================================================================
-
 var set = Em.set;
 var get = Em.get;
 
@@ -38,7 +32,7 @@ test("should detect gesture", function() {
   ok(eventManager,'view has an eventManager');
 
   var gestures = get(eventManager, 'gestures');
-  equals(gestures.length,1,'gesture exists');
+  equal(gestures.length,1,'gesture exists');
 });
 
 test("should apply options", function() {
@@ -57,7 +51,7 @@ test("should apply options", function() {
   ok(eventManager,'view has an eventManager');
 
   var gestures = get(eventManager, 'gestures');
-  equals(gestures.length,1,'gesture exists');
+  equal(gestures.length,1,'gesture exists');
 
-  equals(gestures[0].numberOfRequiredTouches,4, "should apply options hash");
+  equal(gestures[0].numberOfRequiredTouches,4, "should apply options hash");
 });

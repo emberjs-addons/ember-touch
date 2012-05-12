@@ -62,8 +62,8 @@ test("one start event should put it in began state", function() {
   var gestures = get(get(view, 'eventManager'), 'gestures');
 
   ok(gestures);
-  equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
+  equal(gestures.length,1);
+  equal(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
 });
 
 test("when touch ends, tap should fire", function() {
@@ -83,8 +83,8 @@ test("when touch ends, tap should fire", function() {
   var gestures = get(get(view, 'eventManager'), 'gestures');
 
   ok(gestures, "gestures should exist");
-  equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
+  equal(gestures.length,1);
+  equal(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
 
   touchEvent = new jQuery.Event();
   touchEvent.type='touchend';
@@ -101,8 +101,8 @@ test("when touch ends, tap should fire", function() {
 
   ok(endCalled,'tap should be ended');
   ok(gestures, "gestures should exist");
-  equals(gestures.length,1,"there should be one gesture");
-  equals(get(gestures[0], 'state'),Em.Gesture.ENDED, "gesture should be ended");
+  equal(gestures.length,1,"there should be one gesture");
+  equal(get(gestures[0], 'state'),Em.Gesture.ENDED, "gesture should be ended");
 
 
 });
@@ -140,7 +140,7 @@ test("accepts multiple numberOfTaps", function() {
 
 
   gestures = get(get(view2, 'eventManager'), 'gestures');
-  equals(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
+  equal(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
 
   touchEvent = new jQuery.Event('touchend');
   touchEvent['originalEvent'] = {
@@ -152,7 +152,7 @@ test("accepts multiple numberOfTaps", function() {
   view2.$().trigger(touchEvent);
 
   gestures = get(get(view2, 'eventManager'), 'gestures');
-  equals(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
+  equal(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
 
   ok(!wasCalled,'tap was not ended');
 

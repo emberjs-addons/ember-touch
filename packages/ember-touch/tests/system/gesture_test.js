@@ -15,29 +15,29 @@ test("distance", function() {
   var distance;
 
   distance = gesture.distance([{pageX:0,pageY:0},{pageX:10,pageY:0}]);
-  equals(distance,10,'x distance');
+  equal(distance,10,'x distance');
 
   distance = gesture.distance([{pageX:0,pageY:0},{pageX:0,pageY:10}]);
-  equals(distance,10,'y distance');
+  equal(distance,10,'y distance');
 
   distance = gesture.distance([{pageX:0,pageY:0},{pageX:0,pageY:0}]);
-  equals(distance,0,'0 distance');
+  equal(distance,0,'0 distance');
 });
 
 test("centerPoint", function() {
   var point;
 
   point = gesture.centerPointForTouches([{pageX:0,pageY:0},{pageX:10,pageY:0}]);
-  equals(point.x,5,'x distance');
-  equals(point.y,0,'x distance');
+  equal(point.x,5,'x distance');
+  equal(point.y,0,'x distance');
 
   point = gesture.centerPointForTouches([{pageX:0,pageY:0},{pageX:0,pageY:10}]);
-  equals(point.x,0,'y distance');
-  equals(point.y,5,'y distance');
+  equal(point.x,0,'y distance');
+  equal(point.y,5,'y distance');
 
   point = gesture.centerPointForTouches([{pageX:0,pageY:0},{pageX:0,pageY:0}]);
-  equals(point.x,0,'0 distance');
-  equals(point.y,0,'0 distance');
+  equal(point.x,0,'0 distance');
+  equal(point.y,0,'0 distance');
 });
 
 test("notifyViewOfGestureEvent", function() {
@@ -54,7 +54,7 @@ test("notifyViewOfGestureEvent", function() {
 
   gesture.notifyViewOfGestureEvent('touchStart', 10);
 
-  equals(numCalled,1,'called once');
-  equals(dataCalled,10,'data passed through');
-  equals(gestureCalled,gesture,'gesture passed through');
+  equal(numCalled,1,'called once');
+  equal(dataCalled,10,'data passed through');
+  equal(gestureCalled,gesture,'gesture passed through');
 });

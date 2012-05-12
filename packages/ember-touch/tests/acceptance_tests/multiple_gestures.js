@@ -36,7 +36,7 @@ test("gesturable views that implement pinch methods get a pinch recognizer", fun
   var gestures = get(get(view, 'eventManager'), 'gestures');
 
   ok(gestures,'Should have a gestures property');
-  equals(gestures.length,1,'Should have one gesture');
+  equal(gestures.length,1,'Should have one gesture');
   ok(gestures[0] instanceof Em.PinchGestureRecognizer,'gesture should be pinch');
 });
 
@@ -70,8 +70,8 @@ test("when finger touches inside, gesture should be in waiting state", function(
   var gestures = get(get(view, 'eventManager'), 'gestures');
 
   ok(gestures);
-  equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),Em.Gesture.WAITING_FOR_TOUCHES, "gesture should be waiting");
+  equal(gestures.length,1);
+  equal(get(gestures[0], 'state'),Em.Gesture.WAITING_FOR_TOUCHES, "gesture should be waiting");
 
   view.$().trigger('touchend')
 });
@@ -115,8 +115,8 @@ test("when 2 fingers touch inside, gesture should be in possible state", functio
   window.gestures = gestures;
 
   ok(gestures);
-  equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be possible");
+  equal(gestures.length,1);
+  equal(get(gestures[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be possible");
 
   view.$().trigger('touchend')
 });
@@ -166,8 +166,8 @@ test("when 2 fingers move closer together, gesture should be in BEGAN state", fu
   window.gestures = gestures;
 
   ok(gestures);
-  equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be possible");
+  equal(gestures.length,1);
+  equal(get(gestures[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be possible");
 
   // =====================================
   // Double its size
@@ -185,9 +185,9 @@ test("when 2 fingers move closer together, gesture should be in BEGAN state", fu
 
   view.$().trigger(touchEvent);
 
-  equals(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
-  equals(numStart,1,"pinchStart called once");
-  equals(startScale,2,"scale should be doubled");
+  equal(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
+  equal(numStart,1,"pinchStart called once");
+  equal(startScale,2,"scale should be doubled");
 
   // =====================================
   // Halve its size
@@ -204,7 +204,7 @@ test("when 2 fingers move closer together, gesture should be in BEGAN state", fu
 
   view.$().trigger(touchEvent);
 
-  equals(changeScale,0.5,"scale should be halved");
+  equal(changeScale,0.5,"scale should be halved");
 
   // =====================================
   // End gesture
@@ -220,7 +220,7 @@ test("when 2 fingers move closer together, gesture should be in BEGAN state", fu
   };
   view.$().trigger(touchEvent)
 
-  equals(get(gestures[0], 'state'),Em.Gesture.ENDED, "gesture should be ended");
+  equal(get(gestures[0], 'state'),Em.Gesture.ENDED, "gesture should be ended");
 
   // =====================================
   // Start again
@@ -256,9 +256,9 @@ test("when 2 fingers move closer together, gesture should be in BEGAN state", fu
 
   view.$().trigger(touchEvent);
 
-  equals(numStart,1,"pinchStart called once")
-  equals(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
-  equals(startScale,2,"scale should be doubled again");
+  equal(numStart,1,"pinchStart called once")
+  equal(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
+  equal(startScale,2,"scale should be doubled again");
 
   // =====================================
   // Half its size
@@ -275,8 +275,8 @@ test("when 2 fingers move closer together, gesture should be in BEGAN state", fu
 
   view.$().trigger(touchEvent);
 
-  equals(get(gestures[0], 'state'),Em.Gesture.CHANGED, "gesture should be changed");
-  equals(changeScale,0.5,"scale should be halved");
+  equal(get(gestures[0], 'state'),Em.Gesture.CHANGED, "gesture should be changed");
+  equal(changeScale,0.5,"scale should be halved");
 
 });
 

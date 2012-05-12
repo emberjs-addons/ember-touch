@@ -1,174 +1,84 @@
+abort "Please use Ruby 1.9 to build Ember.js!" if RUBY_VERSION !~ /^1\.9/
+
 require "bundler/setup"
-require "sproutcore"
 require "erb"
-require "uglifier"
+require 'rake-pipeline'
+require "ember_docs/cli"
+require "colored"
 
-LICENSE = File.read("generators/license.js")
+def pipeline
+  Rake::Pipeline::Project.new("Assetfile")
+end
 
-## Some SproutCore modules expect an exports object to exist. Until bpm exists,
-## just mock this out for now.
-
-module SproutCore
-  module Compiler
-    class Entry
-      def body
-        "\n(function(exports) {\n#{@raw_body}\n})({});\n"
-      end
+desc "Strip trailing whitespace for JavaScript files in packages"
+task :strip_whitespace do
+  Dir["packages/**/*.js"].each do |name|
+    body = File.read(name)
+    File.open(name, "w") do |file|
+      file.write body.gsub(/ +\n/, "\n")
     end
   end
 end
 
-## HELPERS ##
-
-def strip_require(file)
-  result = File.read(file)
-  result.gsub!(%r{^\s*require\(['"]([^'"])*['"]\);?\s*$}, "")
-  result
-end
-
-def strip_sc_assert(file)
-  result = File.read(file)
-  result.gsub!(%r{^(\s)+sc_assert\((.*)\).*$}, "")
-  result
-end
-
-def uglify(file)
-  uglified = Uglifier.compile(File.read(file))
-  "#{LICENSE}\n#{uglified}"
-end
-
-SproutCore::Compiler.intermediate = "tmp/intermediate"
-SproutCore::Compiler.output       = "tmp/static"
-
-def compile_package_task(package)
-  js_tasks = SproutCore::Compiler::Preprocessors::JavaScriptTask.with_input "packages/#{package}/lib/**/*.js", "."
-  SproutCore::Compiler::CombineTask.with_tasks js_tasks, "#{SproutCore::Compiler.intermediate}/#{package}"
-end
-
-namespace :ember do
-    task :touch => compile_package_task("ember-touch")
-end
-
-task :build => ["ember:touch"]
-
-file "dist/ember-touch.js" => :build do
-  puts "Generating ember-touch.js"
-
-  mkdir_p "dist"
-
-  File.open("dist/ember-touch.js", "w") do |file|
-    file.puts strip_require("tmp/static/ember-touch.js")
-  end
-end
-
-# Minify dist/ember-touch.js to dist/ember-touch.min.js
-file "dist/ember-touch.min.js" => "dist/ember-touch.js" do
-  puts "Generating ember-touch.min.js"
-  
-  File.open("dist/ember.prod.js", "w") do |file|
-    file.puts strip_sc_assert("dist/ember-touch.js")
-  end
-
-  File.open("dist/ember-touch.min.js", "w") do |file|
-    file.puts uglify("dist/ember-touch.js")
-  end
-end
-
-
-SC_VERSION = File.read("VERSION").strip
-
-desc "bump the version to the specified version"
-task :bump_version, :version do |t, args|
-  version = args[:version]
-
-  File.open("VERSION", "w") { |file| file.write version }
-
-  # Bump the version of subcomponents required by the "umbrella" ember
-  # package.
-  contents = File.read("packages/ember-touch/package.json")
-  contents.gsub! %r{"ember-(\w+)": .*$} do
-    %{"ember-#{$1}": "#{version}"}
-  end
-
-  File.open("packages/ember-touch/package.json", "w") do |file|
-    file.write contents
-  end
-
-  # Bump the version of each component package
-  Dir["packages/ember*/package.json", "package.json"].each do |package|
-    contents = File.read(package)
-    contents.gsub! %r{"version": .*$}, %{"version": "#{version}",}
-    contents.gsub! %r{"(ember-?\w*)": [^\n\{,]*(,?)$} do
-      %{"#{$1}": "#{version}"#{$2}}
-    end
-
-    File.open(package, "w") { |file| file.write contents }
-  end
-
-  sh %{git add VERSION package.json packages/**/package.json}
-  sh %{git commit -m "Bump version to #{version}"}
-end
-
-## STARTER KIT ##
-
-namespace :starter_kit do
-  ember_output = "tmp/touch-starter-kit/js/libs/ember-touch-#{SC_VERSION}.js"
-  ember_min_output = "tmp/touch-starter-kit/js/libs/ember-touch-#{SC_VERSION}.min.js"
-
-  task :pull => "tmp/touch-starter-kit" do
-    Dir.chdir("tmp/touch-starter-kit") do
-      sh "git pull origin master"
-    end
-  end
-
-  task :clean => :pull do
-    Dir.chdir("tmp/touch-starter-kit") do
-      rm_rf Dir["js/libs/ember*.js"]
-    end
-  end
-
-  task "dist/touch-starter-kit.#{SC_VERSION}.zip" => ["tmp/touch-starter-kit/index.html"] do
-    mkdir_p "dist"
-
-    Dir.chdir("tmp") do
-      sh %{zip -r ../dist/touch-starter-kit.#{SC_VERSION}.zip touch-starter-kit -x "touch-starter-kit/.git/*"}
-    end
-  end
-
-  task ember_output => ["tmp/touch-starter-kit", "dist/ember-touch.js"] do
-    sh "cp dist/ember-touch.js #{ember_output}"
-  end
-
-  task ember_min_output => ["tmp/touch-starter-kit", "dist/ember-touch.min.js"] do
-    sh "cp dist/ember-touch.min.js #{ember_min_output}"
-  end
-
-  file "tmp/touch-starter-kit" do
-    mkdir_p "tmp"
-
-    Dir.chdir("tmp") do
-      sh "git clone git://github.com/ember/starter-kit.git -b ember-touch touch-starter-kit"
-    end
-  end
-
-  file "tmp/touch-starter-kit/index.html" => [ember_output, ember_min_output] do
-    index = File.read("tmp/touch-starter-kit/index.html")
-    index.gsub! %r{<script src="js/libs/ember-touch-\d\.\d.*</script>},
-      %{<script src="js/libs/ember-touch-#{SC_VERSION}.min.js"></script>}
-
-    File.open("tmp/touch-starter-kit/index.html", "w") { |f| f.write index }
-  end
-
-  task :index => "tmp/touch-starter-kit/index.html"
-
-  desc "Build the ember Touch starter kit"
-  task :build => "dist/touch-starter-kit.#{SC_VERSION}.zip"
+desc "Build ember-touch.js"
+task :dist do
+  puts "Building Ember Touch..."
+  pipeline.invoke
+  puts "Done"
 end
 
 desc "Clean build artifacts from previous builds"
 task :clean do
-  sh "rm -rf tmp && rm -rf dist"
+  puts "Cleaning build..."
+  pipeline.clean
+  puts "Done"
 end
 
-task :default => ["dist/ember-touch.min.js"]
+desc "Run tests with phantomjs"
+task :test, [:suite] => :dist do |t, args|
+  unless system("which phantomjs > /dev/null 2>&1")
+    abort "PhantomJS is not installed. Download from http://phantomjs.org"
+  end
 
+  suites = {
+    :default => ["package=all&nojshint=true"],
+    :all => ["package=all",
+              "package=all&jquery=1.6.4&nojshint=true",
+              "package=all&extendprototypes=true&nojshint=true",
+              "package=all&extendprototypes=true&jquery=1.6.4&nojshint=true",
+              "package=all&dist=build&nojshint=true"]
+  }
+
+  if ENV['TEST']
+    opts = [ENV['TEST']]
+  else
+    suite = args[:suite] || :default
+    opts = suites[suite.to_sym]
+  end
+
+  unless opts
+    abort "No suite named: #{suite}"
+  end
+
+  cmd = opts.map do |opt|
+    "phantomjs tests/qunit/run-qunit.js \"file://localhost#{File.dirname(__FILE__)}/tests/index.html?#{opt}\""
+  end.join(' && ')
+
+  # Run the tests
+  puts "Running: #{opts.join(", ")}"
+  success = system(cmd)
+
+  if success
+    puts "Tests Passed".green
+  else
+    puts "Tests Failed".red
+    exit(1)
+  end
+end
+
+desc "Automatically run tests (Mac OS X only)"
+task :autotest do
+  system("kicker -e 'rake test' packages")
+end
+
+task :default => :dist

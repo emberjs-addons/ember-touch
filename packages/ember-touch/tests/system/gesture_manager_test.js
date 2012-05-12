@@ -52,15 +52,15 @@ test("manager should re-dispatch event to view", function() {
   touchEvent = new jQuery.Event('touchcancel');
   view.$().trigger(touchEvent);
 
-  equals(numViewStart,1,"dispatch start event to the view");
-  equals(numViewMove,1,"dispatch move event to the view");
-  equals(numViewEnd,1,"dispatch end event to the view");
-  equals(numViewCancel,1,"dispatch cancel event to the view");
+  equal(numViewStart,1,"dispatch start event to the view");
+  equal(numViewMove,1,"dispatch move event to the view");
+  equal(numViewEnd,1,"dispatch end event to the view");
+  equal(numViewCancel,1,"dispatch cancel event to the view");
 
 });
 
-test("TODO: manager should re-dispatch events to all gestures", function() {
 /*
+test("TODO: manager should re-dispatch events to all gestures", function() {
  manager = Em.GestureManager.create({
       gestures: [
         gesture.create(),
@@ -90,5 +90,7 @@ var gesture = Em.Object.extend({
   }
 });
 
-*/
+
 });
+
+*/

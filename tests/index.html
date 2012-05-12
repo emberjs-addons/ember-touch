@@ -4,11 +4,43 @@
   <meta charset="UTF-8" />
   <title>QUnit Test Suite</title>
   <link rel="stylesheet" href="qunit/qunit.css" type="text/css" media="screen">
-
   <script type="text/javascript" src="qunit/qunit.js"></script>
   <script type="text/javascript" src="minispade.js"></script>
-  <script type="text/javascript" src="source/ember-touch.js"></script>
-  <script type="text/javascript" src="source/ember-touch-tests.js"></script>
+
+  <script type="text/javascript">
+    // Handle JSHint
+    QUnit.config.urlConfig.push('nojshint');
+
+    var noJsHint = location.search.match(/nojshint=([^&]+)/);
+    jsHint = !(noJsHint && decodeURIComponent(noJsHint[1]));
+
+    var jsHintReporter = function (file, errors) {
+      if (!errors) { return ''; }
+
+      var len = errors.length,
+          str = '',
+          error, idx;;
+
+      if (len === 0) { return ''; }
+
+      for (idx=0; idx<len; idx++) {
+        error = errors[idx];
+        str += file  + ': line ' + error.line + ', col ' +
+            error.character + ', ' + error.reason + '\n';
+      };
+
+      return str + "\n" + len + ' error' + ((len === 1) ? '' : 's');
+    }
+
+
+    // Handle extending prototypes
+    QUnit.config.urlConfig.push('extendprototypes');
+
+    window.ENV = window.ENV || {};
+    var extendPrototypes = location.search.match(/extendprototypes=([^&]+)/);
+    ENV['EXTEND_PROTOTYPES'] = !!(extendPrototypes && decodeURIComponent(extendPrototypes[1]));
+    ENV['TESTING'] = true
+  </script>
 </head>
 <body>
   <h1 id="qunit-header">QUnit Test Suite</h1>
@@ -19,10 +51,19 @@
   <div id="qunit-fixture">test markup</div>
 
   <script>
+    // Load jshint if being used (can cause failurs in old environments if always loaded)
+    if (jsHint) {
+      document.write(unescape('%3Cscript src="jshint.js"%3E%3C/script%3E'));
+    }
+    // Close the script tag to make sure document.write happens
+  </script>
+
+  <script>
     // Load custom version of jQuery if possible
-    var jQueryVersion = QUnit.urlParams.jquery || "1.7.2";
+    var jQueryMatch = location.search.match(/jquery=([^&]+)/),
+        jQueryVersion = jQueryMatch ? jQueryMatch[1] : "1.7.1";
     if (jQueryVersion !== 'none') {
-      document.write(unescape('%3Cscript src="http://code.jquery.com/jquery-'+jQueryVersion+'.js"%3E%3C/script%3E'));
+      document.write(unescape('%3Cscript src="http://ajax.googleapis.com/ajax/libs/jquery/'+jQueryVersion+'/jquery.js"%3E%3C/script%3E'));
     }
     // Close the script tag to make sure document.write happens
   </script>
@@ -31,20 +72,34 @@
     // Fallback to default jQuery
     if (jQueryVersion !== 'none' && !window.jQuery) {
       if (console && console.warn) { console.warn("Unable to load jQuery "+jQueryVersion+". Using default."); }
-      document.write(unescape('%3Cscript src="../lib/jquery-1.7.2.js"%3E%3C/script%3E'));
+      document.write(unescape('%3Cscript src="jquery-1.7.1.js"%3E%3C/script%3E'));
     }
+  </script>
+
+  <script>
+    document.write(unescape('%3Cscript src="../dist/modules/ember.js"%3E%3C/script%3E'));
+  </script>
+
+  <script>
+    // Load ember distribution from query vars
+    var distMatch = location.search.match(/dist=([^&]+)/),
+        dist = (distMatch && distMatch[1]) || 'spade';
+
+    var distros = {
+      spade:   'ember-touch-spade.js',
+      build:   'ember-touch.js'
+    };
+
+    var emberFile = distros[dist];
+    if (!emberFile) { throw 'Unknown dist'; }
+
+    document.write(unescape('%3Cscript src="../dist/'+emberFile+'"%3E%3C/script%3E'));
     // Close the script tag to make sure document.write happens
   </script>
 
+  <script type="text/javascript" src="ember-touch-tests.js"></script>
 
   <script type="text/javascript">
-    // Handle extending prototypes
-    QUnit.config.urlConfig.push('extendprototypes');
-
-    window.ENV = window.ENV || {};
-    var extendPrototypes = location.search.match(/extendprototypes=([^&]+)/);
-    ENV['EXTEND_PROTOTYPES'] = !!(extendPrototypes && decodeURIComponent(extendPrototypes[1]));
-
 
     // hack qunit to not suck for Ember objects
     var originalTypeof = QUnit.jsDump.typeOf;
@@ -61,51 +116,64 @@
       return obj.toString();
     }
 
+
     // Load Tests and Depenencies
-    var packageName, re, match, moduleName, unique_test;
+    var packages = location.search.match(/package=([^&]+)/),
+        packageName, el, idx, len, re, match, moduleName;
 
-
-    var param_test = location.search.match(/test=([^&]+)/), unique_test;
-    if ( param_test ) {
-       unique_test = param_test[1];
-    }
-
-    // There are no requires for these in the code
-    minispade.require('ember/main');
-
-
-    packageName = 'ember-touch';
-    re = new RegExp('^'+packageName+'/([^/]+)');
-
-    minispade.require(packageName+'/main');
-
-      for (moduleName in minispade.modules) {
-        if (!minispade.modules.hasOwnProperty(moduleName)) { continue; }
-
-        match = moduleName.match(re);
-        if (match && match[1] === 'tests') {
-
-          if ( unique_test ) {
-
-            var test_location = moduleName.replace('ember-touch/tests/', '');
-            //console.log(test_location);
-            //console.log(unique_test);
-            if ( unique_test === test_location ) {
-              minispade.require(moduleName);
-            }
-          } else {
-
-            //console.log(moduleName);
-            minispade.require(moduleName);
-          }
-        
-
-        }
+    if (!packages) {
+      el = document.getElementById('qunit-header');
+      el.innerHTML = 'Add package=package1,package2 in the URL to test packages';
+    } else {
+      if (packages[1] === 'all') {
+        packages = [
+          'ember-touch'
+        ];
+      } else {
+        packages = packages[1].split(',');
       }
 
+      len = packages.length;
 
+      // There is no require for this in the code
+      if (dist == 'spade') {
+        minispade.require('ember');
+      }
 
+      for (idx=0; idx<len; idx++) {
+        packageName = packages[idx];
+        re = new RegExp('^'+packageName+'/([^/]+)');
 
+        if (dist == 'spade') {
+          minispade.require(packageName);
+        }
+
+        for (moduleName in minispade.modules) {
+          if (!minispade.modules.hasOwnProperty(moduleName)) { continue; }
+
+          match = moduleName.match(re);
+          if (match) {
+            if (match[1] === '~tests') {
+              // Only require the actual tests since we already required the module
+              minispade.require(moduleName);
+            }
+
+            if (jsHint) {
+              // JSHint all modules in this package, tests and code
+              // (closure to preserve variable values)
+              (function() {
+                var jshintModule = moduleName;
+                test(jshintModule+' should pass jshint', function() {
+                  var passed = JSHINT(minispade.modules[jshintModule], JSHINTRC),
+                      errors = jsHintReporter(jshintModule, JSHINT.errors);
+                  ok(passed, jshintModule+" should pass jshint."+(errors ? "\n"+errors : ''));
+                });
+              })();
+            }
+          }
+        }
+      }
+    }
   </script>
 
 </body>

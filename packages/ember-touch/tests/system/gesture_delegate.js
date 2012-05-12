@@ -62,8 +62,8 @@ test("can block delivering touch events and prevent the gesture from being recog
 
 
     gestures = get(get(view, 'eventManager'), 'gestures');
-    equals(gestures.length,1,"there should be only tap gesture");
-    equals(gestures[0].touches.get('length') , 1,"the touch was included on the tap gesture ");
+    equal(gestures.length,1,"there should be only tap gesture");
+    equal(gestures[0].touches.get('length') , 1,"the touch was included on the tap gesture ");
 
 
     touchEvent = new jQuery.Event('touchend');
@@ -95,8 +95,8 @@ test("can block delivering touch events and prevent the gesture from being recog
 
 
     gestures = get(get(view, 'eventManager'), 'gestures');
-    equals(gestures.length,1,"there should be only tap gesture");
-    equals(gestures[0].touches.get('length') , 0,"the touch was not included on the tap gesture ");
+    equal(gestures.length,1,"there should be only tap gesture");
+    equal(gestures[0].touches.get('length') , 0,"the touch was not included on the tap gesture ");
 
 
     touchEvent = new jQuery.Event('touchend');
@@ -148,7 +148,7 @@ test("can be assigned with delegateName property ", function() {
 
 
     gestures = get(get(view, 'eventManager'), 'gestures');
-    equals(gestures.length,1,"there should be only tap gesture");
+    equal(gestures.length,1,"there should be only tap gesture");
     ok( gestures[0].get('delegate') ,"the delegate must be assigned to the view based on delegateName property ");
 
 
@@ -173,7 +173,7 @@ test("can be assigned with delegateName property ", function() {
 
 
     gestures = get(get(view2, 'eventManager'), 'gestures');
-    equals(gestures.length,1,"there should be only tap gesture");
+    equal(gestures.length,1,"there should be only tap gesture");
     ok( !gestures[0].get('delegate') ,"the delegate is empty ");
 
 
@@ -181,3 +181,4 @@ test("can be assigned with delegateName property ", function() {
     Em.GestureDelegates.clear();
 
 });
+

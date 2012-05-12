@@ -70,8 +70,8 @@ test("one start event should put it in waiting state", function() {
   var gestures = get(get(view, 'eventManager'), 'gestures');
 
   ok(gestures);
-  equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),Em.Gesture.WAITING_FOR_TOUCHES, "gesture should be waiting");
+  equal(gestures.length,1);
+  equal(get(gestures[0], 'state'),Em.Gesture.WAITING_FOR_TOUCHES, "gesture should be waiting");
 });
 
 test("two start events should put it in possible state", function() {
@@ -97,8 +97,8 @@ test("two start events should put it in possible state", function() {
   var gestures = get(get(view, 'eventManager'), 'gestures');
 
   ok(gestures);
-  equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be possible");
+  equal(gestures.length,1);
+  equal(get(gestures[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be possible");
 });
 
 test("If the touches move, the translation should reflect the change", function() {
@@ -118,7 +118,7 @@ test("If the touches move, the translation should reflect the change", function(
   };
 
   view.$().trigger(touchEvent);
-  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be possible");
+  equal(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be possible");
 
   touchEvent = new jQuery.Event();
   touchEvent.type='touchmove';
@@ -137,9 +137,9 @@ test("If the touches move, the translation should reflect the change", function(
 
   view.$().trigger(touchEvent);
 
-  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.BEGAN, "gesture should be BEGAN");
+  equal(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.BEGAN, "gesture should be BEGAN");
 
-  equals(translation.x,5,'changed x value');
+  equal(translation.x,5,'changed x value');
 
   touchEvent = new jQuery.Event();
   touchEvent.type='touchmove';
@@ -157,9 +157,9 @@ test("If the touches move, the translation should reflect the change", function(
   };
 
   view.$().trigger(touchEvent);
-  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.CHANGED, "gesture should be CHANGED");
+  equal(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.CHANGED, "gesture should be CHANGED");
 
-  equals(translation.y,5,'changed y value');
+  equal(translation.y,5,'changed y value');
 
   touchEvent = new jQuery.Event();
   touchEvent.type='touchend';
@@ -172,7 +172,7 @@ test("If the touches move, the translation should reflect the change", function(
   };
 
   view.$().trigger(touchEvent);
-  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.ENDED, "gesture should be ENDED");
+  equal(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.ENDED, "gesture should be ENDED");
 
   touchEvent = new jQuery.Event();
   touchEvent.type='touchend';
@@ -181,9 +181,9 @@ test("If the touches move, the translation should reflect the change", function(
   };
 
   view.$().trigger(touchEvent);
-  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.ENDED, "gesture should be ENDED");
+  equal(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.ENDED, "gesture should be ENDED");
 
-  equals(numEnded,1,"panEnd should be called once");
+  equal(numEnded,1,"panEnd should be called once");
 });
 
 test("If a gesture event returns false, reject the change", function() {
@@ -220,8 +220,8 @@ test("If a gesture event returns false, reject the change", function() {
   view.$().trigger(touchEvent);
 
   var gestures = get(get(view, 'eventManager'), 'gestures');
-  equals(get(gestures[0], 'translation').x,0, "state should not change");
-  equals(get(gestures[0], 'translation').y,0, "state should not change");
+  equal(get(gestures[0], 'translation').x,0, "state should not change");
+  equal(get(gestures[0], 'translation').y,0, "state should not change");
 });
 
 test("Subsequent pan gestures should be relative to previous ones", function() {
@@ -266,8 +266,8 @@ test("Subsequent pan gestures should be relative to previous ones", function() {
 
   view.$().trigger(touchEvent);
 
-  equals(translation.x,5,'changed x value');
-  equals(translation.y,0,'changed y value');
+  equal(translation.x,5,'changed x value');
+  equal(translation.y,0,'changed y value');
 
 
   // ======================================
@@ -320,7 +320,7 @@ test("Subsequent pan gestures should be relative to previous ones", function() {
 
   view.$().trigger(touchEvent);
 
-  equals(translation.x,5,'changed x value');
-  equals(translation.y,0,'changed y value');
+  equal(translation.x,5,'changed x value');
+  equal(translation.y,0,'changed y value');
 
 });

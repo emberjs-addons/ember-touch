@@ -15,3 +15,4 @@ dist/
 .DS_Store
 NERD_tre*
 assets
+tests/ember-touch-tests.js

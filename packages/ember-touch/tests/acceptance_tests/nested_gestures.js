@@ -126,18 +126,18 @@ test("Tap on the nested div", function() {
 
   var gestures = get(get(outerdiv.nestedView, 'eventManager'), 'gestures');
   ok (gestures, "gestures should be defined");
-  equals(gestures.length, 3, 'should be three gestures defined');
+  equal(gestures.length, 3, 'should be three gestures defined');
 
   for (var i=0, l=gestures.length; i<l; i++) {
     switch (gestures[i], 'name'){
       case 'pinch': 
-        equals(get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pinch should be waiting for touches');
+        equal(get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pinch should be waiting for touches');
       break;
       case 'pan': 
-        equals(get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pan should be waiting for touches');
+        equal(get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pan should be waiting for touches');
       break;
       case 'tap': 
-        equals(get(gestures[i], 'state'), Em.Gesture.BEGAN, 'tap should be started');
+        equal(get(gestures[i], 'state'), Em.Gesture.BEGAN, 'tap should be started');
       break;
     }
   }
@@ -162,13 +162,13 @@ test("Tap on the nested div", function() {
   for (var i=0, l=gestures.length; i<l; i++) {
     switch (gestures[i], 'name'){
       case 'pinch': 
-        equals(get(gestures[i], 'state'), Em.Gesture.ENDED, 'pinch should be ended');
+        equal(get(gestures[i], 'state'), Em.Gesture.ENDED, 'pinch should be ended');
       break;
       case 'pan': 
-        equals(get(gestures[i], 'state'), Em.Gesture.ENDED, 'pan should be ended');
+        equal(get(gestures[i], 'state'), Em.Gesture.ENDED, 'pan should be ended');
       break;
       case 'tap': 
-        equals(get(gestures[i], 'state'), Em.Gesture.ENDED, 'tap should be ended');
+        equal(get(gestures[i], 'state'), Em.Gesture.ENDED, 'tap should be ended');
       break;
     }
   }
@@ -222,20 +222,20 @@ test("Simultaneous pinch and pan on the outer div", function() {
 
   var gestures = get(get(outerdiv, 'eventManager'), 'gestures');
   ok (gestures, "gestures should be defined");
-  equals(gestures.length, 2, 'should be two gestures defined');
+  equal(gestures.length, 2, 'should be two gestures defined');
 
   if (get(gestures[0], 'name') === 'pinch') {
-    equals(get(gestures[0], 'state'), Em.Gesture.POSSIBLE, 'pinch should be possible');
-    equals(get(gestures[1], 'state'), Em.Gesture.BEGAN, 'pan should have started');
+    equal(get(gestures[0], 'state'), Em.Gesture.POSSIBLE, 'pinch should be possible');
+    equal(get(gestures[1], 'state'), Em.Gesture.BEGAN, 'pan should have started');
   } 
   else if (get(gestures[0], 'name') === 'pan') {
-    equals(get(gestures[0], 'state'), Em.Gesture.BEGAN, 'pinch should be possible');
-    equals(get(gestures[1], 'state'), Em.Gesture.POSSIBLE, 'pan should have started');
+    equal(get(gestures[0], 'state'), Em.Gesture.BEGAN, 'pinch should be possible');
+    equal(get(gestures[1], 'state'), Em.Gesture.POSSIBLE, 'pan should have started');
   }
 
   ok(panStartWasCalled, "Pan start was called");
-  equals(outerdiv.translate.x,10,'move right 5px');
-  equals(outerdiv.translate.y,10,'move down 10px');
+  equal(outerdiv.translate.x,10,'move right 5px');
+  equal(outerdiv.translate.y,10,'move down 10px');
 
   // ===================================
   // Pan and pinch simultaneously
@@ -260,25 +260,25 @@ test("Simultaneous pinch and pan on the outer div", function() {
 
   var gestures = get(get(outerdiv, 'eventManager'), 'gestures');
   ok (gestures, "gestures should be defined");
-  equals(gestures.length, 2, 'should be two gestures defined');
+  equal(gestures.length, 2, 'should be two gestures defined');
 
   // I don't know what order they're in
   if (get(gestures[0], 'name') === 'pinch') {
-    equals(get(gestures[0], 'state'), Em.Gesture.BEGAN, 'pinch should be possible');
-    equals(get(gestures[1], 'state'), Em.Gesture.CHANGED, 'pan should have started');
+    equal(get(gestures[0], 'state'), Em.Gesture.BEGAN, 'pinch should be possible');
+    equal(get(gestures[1], 'state'), Em.Gesture.CHANGED, 'pan should have started');
   } 
   else if (get(gestures[0], 'name') === 'pan') {
-    equals(get(gestures[0], 'state'), Em.Gesture.CHANGED, 'pinch should be possible');
-    equals(get(gestures[1], 'state'), Em.Gesture.BEGAN, 'pan should have started');
+    equal(get(gestures[0], 'state'), Em.Gesture.CHANGED, 'pinch should be possible');
+    equal(get(gestures[1], 'state'), Em.Gesture.BEGAN, 'pan should have started');
   }
 
   ok(panChangeWasCalled, "panChange was called");
   ok(pinchStartWasCalled, "pinchStart was called");
 
-  equals(outerdiv.translate.x,15,'move right another 10px');
-  equals(outerdiv.translate.y,10,'move down another 10px');
+  equal(outerdiv.translate.x,15,'move right another 10px');
+  equal(outerdiv.translate.y,10,'move down another 10px');
 
-  equals(outerdiv.scale,2,'double the scale');
+  equal(outerdiv.scale,2,'double the scale');
 });
 
 test("one finger down on nested one, other on outer", function() {
@@ -301,18 +301,18 @@ test("one finger down on nested one, other on outer", function() {
 
   var gestures = get(get(outerdiv.nestedView, 'eventManager'), 'gestures');
   ok (gestures, "gestures should be defined");
-  equals(gestures.length, 3, 'should be three gestures defined');
+  equal(gestures.length, 3, 'should be three gestures defined');
 
   for (var i=0, l=gestures.length; i<l; i++) {
     switch (gestures[i], 'name'){
       case 'pinch': 
-        equals(get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pinch should be waiting for touches');
+        equal(get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pinch should be waiting for touches');
       break;
       case 'pan': 
-        equals(get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pan should be waiting for touches');
+        equal(get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pan should be waiting for touches');
       break;
       case 'tap': 
-        equals(get(gestures[i], 'state'), Em.Gesture.BEGAN, 'tap should be started');
+        equal(get(gestures[i], 'state'), Em.Gesture.BEGAN, 'tap should be started');
       break;
     }
   }
@@ -336,15 +336,15 @@ test("one finger down on nested one, other on outer", function() {
 
   var gestures = get(get(outerdiv, 'eventManager'), 'gestures');
   ok (gestures, "gestures should be defined");
-  equals(gestures.length, 2, 'should be two gestures defined');
+  equal(gestures.length, 2, 'should be two gestures defined');
 
   for (var i=0, l=gestures.length; i<l; i++) {
     switch (gestures[i], 'name'){
       case 'pinch': 
-        equals(get(gestures[i], 'state'), Em.Gesture.POSSIBLE, 'pinch should be waiting for touches');
+        equal(get(gestures[i], 'state'), Em.Gesture.POSSIBLE, 'pinch should be waiting for touches');
       break;
       case 'pan': 
-        equals(get(gestures[i], 'state'), Em.Gesture.POSSIBLE, 'pan should be waiting for touches');
+        equal(get(gestures[i], 'state'), Em.Gesture.POSSIBLE, 'pan should be waiting for touches');
       break;
     }
   }
@@ -371,15 +371,15 @@ test("one finger down on nested one, other on outer", function() {
   $('#outer-div').trigger(touchEvent);
 
   var gestures = get(get(outerdiv, 'eventManager'), 'gestures');
-  equals(gestures.length, 2, 'should be two gestures defined');
+  equal(gestures.length, 2, 'should be two gestures defined');
 
   for (var i=0, l=gestures.length; i<l; i++) {
     switch (gestures[i], 'name'){
       case 'pinch': 
-        equals(get(gestures[i], 'state'), Em.Gesture.BEGAN, 'pinch should be waiting for touches');
+        equal(get(gestures[i], 'state'), Em.Gesture.BEGAN, 'pinch should be waiting for touches');
       break;
       case 'pan': 
-        equals(get(gestures[i], 'state'), Em.Gesture.BEGAN, 'pan should be waiting for touches');
+        equal(get(gestures[i], 'state'), Em.Gesture.BEGAN, 'pan should be waiting for touches');
       break;
     }
   }
@@ -387,10 +387,10 @@ test("one finger down on nested one, other on outer", function() {
   ok(panStartWasCalled, "panStart was called");
   ok(pinchStartWasCalled, "pinchStart was called");
 
-  equals(outerdiv.translate.x,10,'move right another 10px');
-  equals(outerdiv.translate.y,0,'no y axis change');
+  equal(outerdiv.translate.x,10,'move right another 10px');
+  equal(outerdiv.translate.y,0,'no y axis change');
 
-  equals(outerdiv.scale,2,'double the scale');
+  equal(outerdiv.scale,2,'double the scale');
 
   // ===================================
   // lift finger
@@ -417,13 +417,13 @@ test("one finger down on nested one, other on outer", function() {
   for (var i=0, l=gestures.length; i<l; i++) {
     switch (gestures[i], 'name'){
       case 'pinch': 
-        equals(get(gestures[i], 'state'), Em.Gesture.ENDED, 'pinch should be ended');
+        equal(get(gestures[i], 'state'), Em.Gesture.ENDED, 'pinch should be ended');
       break;
       case 'pan': 
-        equals(get(gestures[i], 'state'), Em.Gesture.ENDED, 'pan should be ended');
+        equal(get(gestures[i], 'state'), Em.Gesture.ENDED, 'pan should be ended');
       break;
       case 'tap': 
-        equals(get(gestures[i], 'state'), Em.Gesture.ENDED, 'tap should be ended');
+        equal(get(gestures[i], 'state'), Em.Gesture.ENDED, 'tap should be ended');
       break;
     }
   }
@@ -450,15 +450,15 @@ test("one finger down on container view, other on nested view", function() {
 
   var gestures = get(get(outerdiv, 'eventManager'), 'gestures');
   ok (gestures, "gestures should be defined");
-  equals(gestures.length, 2, 'should be two gestures defined');
+  equal(gestures.length, 2, 'should be two gestures defined');
 
   for (var i=0, l=gestures.length; i<l; i++) {
     switch (gestures[i], 'name'){
       case 'pinch': 
-        equals(get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pinch should be waiting for touches');
+        equal(get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pinch should be waiting for touches');
       break;
       case 'pan': 
-        equals(get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pan should be waiting for touches');
+        equal(get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pan should be waiting for touches');
       break;
     }
   }
@@ -481,18 +481,18 @@ test("one finger down on container view, other on nested view", function() {
 
   var gestures = get(get(outerdiv.nestedView, 'eventManager'), 'gestures');
   ok (gestures, "gestures should be defined");
-  equals(gestures.length, 3, 'should be three gestures defined');
+  equal(gestures.length, 3, 'should be three gestures defined');
 
   for (var i=0, l=gestures.length; i<l; i++) {
     switch (gestures[i], 'name'){
       case 'pinch': 
-        equals(get(gestures[i], 'state'), Em.Gesture.POSSIBLE, 'pinch should be waiting for touches');
+        equal(get(gestures[i], 'state'), Em.Gesture.POSSIBLE, 'pinch should be waiting for touches');
       break;
       case 'pan': 
-        equals(get(gestures[i], 'state'), Em.Gesture.POSSIBLE, 'pan should be waiting for touches');
+        equal(get(gestures[i], 'state'), Em.Gesture.POSSIBLE, 'pan should be waiting for touches');
       break;
       case 'tap': 
-        equals(get(gestures[i], 'state'), Em.Gesture.POSSIBLE, 'tap should be possible');
+        equal(get(gestures[i], 'state'), Em.Gesture.POSSIBLE, 'tap should be possible');
       break;
     }
   }
@@ -519,15 +519,15 @@ test("one finger down on container view, other on nested view", function() {
   $('#outer-div').trigger(touchEvent);
 
   var gestures = get(get(outerdiv, 'eventManager'), 'gestures');
-  equals(gestures.length, 2, 'should be two gestures defined');
+  equal(gestures.length, 2, 'should be two gestures defined');
 
   for (var i=0, l=gestures.length; i<l; i++) {
     switch (gestures[i], 'name'){
       case 'pinch': 
-        equals(get(gestures[i], 'state'), Em.Gesture.BEGAN, 'pinch should be waiting for touches');
+        equal(get(gestures[i], 'state'), Em.Gesture.BEGAN, 'pinch should be waiting for touches');
       break;
       case 'pan': 
-        equals(get(gestures[i], 'state'), Em.Gesture.BEGAN, 'pan should be waiting for touches');
+        equal(get(gestures[i], 'state'), Em.Gesture.BEGAN, 'pan should be waiting for touches');
       break;
     }
   }
@@ -535,12 +535,12 @@ test("one finger down on container view, other on nested view", function() {
   ok(panStartWasCalled, "panStart was called");
   ok(pinchStartWasCalled, "pinchStart was called");
 
-  equals(outerdiv.translate.x,10,'move right another 10px');
-  equals(outerdiv.translate.y,0,'no y axis change');
+  equal(outerdiv.translate.x,10,'move right another 10px');
+  equal(outerdiv.translate.y,0,'no y axis change');
 
-  equals(outerdiv.scale,2,'double the scale');
+  equal(outerdiv.scale,2,'double the scale');
 
-  equals(tapEndWasCalled, false, 'tapEnd should not have been called');
+  equal(tapEndWasCalled, false, 'tapEnd should not have been called');
 
   // ===================================
   // lift finger
@@ -567,13 +567,13 @@ test("one finger down on container view, other on nested view", function() {
   for (var i=0, l=gestures.length; i<l; i++) {
     switch (gestures[i], 'name'){
       case 'pinch': 
-        equals(get(gestures[i], 'state'), Em.Gesture.ENDED, 'pinch should be ended');
+        equal(get(gestures[i], 'state'), Em.Gesture.ENDED, 'pinch should be ended');
       break;
       case 'pan': 
-        equals(get(gestures[i], 'state'), Em.Gesture.ENDED, 'pan should be ended');
+        equal(get(gestures[i], 'state'), Em.Gesture.ENDED, 'pan should be ended');
       break;
       case 'tap': 
-        equals(get(gestures[i], 'state'), Em.Gesture.ENDED, 'tap should be ended');
+        equal(get(gestures[i], 'state'), Em.Gesture.ENDED, 'tap should be ended');
       break;
     }
   }

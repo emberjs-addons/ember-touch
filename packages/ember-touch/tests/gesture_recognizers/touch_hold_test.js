@@ -61,8 +61,8 @@ test("one start event should put it in began state", function() {
   var gestures = get(get(view, 'eventManager'), 'gestures');
 
   ok(gestures);
-  equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
+  equal(gestures.length,1);
+  equal(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
 });
 
 test("without touch ends after the period, touchHoldEnd should have been fired and ENDED", function() {
@@ -86,8 +86,8 @@ test("without touch ends after the period, touchHoldEnd should have been fired a
 
       ok(endCalled,'touch press should be ended');
       ok(gestures, "gestures should exist");
-      equals(gestures.length,1,"there should be one gesture");
-      equals(get(gestures[0], 'state'),Em.Gesture.ENDED, "gesture should be ended");
+      equal(gestures.length,1,"there should be one gesture");
+      equal(get(gestures[0], 'state'),Em.Gesture.ENDED, "gesture should be ended");
 
       start();  
 
@@ -128,8 +128,8 @@ test("with touch ends after the period, touchHoldEnd should have been fired and 
 
       ok(endCalled,'touch press should be ended');
       ok(gestures, "gestures should exist");
-      equals(gestures.length,1,"there should be one gesture");
-      equals(get(gestures[0], 'state'),Em.Gesture.ENDED, "gesture should be ended");
+      equal(gestures.length,1,"there should be one gesture");
+      equal(get(gestures[0], 'state'),Em.Gesture.ENDED, "gesture should be ended");
 
       start();  
 
@@ -167,8 +167,8 @@ test("with touch ends before the period, touchHoldEnd should not fire and CANCEL
 
   ok(!endCalled,'touch press should be ended');
   ok(gestures, "gestures should exist");
-  equals(gestures.length,1,"there should be one gesture");
-  equals(get(gestures[0], 'state'),Em.Gesture.CANCELLED, "gesture should be canceled");
+  equal(gestures.length,1,"there should be one gesture");
+  equal(get(gestures[0], 'state'),Em.Gesture.CANCELLED, "gesture should be canceled");
 
 
 });
@@ -209,8 +209,8 @@ test("when move less than moveThreshold, touchHoldEnd should be fired", function
 
       ok(endCalled,'touch press should be ended');
       ok(gestures, "gestures should exist");
-      equals(gestures.length,1,"there should be one gesture");
-      equals(get(gestures[0], 'state'),Em.Gesture.ENDED, "gesture should be ended");
+      equal(gestures.length,1,"there should be one gesture");
+      equal(get(gestures[0], 'state'),Em.Gesture.ENDED, "gesture should be ended");
 
       start();  
 
@@ -255,8 +255,8 @@ test("when move more than moveThreshold, touchHoldEnd should not be fired and CA
 
       ok(!endCalled,'touch press should be ended');
       ok(gestures, "gestures should exist");
-      equals(gestures.length,1,"there should be one gesture");
-      equals(get(gestures[0], 'state'),Em.Gesture.CANCELLED);
+      equal(gestures.length,1,"there should be one gesture");
+      equal(get(gestures[0], 'state'),Em.Gesture.CANCELLED);
 
       start();  
 

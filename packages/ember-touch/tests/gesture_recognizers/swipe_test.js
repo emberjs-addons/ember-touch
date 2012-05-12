@@ -75,8 +75,8 @@ test(" Init: one start event should put it in possible state and when move the i
   var gestures = get(get(view, 'eventManager'), 'gestures');
 
   ok(gestures);
-  equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be possible");
+  equal(gestures.length,1);
+  equal(get(gestures[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be possible");
 
 
   touchEvent = jQuery.Event('touchmove');
@@ -90,7 +90,7 @@ test(" Init: one start event should put it in possible state and when move the i
 
   view.$().trigger(touchEvent);
 
-  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.BEGAN, "gesture should be BEGAN");
+  equal(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.BEGAN, "gesture should be BEGAN");
 
 
 });
@@ -108,7 +108,7 @@ test(" After init when cancelPeriod is reached, cancel method is called", functi
 
   view.$().trigger(touchEvent);
 
-  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be POSSIBLE");
+  equal(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be POSSIBLE");
 
   touchEvent = jQuery.Event('touchmove');
   touchEvent['originalEvent'] = {
@@ -121,7 +121,7 @@ test(" After init when cancelPeriod is reached, cancel method is called", functi
 
   view.$().trigger(touchEvent);
 
-  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.BEGAN, "gesture should be BEGAN");
+  equal(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.BEGAN, "gesture should be BEGAN");
 
 
   stop();  
@@ -132,8 +132,8 @@ test(" After init when cancelPeriod is reached, cancel method is called", functi
 
       ok(cancelCalled,'cancel should be called');
       ok(gestures, "gestures should exist");
-      equals(gestures.length,1,"there should be one gesture");
-      equals(get(gestures[0], 'state'),Em.Gesture.CANCELLED, "gesture should be cancelled");
+      equal(gestures.length,1,"there should be one gesture");
+      equal(get(gestures[0], 'state'),Em.Gesture.CANCELLED, "gesture should be cancelled");
 
       start();  
 
@@ -153,7 +153,7 @@ test("If touchend is fired before swipeThreshold is reached, cancel is called", 
   };
 
   view.$().trigger(touchEvent);
-  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be POSSIBLE");
+  equal(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be POSSIBLE");
 
   touchEvent = jQuery.Event('touchmove');
   touchEvent['originalEvent'] = {
@@ -164,7 +164,7 @@ test("If touchend is fired before swipeThreshold is reached, cancel is called", 
     }]
   };
   view.$().trigger(touchEvent);
-  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.BEGAN, "gesture should be BEGAN");
+  equal(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.BEGAN, "gesture should be BEGAN");
 
   touchEvent = jQuery.Event('touchmove');
   touchEvent['originalEvent'] = {
@@ -176,7 +176,7 @@ test("If touchend is fired before swipeThreshold is reached, cancel is called", 
   };
 
   view.$().trigger(touchEvent);
-  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.CHANGED, "gesture should be CHANGED");
+  equal(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.CHANGED, "gesture should be CHANGED");
 
   touchEvent = jQuery.Event('touchend');
   touchEvent['originalEvent'] = {
@@ -194,7 +194,7 @@ test("If touchend is fired before swipeThreshold is reached, cancel is called", 
   ok(!endCalled,'endCalled should not be called');
   ok(cancelCalled,'cancel should be called');
 
-  equals( get(gestures[0], 'state'), Em.Gesture.CANCELLED, "gesture should be cancelled");
+  equal( get(gestures[0], 'state'), Em.Gesture.CANCELLED, "gesture should be cancelled");
 
 
 });
@@ -211,7 +211,7 @@ test("swipeEnd is recognized when swipeThreshold is reached, and if after being 
   };
 
   view.$().trigger(touchEvent);
-  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be POSSIBLE");
+  equal(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be POSSIBLE");
 
   touchEvent = jQuery.Event('touchmove');
   touchEvent['originalEvent'] = {
@@ -222,7 +222,7 @@ test("swipeEnd is recognized when swipeThreshold is reached, and if after being 
     }]
   };
   view.$().trigger(touchEvent);
-  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.BEGAN, "gesture should be BEGAN");
+  equal(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.BEGAN, "gesture should be BEGAN");
 
   touchEvent = jQuery.Event('touchmove');
   touchEvent['originalEvent'] = {
@@ -234,7 +234,7 @@ test("swipeEnd is recognized when swipeThreshold is reached, and if after being 
   };
 
   view.$().trigger(touchEvent);
-  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.ENDED, "gesture should be ENDED");
+  equal(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.ENDED, "gesture should be ENDED");
 
   ok(endCalled,'endCalled should have been called');
 
@@ -251,7 +251,7 @@ test("swipeEnd is recognized when swipeThreshold is reached, and if after being 
 
   var gestures = get(get(view, 'eventManager'), 'gestures');
 
-  equals(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.ENDED, "gesture should be ENDED");
+  equal(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.ENDED, "gesture should be ENDED");
   ok(!cancelCalled,'cancelCalled should not be called');
 
 });
@@ -301,7 +301,7 @@ test("Recognizes multiple directions (Left and Right) ", function() {
     }]
   };
   view2.$().trigger(touchEvent);
-  equals(get(get(get(view2, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be POSSIBLE");
+  equal(get(get(get(view2, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be POSSIBLE");
 
   touchEvent = jQuery.Event('touchmove');
   touchEvent['originalEvent'] = {
@@ -312,7 +312,7 @@ test("Recognizes multiple directions (Left and Right) ", function() {
     }]
   };
   view2.$().trigger(touchEvent);
-  equals(get(get(get(view2, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.BEGAN, "gesture should be BEGAN");
+  equal(get(get(get(view2, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.BEGAN, "gesture should be BEGAN");
 
   touchEvent = jQuery.Event('touchmove');
   touchEvent['originalEvent'] = {
@@ -325,7 +325,7 @@ test("Recognizes multiple directions (Left and Right) ", function() {
   };
 
   view2.$().trigger(touchEvent);
-  equals(get(get(get(view2, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.ENDED, "gesture should be ENDED");
+  equal(get(get(get(view2, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.ENDED, "gesture should be ENDED");
 
   ok(isLeft,'recognizes left direction');
   ok(!isRight,'there was no swipe right');
@@ -344,7 +344,7 @@ test("Recognizes multiple directions (Left and Right) ", function() {
     }]
   };
   view2.$().trigger(touchEvent);
-  equals(get(get(get(view2, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be POSSIBLE");
+  equal(get(get(get(view2, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be POSSIBLE");
 
   touchEvent = jQuery.Event('touchmove');
   touchEvent['originalEvent'] = {
@@ -355,7 +355,7 @@ test("Recognizes multiple directions (Left and Right) ", function() {
     }]
   };
   view2.$().trigger(touchEvent);
-  equals(get(get(get(view2, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.BEGAN, "gesture should be BEGAN");
+  equal(get(get(get(view2, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.BEGAN, "gesture should be BEGAN");
 
   touchEvent = jQuery.Event('touchmove');
   touchEvent['originalEvent'] = {
@@ -368,7 +368,7 @@ test("Recognizes multiple directions (Left and Right) ", function() {
   };
 
   view2.$().trigger(touchEvent);
-  equals(get(get(get(view2, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.ENDED, "gesture should be ENDED");
+  equal(get(get(get(view2, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.ENDED, "gesture should be ENDED");
 
   ok(isRight,'recognizes right direction');
   ok(!isLeft,'there was no swipe left');
@@ -422,7 +422,7 @@ test("Recognizes multiple directions (Up and Down) ", function() {
     }]
   };
   view2.$().trigger(touchEvent);
-  equals(get(get(get(view2, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be POSSIBLE");
+  equal(get(get(get(view2, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be POSSIBLE");
 
   touchEvent = jQuery.Event('touchmove');
   touchEvent['originalEvent'] = {
@@ -433,7 +433,7 @@ test("Recognizes multiple directions (Up and Down) ", function() {
     }]
   };
   view2.$().trigger(touchEvent);
-  equals(get(get(get(view2, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.BEGAN, "gesture should be BEGAN");
+  equal(get(get(get(view2, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.BEGAN, "gesture should be BEGAN");
 
   touchEvent = jQuery.Event('touchmove');
   touchEvent['originalEvent'] = {
@@ -446,7 +446,7 @@ test("Recognizes multiple directions (Up and Down) ", function() {
   };
 
   view2.$().trigger(touchEvent);
-  equals(get(get(get(view2, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.ENDED, "gesture should be ENDED");
+  equal(get(get(get(view2, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.ENDED, "gesture should be ENDED");
 
 
 
@@ -468,7 +468,7 @@ test("Recognizes multiple directions (Up and Down) ", function() {
     }]
   };
   view2.$().trigger(touchEvent);
-  equals(get(get(get(view2, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be POSSIBLE");
+  equal(get(get(get(view2, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be POSSIBLE");
 
   touchEvent = jQuery.Event('touchmove');
   touchEvent['originalEvent'] = {
@@ -479,7 +479,7 @@ test("Recognizes multiple directions (Up and Down) ", function() {
     }]
   };
   view2.$().trigger(touchEvent);
-  equals(get(get(get(view2, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.BEGAN, "gesture should be BEGAN");
+  equal(get(get(get(view2, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.BEGAN, "gesture should be BEGAN");
 
   touchEvent = jQuery.Event('touchmove');
   touchEvent['originalEvent'] = {
@@ -492,7 +492,7 @@ test("Recognizes multiple directions (Up and Down) ", function() {
   };
 
   view2.$().trigger(touchEvent);
-  equals(get(get(get(view2, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.ENDED, "gesture should be ENDED");
+  equal(get(get(get(view2, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.ENDED, "gesture should be ENDED");
 
   ok(isUp,'recognizes up direction');
   ok(!isDown,'there was no swipe down');

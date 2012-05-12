@@ -73,8 +73,8 @@ test("one start event should put it in waiting state", function() {
   var gestures = get(get(view, 'eventManager'), 'gestures');
 
   ok(gestures);
-  equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),Em.Gesture.WAITING_FOR_TOUCHES, "gesture should be waiting");
+  equal(gestures.length,1);
+  equal(get(gestures[0], 'state'),Em.Gesture.WAITING_FOR_TOUCHES, "gesture should be waiting");
 });
 
 test("two start events should put it in possible state", function() {
@@ -100,8 +100,8 @@ test("two start events should put it in possible state", function() {
   var gestures = get(get(view, 'eventManager'), 'gestures');
 
   ok(gestures);
-  equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be possible");
+  equal(gestures.length,1);
+  equal(get(gestures[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be possible");
 });
 
 test("If the touches move, the scale should reflect the change", function() {
@@ -125,8 +125,8 @@ test("If the touches move, the scale should reflect the change", function() {
   var gestures = get(get(view, 'eventManager'), 'gestures');
 
   ok(gestures);
-  equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be ended");
+  equal(gestures.length,1);
+  equal(get(gestures[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be ended");
 
   touchEvent = new jQuery.Event();
   touchEvent.type='touchmove';
@@ -141,9 +141,9 @@ test("If the touches move, the scale should reflect the change", function() {
   view.$().trigger(touchEvent);
 
   gestures = get(get(view, 'eventManager'), 'gestures');
-  equals(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
+  equal(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
 
-  equals(scale,0.5,'scale should be halved');
+  equal(scale,0.5,'scale should be halved');
 
   touchEvent = new jQuery.Event();
   touchEvent.type='touchmove';
@@ -163,9 +163,9 @@ test("If the touches move, the scale should reflect the change", function() {
   view.$().trigger(touchEvent);
 
   gestures = get(get(view, 'eventManager'), 'gestures');
-  equals(get(gestures[0], 'state'),Em.Gesture.CHANGED, "gesture should be changed");
+  equal(get(gestures[0], 'state'),Em.Gesture.CHANGED, "gesture should be changed");
 
-  equals(scale,2,'scale should be doubled again');
+  equal(scale,2,'scale should be doubled again');
 
   touchEvent = new jQuery.Event();
   touchEvent.type='touchend';
@@ -192,9 +192,9 @@ test("If the touches move, the scale should reflect the change", function() {
   view.$().trigger(touchEvent);
 
   gestures = get(get(view, 'eventManager'), 'gestures');
-  equals(get(gestures[0], 'state'),Em.Gesture.ENDED, "gesture should be ended");
+  equal(get(gestures[0], 'state'),Em.Gesture.ENDED, "gesture should be ended");
 
-  equals(numEnded,1,"pinchEnd should be called once");
+  equal(numEnded,1,"pinchEnd should be called once");
 
   touchEvent = new jQuery.Event();
   touchEvent.type='touchstart';
@@ -225,7 +225,7 @@ test("If the touches move, the scale should reflect the change", function() {
 
   view.$().trigger(touchEvent);
 
-  equals(scale,0.5,'scale should be halved');
+  equal(scale,0.5,'scale should be halved');
 });
 
 test("If a gesture event returns false, reject the change", function() {
@@ -257,5 +257,5 @@ test("If a gesture event returns false, reject the change", function() {
   view.$().trigger(touchEvent);
 
   var gestures = get(get(view, 'eventManager'), 'gestures');
-  equals(get(gestures[0], 'scale'),1, "state should not change");
+  equal(get(gestures[0], 'scale'),1, "state should not change");
 });

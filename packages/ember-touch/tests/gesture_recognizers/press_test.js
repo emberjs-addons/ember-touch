@@ -59,8 +59,8 @@ test("one start event should put it in began state", function() {
   var gestures = get(get(view, 'eventManager'), 'gestures');
 
   ok(gestures);
-  equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
+  equal(gestures.length,1);
+  equal(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
 });
 
 test("when touch ends, touchpressEnd should fire", function() {
@@ -79,8 +79,8 @@ test("when touch ends, touchpressEnd should fire", function() {
   var gestures = get(get(view, 'eventManager'), 'gestures');
 
   ok(gestures, "gestures should exist");
-  equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
+  equal(gestures.length,1);
+  equal(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
 
   stop();  
   
@@ -101,8 +101,8 @@ test("when touch ends, touchpressEnd should fire", function() {
 
       ok(endCalled,'touch press should be ended');
       ok(gestures, "gestures should exist");
-      equals(gestures.length,1,"there should be one gesture");
-      equals(get(gestures[0], 'state'),Em.Gesture.ENDED, "gesture should be ended");
+      equal(gestures.length,1,"there should be one gesture");
+      equal(get(gestures[0], 'state'),Em.Gesture.ENDED, "gesture should be ended");
 
       start();  
 
@@ -127,8 +127,8 @@ test("when touch ends before pressPeriodThreshold, touchpressEnd should not fire
   var gestures = get(get(view, 'eventManager'), 'gestures');
 
   ok(gestures, "gestures should exist");
-  equals(gestures.length,1);
-  equals(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
+  equal(gestures.length,1);
+  equal(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
 
 
   touchEvent = new jQuery.Event();
@@ -146,8 +146,8 @@ test("when touch ends before pressPeriodThreshold, touchpressEnd should not fire
 
   ok(!endCalled,'touch press should not be ended');
   ok(gestures, "gestures should exist");
-  equals(gestures.length,1,"there should be one gesture");
-  equals(get(gestures[0], 'state'),Em.Gesture.CANCELLED, "gesture should be canceled");
+  equal(gestures.length,1,"there should be one gesture");
+  equal(get(gestures[0], 'state'),Em.Gesture.CANCELLED, "gesture should be canceled");
 
 
 });

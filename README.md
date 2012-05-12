@@ -12,26 +12,27 @@ Consult the [gesture.js](https://github.com/emberjs-addons/sproutcore-touch/blob
 
 # Usage
 
-1.a) Rake command will build ember-touch.js on the dist folder in order to be used on your project.
+1. Import the project.
 
-1.b) Import the project to your Ember App and build it with your build tools ( ex: rake-pipeline ).
+  a) Rake command will build ember-touch.js on the dist folder in order to be used on your project.
+  b) Copy the project to your Ember App and use your build tools ( ex: rake-pipeline ).
 
 2. Add gesture support to your views just by adding specific methods (
    tapEnd, touchHoldStart, touchHoldEnd....)
 
 3. Tests your views on multi touch devices or qunit.
    
-# How to Run Unit Tests
+## Unit Tests
 
-run __bundle exec rackup__ 
+To run unit tests, run `bundle exec rackup` from the root directory and visit
+`http://localhost:9292/tests/index.html?package=ember-touch&nojshint=1`.
 
-Test the whole suite  http://localhost:9292/tests/index.html
+_Currently, it does not pass jshint validations._
 
-Test only a specific test file (add test param: test location without extension) http://localhost:9292/tests/index.html?test=system/view_test
+# Info
 
-If you want to test against other ember.js version, deployed the js on its package directory.
+Look at the current [Wiki](https://github.com/emberjs-addons/sproutcore-touch).
 
+# Questions, bugs
 
-# Questions
-
-Wiki or open an issue
+Please, open an issue.

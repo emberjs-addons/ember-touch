@@ -18,7 +18,7 @@ test("register new gestures", function() {
 
   var newGestures = Em.Gestures.knownGestures();
 
-  equals(newGestures['myGesture'],myGesture, "registered gesture is added");
+  equal(newGestures['myGesture'],myGesture, "registered gesture is added");
 });
 
 
@@ -49,11 +49,11 @@ test("unregister a gesture", function() {
 
   var newGestures = Em.Gestures.knownGestures();
 
-  equals(newGestures['myGesture2'],myGesture, "registered gesture is added");
+  equal(newGestures['myGesture2'],myGesture, "registered gesture is added");
 
   Em.Gestures.unregister('myGesture2');
 
   newGestures = Em.Gestures.knownGestures();
-  equals(newGestures['myGesture2'],undefined, "registered gesture is unregistered");
+  equal(newGestures['myGesture2'],undefined, "registered gesture is unregistered");
 });
 

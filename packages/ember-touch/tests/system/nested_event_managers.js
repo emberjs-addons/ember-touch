@@ -1,9 +1,3 @@
-// ==========================================================================
-// Project:  SproutCore Runtime
-// Copyright: ©2011 Strobe Inc. and contributors.
-// License:   Licensed under MIT license (see license.js)
-// ==========================================================================
-
 var set = Em.set;
 var get = Em.get;
 var application;
@@ -18,8 +12,8 @@ module("Nested event managers", {
   }
 });
 
-test("UNUSED: Nested event managers should get called appropriately", function() {
 /*
+test("UNUSED/TODO: Nested event managers should get called appropriately", function() {
   Em.Gestures.register('nestedEventManagerTestGesture',Em.Gesture.extend({
     touchStart: function(evt, view, manager) {
       this.notifyViewOfGestureEvent(view, 'nestedEventManagerTestGestureStart');
@@ -44,23 +38,23 @@ test("UNUSED: Nested event managers should get called appropriately", function()
       elementId: 'nestedTestView',
 
       nestedViewTestGestureStart: function() {
-        equals(callNumber,0,'nested manager called first');
+        equal(callNumber,0,'nested manager called first');
         callNumber++;
       },
 
       touchStart: function() {
-        equals(callNumber,1,'nested view called second');
+        equal(callNumber,1,'nested view called second');
         callNumber++;
       }
     }),
 
     nestedEventManagerTestGestureStart: function() {
-      equals(callNumber,2,'parent manager called third');
+      equal(callNumber,2,'parent manager called third');
       callNumber++;
     },
 
     touchStart: function() {
-      equals(callNumber,3,'parent view called fourth');
+      equal(callNumber,3,'parent view called fourth');
       callNumber++;
     }
   });
@@ -72,11 +66,11 @@ test("UNUSED: Nested event managers should get called appropriately", function()
   var gestures = get(get(view, 'eventManager'), 'gestures');
 
   ok(gestures);
-  equals(gestures.length,1);
+  equal(gestures.length,1);
 
   $('#nestedTestView').trigger('touchstart');
   Em.Gestures.unregister('nestedViewTestGesture');
   Em.Gestures.unregister('nestedEventManagerTestGestureStart');
-*/
 });
+*/
 

@@ -139,7 +139,7 @@ test("With simultaneously enabled.", function() {
   panView.$().trigger( touchEvent );
 
 
-  equals(get(get(get(panView, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
+  equal(get(get(get(panView, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
   ok( panStartWasCalled, 'pan Start Was called ');
 
 
@@ -374,7 +374,7 @@ test("When unblock a view which did not block, throw exception", function() {
   panView.$().trigger( touchEvent );
 
 
-  equals(get(get(get(panView, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
+  equal(get(get(get(panView, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
   ok( panStartWasCalled, 'pan Start Was called ');
 
 
