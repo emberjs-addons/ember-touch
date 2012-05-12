@@ -1,34 +1,48 @@
-# SproutCore Touch
-
-**Current Version:** 2.0.beta
+# Ember Touch
 
 ## Overview
-SproutCore Touch lays the groundwork for a comprehensive touch and
-gesture system that sits on top of [SproutCore 2.0](github.com/sproutcore/sproutcore20).
+Ember Touch lays the groundwork for a comprehensive touch and
+gesture system that sits on top of [EmberJS](https://github.com/emberjs/ember.js).
 
-Along with providing support for custom gesture recognizers, SproutCore
-Touch ships with some pre-built gestures: Pinch, Pan, and Tap.
+Along with providing support for custom gesture recognizers, Ember
+Touch ships with some pre-built gestures: Pinch, Pan, Tap, TouchHold and
+Press.
 
-Consult the gesture.js file for instructions on building your own gestures as well
-as using the built-in one.
+Consult the gesture.js file for instructions on building your own gestures as well as using the built-in one.
+
+Touch ember views can also be used with other UI libraries (ex: iScroll 4 ) which also handles touch events.
+
+# TODO
+
+Test gestures on multiple touch devices.
+
+Improvements, issues, bugs, contributions.....
+
+# Wiki
+
+[Read Sproutcore-Touch Wiki](https://github.com/ppcano/sproutcore-touch/wiki)
+
+
+# Ember-Touch in Action ( Examples )
+
+[Mobile Ember Kit](https://github.com/ppcano/ember-mk)
 
 # Usage
 
-1. Download the [SproutCore Touch Starter Kit](https://github.com/sproutcore/sproutcore-touch/downloads)
+1. Rake command will build ember-touch.js on the dist folder in order to be used on your project.
 
-2. Unzip and open the kit in your favourite editor
+2. Add gesture support to your views just by adding specific methods (
+   tapEnd, touchHoldStart, touchHoldEnd....)
 
-3. Open the iOS Simulator and try pinching and panning the red box with two fingers
-
-4. Open js/app.js and play around with the application. You can find docs in [gesture.js](https://github.com/sproutcore/sproutcore-touch/blob/master/packages/sproutcore-touch/lib/system/gesture.js)
+3. Tests your views on multi touch devices or qunit.
    
 # How to Run Unit Tests
 
-1. Install Ruby 1.9.2. There are many resources on the web can help; one of the best is [rvm](http://rvm.beginrescueend.com/).
+run __bundle exec rackup__ 
 
-3. Run `gem install bpm --pre` to install bpm, the browser package
-   manager.
+Test the whole suite  http://localhost:9292/tests/index.html
 
-4. To start the development server, run `bpm preview`
+Test only a specific test file (add test param: test location without extension) http://localhost:9292/tests/index.html?test=system/view_test
 
-5. Then visit: `http://localhost:4020/assets/spade-qunit/index.html?package=sproutcore-touch`
+If you want to test against other ember.js version, deployed the js on its package directory.
+

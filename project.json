@@ -1,9 +1,9 @@
 {
-  "name": "sproutcore-touch-project",
+  "name": "ember-touch-project",
   "bpm":  "1.0.0",
   
   "dependencies": {
-    "sproutcore-touch": "=> 0"
+    "ember-touch": "=> 0"
   },
   
   "bpm:build": {
