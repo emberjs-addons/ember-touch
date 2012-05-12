@@ -28,33 +28,21 @@ class RequireRewrite < Filter
 end
 
 
-input "packages"
 output "tests/source"
 
 
+input "packages"  do
 
-match "*/{lib,tests}/**/*.js" do
-  filter RegisterWrapper
-  filter RequireRewrite
-  filter ConcatFilter do |filename|
-    filename =~ %r{/tests/} ? "ember-touch-tests.js" : "ember-touch.js"
 
+  match "*/{lib,tests}/**/*.js" do
+    filter RegisterWrapper
+    filter RequireRewrite
+    filter ConcatFilter do |filename|
+      filename =~ %r{/tests/} ? "ember-touch-tests.js" : "ember-touch.js"
+
+    end
   end
-end
 
-
-# Hack to ignore certain files
-
-match "**/*.{json,md}" do
-  filter ConcatFilter, "trash"
-end
-
-match "**/README" do
-  filter ConcatFilter, "trash"
-end
-
-match "*/*.js" do
-  filter ConcatFilter, "trash"
 end
 
 # vim: filetype=ruby
