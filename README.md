@@ -14,8 +14,8 @@ Consult the [gesture.js](https://github.com/emberjs-addons/sproutcore-touch/blob
 
 1. Import the project.
 
-  a) Rake command will build ember-touch.js on the dist folder in order to be used on your project.
-  b) Copy the project to your Ember App and use your build tools ( ex: rake-pipeline ).
+  - Rake command will build ember-touch.js on the dist folder in order to be used on your project.
+  - Or copy the project to your Ember App and use your build tools ( ex: rake-pipeline ).
 
 2. Add gesture support to your views just by adding specific methods (
    tapEnd, touchHoldStart, touchHoldEnd....)
