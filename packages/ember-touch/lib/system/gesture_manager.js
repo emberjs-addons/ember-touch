@@ -4,9 +4,6 @@
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-require('ember-touch/system/gesture');
-require('ember-touch/system/app_gesture_manager');
-
 var get = Em.get;
 var set = Em.set;
 

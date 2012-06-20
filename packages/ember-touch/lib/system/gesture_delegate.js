@@ -5,8 +5,6 @@
 // ==========================================================================
 
 
-require('ember-touch/system/gesture_delegates');
-
 
 /*
  Delegate implements the logic of your application's gesture-recognition behavior.
