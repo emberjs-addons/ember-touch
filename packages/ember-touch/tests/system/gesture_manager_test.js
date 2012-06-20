@@ -4,7 +4,9 @@
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-var application, view, touchEvent;
+var set = Em.set;
+var get = Em.get;
+var application, view, touchEvent, gestures;
 
 
 module("Gesture Manager",{
@@ -62,38 +64,209 @@ test("manager should re-dispatch event to view", function() {
 
 });
 
-/*
-test("TODO: manager should re-dispatch events to all gestures", function() {
- manager = Em.GestureManager.create({
-      gestures: [
-        gesture.create(),
-        gesture.create()
-      ]
+
+test("manager avoid delivering events when a delegate filter return false", function() {
+
+    var endCalled;
+    var filterResult;
+    var delegateResult;
+
+
+    var myDelegateFilter = Em.DelegateFilter.create({
+
+      shouldReceiveTouch: function(gesture, view, event) {
+        return filterResult;
+      }
+
     });
-var numStart, numMove, numEnd, numCancel;
-numStart = numMove = numEnd = numCancel = 0;
-var manager = Em.GestureManager.create()
 
-var gesture = Em.Object.extend({
-  touchStart: function(evt, view, manager) {
-    numStart++;
-    if (view) manager.redispatchEventToView(view, 'touchstart')
-  },
-  touchMove: function(evt, view, manager) {
-    numMove++;
-    if (view) manager.redispatchEventToView(view, 'touchmove')
-  },
-  touchEnd: function(evt, view, manager) {
-    numEnd++;
-    if (view) manager.redispatchEventToView(view, 'touchend')
-  },
-  touchCancel: function(evt, view, manager) {
-    numCancel++;
-    if (view) manager.redispatchEventToView(view, 'touchcancel')
-  }
+    var delegate = Em.GestureDelegate.create({
+        name: 'application_delegate',
+        filters: [myDelegateFilter],
+
+
+        shouldReceiveTouch: function(gesture, view, event) {
+          return delegateResult;
+        }
+    });
+
+    var view = Em.View.create({
+      
+      tapOptions: {
+        numberOfRequiredTouches: 1,
+        delegate: delegate
+      },
+
+      tapEnd: function(recognizer) {
+        endCalled = true;
+      }
+
+    });
+
+
+    endCalled = false;
+    filterResult = undefined;
+    delegateResult = true;
+
+
+
+
+    Em.run(function(){
+      view.append();
+    });
+
+
+    gestures = get(get(view, 'eventManager'), 'gestures');
+    equal(gestures.length,1,"there should be only tap gesture");
+
+
+    touchEvent = new jQuery.Event('touchstart');
+    touchEvent['originalEvent'] = {
+      targetTouches: [{
+        pageX: 0,
+        pageY: 10
+      }]
+    };
+    view.$().trigger(touchEvent);
+
+    equal(gestures[0].touches.get('length') , 1,"the touch was included on the tap gesture ");
+
+    touchEvent = new jQuery.Event('touchend');
+    touchEvent['originalEvent'] = {
+      changedTouches: [{
+        pageX: 0,
+        pageY: 10
+      }]
+    };
+
+
+    view.$().trigger(touchEvent);
+    ok(endCalled, 'event was recognized');
+
+
+
+    endCalled = false;
+    filterResult = false;
+    delegateResult = true;
+
+
+    touchEvent = new jQuery.Event('touchstart');
+    touchEvent['originalEvent'] = {
+      targetTouches: [{
+        pageX: 0,
+        pageY: 10
+      }]
+    };
+    view.$().trigger(touchEvent);
+
+
+    equal(gestures[0].touches.get('length') , 0,"the touch was not included on the tap gesture ");
+
+
+    touchEvent = new jQuery.Event('touchend');
+    touchEvent['originalEvent'] = {
+      changedTouches: [{
+        pageX: 0,
+        pageY: 10
+      }]
+    };
+
+    view.$().trigger(touchEvent);
+    ok(!endCalled, 'event was not recognized, because it was blocked by a delegate filter');
+
 });
 
 
-});
+test("manager avoid delivering events when delegate ReceiveTouch is false", function() {
 
-*/
+    var blocked = false;
+    var endCalled = false;
+
+    var delegate = Em.GestureDelegate.create({
+        name: 'delegate',
+
+        shouldReceiveTouch: function(gesture, view, event) {
+          return !blocked; 
+        }
+
+    });
+
+    var view = Em.View.create({
+      
+      tapOptions: {
+        numberOfRequiredTouches: 1,
+        delegate: delegate
+      },
+
+      tapEnd: function(recognizer) {
+        endCalled = true;
+      }
+
+
+    });
+
+    Em.run(function(){
+      view.append();
+    });
+
+
+    touchEvent = new jQuery.Event('touchstart');
+    touchEvent['originalEvent'] = {
+      targetTouches: [{
+        pageX: 0,
+        pageY: 10
+      }]
+    };
+    view.$().trigger(touchEvent);
+
+
+    gestures = get(get(view, 'eventManager'), 'gestures');
+    equal(gestures.length,1,"there should be only tap gesture");
+    equal(gestures[0].touches.get('length') , 1,"the touch was included on the tap gesture ");
+
+
+    touchEvent = new jQuery.Event('touchend');
+    touchEvent['originalEvent'] = {
+      changedTouches: [{
+        pageX: 0,
+        pageY: 10
+      }]
+    };
+
+
+    view.$().trigger(touchEvent);
+    ok(endCalled, 'event was recognized');
+
+
+
+    endCalled = false;
+    blocked = true;
+
+
+    touchEvent = new jQuery.Event('touchstart');
+    touchEvent['originalEvent'] = {
+      targetTouches: [{
+        pageX: 0,
+        pageY: 10
+      }]
+    };
+    view.$().trigger(touchEvent);
+
+
+    gestures = get(get(view, 'eventManager'), 'gestures');
+    equal(gestures.length,1,"there should be only tap gesture");
+    equal(gestures[0].touches.get('length') , 0,"the touch was not included on the tap gesture ");
+
+
+    touchEvent = new jQuery.Event('touchend');
+    touchEvent['originalEvent'] = {
+      changedTouches: [{
+        pageX: 0,
+        pageY: 10
+      }]
+    };
+
+    view.$().trigger(touchEvent);
+    ok(!endCalled, 'event was not recognized, because it was blocked by the filter');
+
+});

@@ -99,11 +99,23 @@ Em.GestureManager = Em.Object.extend({
 
       if (Em.typeOf(handler) === 'function') {
 
-        var gestureDelegate = gesture.get('delegate');
-        if ( !gestureDelegate || gestureDelegate.shouldReceiveTouch( gesture, this.view, eventObject )  ) {
-          result = handler.call(gesture, eventObject);
-        } 
+        var gestureDelegate = gesture.get('delegate'),
+            isValid;
 
+        if ( !gestureDelegate ) {
+          isValid = true;
+        } else {
+
+          isValid = this._applyDelegateFilters( gestureDelegate,  gesture, this.view, eventObject );
+          if ( isValid === undefined ) {
+            isValid = gestureDelegate.shouldReceiveTouch( gesture, this.view, eventObject );
+          }
+
+        }
+
+        if ( isValid ) {
+          result = handler.call(gesture, eventObject);
+        }
 
       }
    }
@@ -118,6 +130,28 @@ Em.GestureManager = Em.Object.extend({
     }
 
     return result;
+
+  },
+
+  _applyDelegateFilters: function(gestureDelegate, gesture, view, event) {
+
+    var filters = gestureDelegate.filters,
+        length = filters.length;
+
+    if ( length > 0 ) {
+
+      var i,
+          result;
+
+      for (i=0;i<length;i++) {
+        result = filters[i].shouldReceiveTouch(gesture, view, event);
+        if ( result !== undefined ) {
+          return result;
+        }
+      }
+    }
+
+    return undefined;
 
   }
 

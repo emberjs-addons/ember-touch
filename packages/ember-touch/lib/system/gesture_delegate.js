@@ -18,9 +18,42 @@ Em.GestureDelegate = Em.Object.extend({
 	* It will be used on gestureOptions to assign a gestureDelegate to a specific gesture.
   */
   name: null,
+  filters: null,
 
   init: function(){
+
     this._super();
+
+    var filters = this.filters,
+        current = [],
+        filter;
+
+    if ( !!filters ) {
+
+      var i,
+          max;
+      
+      for ( i=0, max=filters.length; i<max; i++ ) {
+
+        filter = filters[i];
+
+        if ( Em.typeOf(filter) === "string" ) {
+          filter = Em.getPath(filter);
+        }
+
+        if ( !filter.isInstance ) {
+          filter = filter.create();
+        }
+
+
+        filter.gestureDelegate = this;
+        current.push( filter );
+      }
+
+    }
+
+    this.filters = current;
+
   },
 
 	/*
@@ -30,6 +63,4 @@ Em.GestureDelegate = Em.Object.extend({
     return true; 
   }
 
-
 });
-
