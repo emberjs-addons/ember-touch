@@ -73,7 +73,7 @@ test("when finger touches inside, gesture should be in waiting state", function(
   equal(gestures.length,1);
   equal(get(gestures[0], 'state'),Em.Gesture.WAITING_FOR_TOUCHES, "gesture should be waiting");
 
-  view.$().trigger('touchend')
+  view.$().trigger('touchend');
 });
 
 test("when 2 fingers touch inside, gesture should be in possible state", function() {
@@ -118,7 +118,7 @@ test("when 2 fingers touch inside, gesture should be in possible state", functio
   equal(gestures.length,1);
   equal(get(gestures[0], 'state'),Em.Gesture.POSSIBLE, "gesture should be possible");
 
-  view.$().trigger('touchend')
+  view.$().trigger('touchend');
 });
 
 test("when 2 fingers move closer together, gesture should be in BEGAN state", function() {
@@ -218,7 +218,7 @@ test("when 2 fingers move closer together, gesture should be in BEGAN state", fu
       pageY: 100
     }]
   };
-  view.$().trigger(touchEvent)
+  view.$().trigger(touchEvent);
 
   equal(get(gestures[0], 'state'),Em.Gesture.ENDED, "gesture should be ended");
 
@@ -256,7 +256,7 @@ test("when 2 fingers move closer together, gesture should be in BEGAN state", fu
 
   view.$().trigger(touchEvent);
 
-  equal(numStart,1,"pinchStart called once")
+  equal(numStart,1,"pinchStart called once");
   equal(get(gestures[0], 'state'),Em.Gesture.BEGAN, "gesture should be began");
   equal(startScale,2,"scale should be doubled again");
 

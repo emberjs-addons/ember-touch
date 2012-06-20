@@ -44,7 +44,7 @@ module("Swipe Test",{
     });
   },
 
-  teardown: function() {
+  teardown: function() {
 
     cancelCalled = false;
     endCalled = false;
@@ -54,7 +54,7 @@ module("Swipe Test",{
       targetTouches: [],
       changedTouches: []
     };
-    view.$().trigger(touchEvent)
+    view.$().trigger(touchEvent);
     view.destroy();
     application.destroy();
   }

@@ -7,7 +7,7 @@
 var set = Em.set;
 var get = Em.get;
 
-var view;
+var view, change;
 var application;
 var scale;
 var numEnded = 0;
@@ -22,13 +22,13 @@ module("Pinch Test",{
       elementId: 'gestureTest',
 
       pinchStart: function(recognizer) {
-        change = get(recognizer, 'scale')
+        change = get(recognizer, 'scale');
         if (change < 0.5) return false;
         scale = change;
       },
 
       pinchChange: function(recognizer) {
-        change = get(recognizer, 'scale')
+        change = get(recognizer, 'scale');
         if (scale < 0.5) return false;
         scale = change;
       },
@@ -50,7 +50,7 @@ module("Pinch Test",{
     touchEvent['originalEvent'] = {
       changedTouches: []
     };
-    view.$().trigger(touchEvent)
+    view.$().trigger(touchEvent);
     view.destroy();
     application.destroy();
   }

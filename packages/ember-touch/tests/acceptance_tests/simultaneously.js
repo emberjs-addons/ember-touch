@@ -2,6 +2,7 @@ var set = Em.set;
 var get = Em.get;
 var application;
 var touchEvent;
+var PanView, SwipeView;
 
 var panStartWasCalled = false;
 var panChangeWasCalled = false;
@@ -37,7 +38,7 @@ module("Simultaneously Feature", {
       panOptions: {
         direction:  Em.GestureDirection.Horizontal,
         numberOfRequiredTouches: 1,
-        initThreshold: 5,
+        initThreshold: 5
       },
 
       panStart: function(recognizer) {
@@ -102,13 +103,13 @@ test("With simultaneously enabled.", function() {
 
   var swipeView = SwipeView.create({
     swipeOptions: {
-      simultaneously: true,
+      simultaneously: true
     }
   });
 
   var panView = PanView.create({
     panOptions: {
-      simultaneously: true,
+      simultaneously: true
     }
   });
 
@@ -182,13 +183,13 @@ test("Only one view can be recognized when simultaneously is disabled.", functio
   application = Em.Application.create();
   var swipeView = SwipeView.create({
     swipeOptions: {
-      simultaneously: false,
+      simultaneously: false
     }
   });
 
   var panView = PanView.create({
     panOptions: {
-      simultaneously: false,
+      simultaneously: false
     }
   });
 
@@ -337,13 +338,13 @@ test("When unblock a view which did not block, throw exception", function() {
   application = Em.Application.create();
   var swipeView = SwipeView.create({
     swipeOptions: {
-      simultaneously: false,
+      simultaneously: false
     }
   });
 
   var panView = PanView.create({
     panOptions: {
-      simultaneously: false,
+      simultaneously: false
     }
   });
 

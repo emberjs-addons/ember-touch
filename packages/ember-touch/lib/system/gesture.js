@@ -8,10 +8,7 @@ require('ember-touch/system/gestures');
 require('ember-touch/system/gesture_manager');
 require('ember-touch/system/touch_list');
 
-var get = Em.get;
-var set = Em.set;
-
-var sigFigs = 100;
+var get = Em.get, set = Em.set;
 
 /**
   @class
@@ -243,7 +240,7 @@ Em.Gesture = Em.Object.extend(
     var delegate =  this.get('delegate');
 
     if (!delegate && delegateName ) {
-      var delegate = Em.GestureDelegates.find(delegateName);
+      delegate = Em.GestureDelegates.find(delegateName);
       Em.assert('empty delegate, attempting to set up delegate based on delegateName', delegate);
       this.set('delegate', delegate);
     }
@@ -587,50 +584,14 @@ Em.Gesture = Em.Object.extend(
 
     this._resetState();
 
-  },
-
-  /*  debug Utils */
-  /*
-  _stateChanged: Em.observer(function(){
-    var state = get(this, 'state');
-    console.log( this.toString() + ' ' + this._stateToString( state ) ); 
-  }, 'state'),
-  */
-  _stateToString: function(state) {
-
-    var result = 'NONE';
-    switch (state ) {
-        case Em.Gesture.WAITING_FOR_TOUCHES:
-            result = 'WAITING_FOR_TOUCHES';
-            break;
-        case Em.Gesture.POSSIBLE:
-            result = 'POSSIBLE';
-            break;
-        case Em.Gesture.BEGAN:
-            result = 'BEGAN';
-            break;
-        case Em.Gesture.CHANGED:
-            result = 'CHANGED';
-            break;
-        case Em.Gesture.ENDED:
-            result = 'ENDED';
-            break;
-        case Em.Gesture.CANCELLED:
-            result = 'CANCELLED';
-            break;
-    }
-
-    return result;
-
   }
-
 
 });
 
 Em.GestureDirection = {
   Vertical: 1,
   Horizontal: 2
-}
+};
 
 
 Em.OneGestureDirection = {
@@ -638,7 +599,7 @@ Em.OneGestureDirection = {
   Left: 2, 
   Down: 4,
   Up: 8
-}
+};
 
 Em.Gesture.WAITING_FOR_TOUCHES = 0;
 Em.Gesture.POSSIBLE = 1; // only continuous
@@ -646,11 +607,3 @@ Em.Gesture.BEGAN = 2;
 Em.Gesture.CHANGED = 3; 
 Em.Gesture.ENDED = 4;
 Em.Gesture.CANCELLED = 5;
-
-//TODO: 
-//- think about multiple events handling at the same time currentEventObject
-//- check meaning of manager.redispatEventToView
-//- emberjs.event_manager. dispatchEvent should pass the view? I think is not necesary cause of the view has its own manager, 
-//  so manager should have assigned its view.
-//  testing directions on pan and swipe gestures
-//  LifeCycle of Em.AppGestureManager

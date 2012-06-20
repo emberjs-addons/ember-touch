@@ -4,8 +4,7 @@
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-var get = Em.get;
-var set = Em.set;
+var get = Em.get, set = Em.set;
 
 /** 
   @class

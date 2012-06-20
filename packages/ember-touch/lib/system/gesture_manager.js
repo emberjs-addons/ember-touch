@@ -85,10 +85,10 @@ Em.GestureManager = Em.Object.extend({
   */
   _invokeEvent: function(eventName, eventObject) {
 
-    var gestures = this.get('gestures')
-        , gesture
-        , handler
-        , result = true;
+    var gestures = this.get('gestures'),
+        gesture,
+        handler,
+        result = true;
 
     // view could response directly to touch events
     handler = this.view[eventName];
@@ -109,7 +109,7 @@ Em.GestureManager = Em.Object.extend({
 
 
       }
-   };
+   }
     
     // browser delivers the event to the DOM element
     // bubble the event to the parentView

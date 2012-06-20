@@ -3,6 +3,7 @@ var get = Em.get;
 var application;
 var touchEvent;
 var gestures;
+var endCalled;
 
 
 module("Gesture Delegate", {

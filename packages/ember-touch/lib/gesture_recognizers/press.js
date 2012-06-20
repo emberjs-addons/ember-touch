@@ -1,8 +1,7 @@
 
 require('ember-touch/system/gesture');
 
-var get = Em.get;
-var set = Em.set;
+var get = Em.get, set = Em.set;
 
 /**
   @class

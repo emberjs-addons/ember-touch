@@ -1,6 +1,6 @@
 require('ember-touch/system/gesture');
 
-var get = Em.get; var set = Em.set;
+var get = Em.get, set = Em.set;
 
 /**
   @class
@@ -166,7 +166,7 @@ Em.SwipeGestureRecognizer = Em.Gesture.extend({
     if ( isValidMovement ) {
 
       this._disableCancelFired();
-      set(this, 'state', Em.Gesture.ENDED)
+      set(this, 'state', Em.Gesture.ENDED);
 
       var eventName = get(this, 'name')+'End';
       this.attemptGestureEventDelivery(eventName);

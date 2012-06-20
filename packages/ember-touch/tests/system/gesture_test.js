@@ -45,7 +45,7 @@ test("notifyViewOfGestureEvent", function() {
   var view = Em.Object.create({
     touchStart: function(recognizer, data) {
       dataCalled = data;
-      gestureCalled = recognizer
+      gestureCalled = recognizer;
       numCalled++;
     }
   });

@@ -26,7 +26,7 @@ module("Nested Gestures on childs are redispatched to parents", {
 
 test(" Gesture event on a childview should be attended by the parent when the child don't recognize the gesture.", function() {
 
-  View = Em.ContainerView.extend({
+  var View = Em.ContainerView.extend({
     elementId: 'main',
     childViews: ['nestedChildView'],
 
@@ -85,7 +85,7 @@ test(" Gesture event on a childview should be attended by the parent when the ch
 
 test(" Gesture event on a grandchildview should be attended by the parent when the childrens don't recognize the gesture.", function() {
 
-  View = Em.ContainerView.extend({
+  var View = Em.ContainerView.extend({
 
     elementId: 'main',
     childViews: ['nestedChildView'],

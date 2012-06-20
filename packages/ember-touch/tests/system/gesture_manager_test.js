@@ -19,7 +19,10 @@ module("Gesture Manager",{
 
 test("manager should re-dispatch event to view", function() {
 
-  var numViewStart = numViewMove = numViewEnd = numViewCancel = 0;
+  var numViewStart = 0,
+      numViewMove = 0, 
+      numViewEnd = 0,
+      numViewCancel = 0;
 
   var view = Em.View.create({
     touchStart: function(evt) {

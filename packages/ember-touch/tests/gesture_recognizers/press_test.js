@@ -31,7 +31,7 @@ module("Press Test",{
     });
   },
 
-  teardown: function() {
+  teardown: function() {
 
     var touchEvent = new jQuery.Event();
     touchEvent.type='touchend';
@@ -39,7 +39,7 @@ module("Press Test",{
       targetTouches: [],
       changedTouches: []
     };
-    view.$().trigger(touchEvent)
+    view.$().trigger(touchEvent);
     view.destroy();
     application.destroy();
   }

@@ -2,7 +2,7 @@
 var set = Em.set;
 var get = Em.get;
 
-var view;
+var view, gestures;
 var application;
 var period = 200;
 var endCalled = false;
@@ -33,7 +33,7 @@ module("Touch Hold Test",{
     });
   },
 
-  teardown: function() {
+  teardown: function() {
 
     var touchEvent = new jQuery.Event();
     touchEvent.type='touchend';
@@ -41,7 +41,7 @@ module("Touch Hold Test",{
       targetTouches: [],
       changedTouches: []
     };
-    view.$().trigger(touchEvent)
+    view.$().trigger(touchEvent);
     view.destroy();
     application.destroy();
   }

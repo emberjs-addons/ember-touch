@@ -1,7 +1,6 @@
 require('ember-touch/system/gesture');
 
-var get = Em.get;
-var set = Em.set;
+var get = Em.get, set = Em.set;
 
 /**
   @class
@@ -120,7 +119,7 @@ Em.TouchHoldGestureRecognizer = Em.Gesture.extend({
     
     if ( this.state === Em.Gesture.BEGAN || this.state === Em.Gesture.CHANGED ) {
 
-      set(this, 'state', Em.Gesture.ENDED)
+      set(this, 'state', Em.Gesture.ENDED);
 
       var eventName = get(this, 'name')+'End';
 

@@ -8,6 +8,7 @@ var set = Em.set;
 var get = Em.get;
 var outerdiv;
 var application;
+var i, l;
 
 var pinchStartWasCalled = false;
 var pinchChangeWasCalled = false;
@@ -73,7 +74,7 @@ module("Nested gesture recognizers", {
       panEnd: function(recognizer) {
         panEndWasCalled = true;
         this.translate = recognizer.get('translation');
-      },
+      }
     });
 
     application.OuterView = application.PinchPanView.extend({
@@ -128,18 +129,20 @@ test("Tap on the nested div", function() {
   ok (gestures, "gestures should be defined");
   equal(gestures.length, 3, 'should be three gestures defined');
 
-  for (var i=0, l=gestures.length; i<l; i++) {
-    switch (gestures[i], 'name'){
+  for (i=0, l=gestures.length; i<l; i++) {
+
+    switch (gestures[i].name){
       case 'pinch': 
-        equal(get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pinch should be waiting for touches');
-      break;
+        equal( get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pinch should be waiting for touches');
+        break;
       case 'pan': 
-        equal(get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pan should be waiting for touches');
-      break;
+        equal( get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pan should be waiting for touches');
+        break;
       case 'tap': 
-        equal(get(gestures[i], 'state'), Em.Gesture.BEGAN, 'tap should be started');
-      break;
+        equal( get(gestures[i], 'state'), Em.Gesture.BEGAN, 'tap should be started');
+        break;
     }
+
   }
 
   // ===================================
@@ -159,8 +162,8 @@ test("Tap on the nested div", function() {
   $('#nested-div').trigger(touchEvent);
 
   // I don't know what order they're in
-  for (var i=0, l=gestures.length; i<l; i++) {
-    switch (gestures[i], 'name'){
+  for (i=0, l=gestures.length; i<l; i++) {
+    switch (gestures[i].name){
       case 'pinch': 
         equal(get(gestures[i], 'state'), Em.Gesture.ENDED, 'pinch should be ended');
       break;
@@ -258,7 +261,7 @@ test("Simultaneous pinch and pan on the outer div", function() {
 
   $('#outer-div').trigger(touchEvent);
 
-  var gestures = get(get(outerdiv, 'eventManager'), 'gestures');
+  gestures = get(get(outerdiv, 'eventManager'), 'gestures');
   ok (gestures, "gestures should be defined");
   equal(gestures.length, 2, 'should be two gestures defined');
 
@@ -304,7 +307,7 @@ test("one finger down on nested one, other on outer", function() {
   equal(gestures.length, 3, 'should be three gestures defined');
 
   for (var i=0, l=gestures.length; i<l; i++) {
-    switch (gestures[i], 'name'){
+    switch ( gestures[i].name ){
       case 'pinch': 
         equal(get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pinch should be waiting for touches');
       break;
@@ -321,7 +324,7 @@ test("one finger down on nested one, other on outer", function() {
   // ====================================
   // put second finger on outer div
 
-  var touchEvent = jQuery.Event('touchstart');
+  touchEvent = jQuery.Event('touchstart');
   touchEvent['originalEvent'] = {
     targetTouches: [
       {
@@ -334,12 +337,12 @@ test("one finger down on nested one, other on outer", function() {
 
   $('#outer-div').trigger(touchEvent);
 
-  var gestures = get(get(outerdiv, 'eventManager'), 'gestures');
+  gestures = get(get(outerdiv, 'eventManager'), 'gestures');
   ok (gestures, "gestures should be defined");
   equal(gestures.length, 2, 'should be two gestures defined');
 
-  for (var i=0, l=gestures.length; i<l; i++) {
-    switch (gestures[i], 'name'){
+  for (i=0, l=gestures.length; i<l; i++) {
+    switch ( gestures[i].name ){
       case 'pinch': 
         equal(get(gestures[i], 'state'), Em.Gesture.POSSIBLE, 'pinch should be waiting for touches');
       break;
@@ -370,11 +373,11 @@ test("one finger down on nested one, other on outer", function() {
 
   $('#outer-div').trigger(touchEvent);
 
-  var gestures = get(get(outerdiv, 'eventManager'), 'gestures');
+  gestures = get(get(outerdiv, 'eventManager'), 'gestures');
   equal(gestures.length, 2, 'should be two gestures defined');
 
-  for (var i=0, l=gestures.length; i<l; i++) {
-    switch (gestures[i], 'name'){
+  for (i=0, l=gestures.length; i<l; i++) {
+    switch ( gestures[i].name ){
       case 'pinch': 
         equal(get(gestures[i], 'state'), Em.Gesture.BEGAN, 'pinch should be waiting for touches');
       break;
@@ -414,8 +417,8 @@ test("one finger down on nested one, other on outer", function() {
   $('#nested-div').trigger(touchEvent);
 
   // I don't know what order they're in
-  for (var i=0, l=gestures.length; i<l; i++) {
-    switch (gestures[i], 'name'){
+  for (i=0, l=gestures.length; i<l; i++) {
+    switch (gestures[i].name){
       case 'pinch': 
         equal(get(gestures[i], 'state'), Em.Gesture.ENDED, 'pinch should be ended');
       break;
@@ -452,8 +455,8 @@ test("one finger down on container view, other on nested view", function() {
   ok (gestures, "gestures should be defined");
   equal(gestures.length, 2, 'should be two gestures defined');
 
-  for (var i=0, l=gestures.length; i<l; i++) {
-    switch (gestures[i], 'name'){
+  for (i=0, l=gestures.length; i<l; i++) {
+    switch (gestures[i].name){
       case 'pinch': 
         equal(get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pinch should be waiting for touches');
       break;
@@ -466,7 +469,7 @@ test("one finger down on container view, other on nested view", function() {
   // ====================================
   // put second finger on nested div
 
-  var touchEvent = jQuery.Event('touchstart');
+  touchEvent = jQuery.Event('touchstart');
   touchEvent['originalEvent'] = {
     targetTouches: [
       {
@@ -479,12 +482,12 @@ test("one finger down on container view, other on nested view", function() {
 
   $('#nested-div').trigger(touchEvent);
 
-  var gestures = get(get(outerdiv.nestedView, 'eventManager'), 'gestures');
+  gestures = get(get(outerdiv.nestedView, 'eventManager'), 'gestures');
   ok (gestures, "gestures should be defined");
   equal(gestures.length, 3, 'should be three gestures defined');
 
-  for (var i=0, l=gestures.length; i<l; i++) {
-    switch (gestures[i], 'name'){
+  for (i=0, l=gestures.length; i<l; i++) {
+    switch (gestures[i].name){
       case 'pinch': 
         equal(get(gestures[i], 'state'), Em.Gesture.POSSIBLE, 'pinch should be waiting for touches');
       break;
@@ -518,11 +521,11 @@ test("one finger down on container view, other on nested view", function() {
 
   $('#outer-div').trigger(touchEvent);
 
-  var gestures = get(get(outerdiv, 'eventManager'), 'gestures');
+  gestures = get(get(outerdiv, 'eventManager'), 'gestures');
   equal(gestures.length, 2, 'should be two gestures defined');
 
-  for (var i=0, l=gestures.length; i<l; i++) {
-    switch (gestures[i], 'name'){
+  for ( i=0, l=gestures.length; i<l; i++) {
+    switch ( gestures[i].name ){
       case 'pinch': 
         equal(get(gestures[i], 'state'), Em.Gesture.BEGAN, 'pinch should be waiting for touches');
       break;
@@ -564,8 +567,8 @@ test("one finger down on container view, other on nested view", function() {
   $('#nested-div').trigger(touchEvent);
 
   // I don't know what order they're in
-  for (var i=0, l=gestures.length; i<l; i++) {
-    switch (gestures[i], 'name'){
+  for ( i=0, l=gestures.length; i<l; i++) {
+    switch ( gestures[i].name ){
       case 'pinch': 
         equal(get(gestures[i], 'state'), Em.Gesture.ENDED, 'pinch should be ended');
       break;

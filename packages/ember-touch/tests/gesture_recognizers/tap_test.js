@@ -41,7 +41,7 @@ module("Tap Test",{
       targetTouches: [],
       changedTouches: []
     };
-    view.$().trigger(touchEvent)
+    view.$().trigger(touchEvent);
     view.destroy();
     application.destroy();
   }

@@ -38,13 +38,13 @@ Em.AppGestureManager = Em.Object.create({
   block: function( view ) {
 
     if ( this.get('isBlocked') ) {
-      throw Error('manager has already blocked the gesture recognizer');
+      throw new Error('manager has already blocked the gesture recognizer');
     }
 
 
     if (  view.get('simultaneosly') ) {
       // Em.assert
-      throw Error('a view with simultaneosly property true, cannot block the gesture recognizer');
+      throw new Error('a view with simultaneosly property true, cannot block the gesture recognizer');
     }
 
     this.set('_isBlocked', true);
@@ -55,17 +55,17 @@ Em.AppGestureManager = Em.Object.create({
   unblock: function( view ) {
 
     if ( !this.get('isBlocked') ) {
-      throw Error('unblock, the gesture recognizer when the recognizer was not blocked. Did you unblock after Start? ');
+      throw new Error('unblock, the gesture recognizer when the recognizer was not blocked. Did you unblock after Start? ');
     }
 
     if (  view.get('simultaneosly') ) { // Em.assert
-      throw Error('a view with simultaneosly property true, cannot unblock the gesture recognizer');
+      throw new Error('a view with simultaneosly property true, cannot unblock the gesture recognizer');
     }
 
     var blockerView = this.get('_blockerView');
 
     if ( view !== blockerView ) {
-      throw Error('unblock a view which was not the one which blocked the gesture recognizer');
+      throw new Error('unblock a view which was not the one which blocked the gesture recognizer');
     }
     this.set('_isBlocked', false);
 

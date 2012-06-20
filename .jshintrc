@@ -1,5 +1,8 @@
 {
     "predef": [
+        "$",
+        "jQuery",
+        "Em",
         "console",
         "Ember",
         "DS",
@@ -48,5 +51,6 @@
     "undef": true,
     "sub": true,
     "strict": false,
-    "white": false
+    "white": false,
+    "eqnull": true
 }
