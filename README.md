@@ -25,9 +25,8 @@ Consult the [gesture.js](https://github.com/emberjs-addons/sproutcore-touch/blob
 ## Unit Tests
 
 To run unit tests, run `bundle exec rackup` from the root directory and visit
-`http://localhost:9292/tests/index.html?package=ember-touch&nojshint=1`.
+`http://localhost:9292/tests/index.html?package=ember-touch`.
 
-_Currently, it does not pass jshint validations._
 
 # Info
 

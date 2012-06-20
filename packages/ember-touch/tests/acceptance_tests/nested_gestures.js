@@ -163,17 +163,11 @@ test("Tap on the nested div", function() {
 
   // I don't know what order they're in
   for (i=0, l=gestures.length; i<l; i++) {
-    switch (gestures[i].name){
-      case 'pinch': 
-        equal(get(gestures[i], 'state'), Em.Gesture.ENDED, 'pinch should be ended');
-      break;
-      case 'pan': 
-        equal(get(gestures[i], 'state'), Em.Gesture.ENDED, 'pan should be ended');
-      break;
-      case 'tap': 
-        equal(get(gestures[i], 'state'), Em.Gesture.ENDED, 'tap should be ended');
-      break;
+
+    if (gestures[i].name === 'tap' ){
+      equal(get(gestures[i], 'state'), Em.Gesture.ENDED, 'tap should be ended');
     }
+
   }
 
   ok(tapEndWasCalled, 'tap end should have been called');
@@ -489,13 +483,13 @@ test("one finger down on container view, other on nested view", function() {
   for (i=0, l=gestures.length; i<l; i++) {
     switch (gestures[i].name){
       case 'pinch': 
-        equal(get(gestures[i], 'state'), Em.Gesture.POSSIBLE, 'pinch should be waiting for touches');
+        equal(get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pinch should be waiting for touches');
       break;
       case 'pan': 
-        equal(get(gestures[i], 'state'), Em.Gesture.POSSIBLE, 'pan should be waiting for touches');
+        equal(get(gestures[i], 'state'), Em.Gesture.WAITING_FOR_TOUCHES, 'pan should be waiting for touches');
       break;
       case 'tap': 
-        equal(get(gestures[i], 'state'), Em.Gesture.POSSIBLE, 'tap should be possible');
+        equal(get(gestures[i], 'state'), Em.Gesture.BEGAN, 'tap should have begun');
       break;
     }
   }
