@@ -3,7 +3,7 @@
 // License:   Licensed under MIT license (see license.js)
 // ==========================================================================
 
-Em.DelegateFilter = Em.Object.extend({
+Em.DelegateRule = Em.Object.extend({
 
   gestureDelegate: null,
 

@@ -18,41 +18,45 @@ Em.GestureDelegate = Em.Object.extend({
 	* It will be used on gestureOptions to assign a gestureDelegate to a specific gesture.
   */
   name: null,
-  filters: null,
+  /*
+   * Rules can be setup with string path, extended classes or instances.
+   * Rules are intented to be executed before shouldReceiveTouch method.
+   */
+  rules: null,
 
   init: function(){
 
     this._super();
 
-    var filters = this.filters,
+    var rules = this.rules,
         current = [],
-        filter;
+        rule;
 
-    if ( !!filters ) {
+    if ( !!rules ) {
 
       var i,
           max;
       
-      for ( i=0, max=filters.length; i<max; i++ ) {
+      for ( i=0, max=rules.length; i<max; i++ ) {
 
-        filter = filters[i];
+        rule = rules[i];
 
-        if ( Em.typeOf(filter) === "string" ) {
-          filter = Em.getPath(filter);
+        if ( Em.typeOf(rule) === "string" ) {
+          rule = Em.getPath(rule);
         }
 
-        if ( !filter.isInstance ) {
-          filter = filter.create();
+        if ( !rule.isInstance ) {
+          rule = rule.create();
         }
 
 
-        filter.gestureDelegate = this;
-        current.push( filter );
+        rule.gestureDelegate = this;
+        current.push( rule );
       }
 
     }
 
-    this.filters = current;
+    this.rules = current;
 
   },
 

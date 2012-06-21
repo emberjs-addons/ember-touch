@@ -65,24 +65,24 @@ test("manager should re-dispatch event to view", function() {
 });
 
 
-test("manager avoid delivering events when a delegate filter return false", function() {
+test("manager avoid delivering events when a delegate rule return false", function() {
 
     var endCalled;
-    var filterResult;
+    var ruleResult;
     var delegateResult;
 
 
-    var myDelegateFilter = Em.DelegateFilter.create({
+    var myDelegateRule = Em.DelegateRule.create({
 
       shouldReceiveTouch: function(gesture, view, event) {
-        return filterResult;
+        return ruleResult;
       }
 
     });
 
     var delegate = Em.GestureDelegate.create({
         name: 'application_delegate',
-        filters: [myDelegateFilter],
+        rules: [myDelegateRule],
 
 
         shouldReceiveTouch: function(gesture, view, event) {
@@ -105,7 +105,7 @@ test("manager avoid delivering events when a delegate filter return false", func
 
 
     endCalled = false;
-    filterResult = undefined;
+    ruleResult = undefined;
     delegateResult = true;
 
 
@@ -146,7 +146,7 @@ test("manager avoid delivering events when a delegate filter return false", func
 
 
     endCalled = false;
-    filterResult = false;
+    ruleResult = false;
     delegateResult = true;
 
 
@@ -172,7 +172,7 @@ test("manager avoid delivering events when a delegate filter return false", func
     };
 
     view.$().trigger(touchEvent);
-    ok(!endCalled, 'event was not recognized, because it was blocked by a delegate filter');
+    ok(!endCalled, 'event was not recognized, because it was blocked by a delegate rule');
 
 });
 
@@ -267,6 +267,6 @@ test("manager avoid delivering events when delegate ReceiveTouch is false", func
     };
 
     view.$().trigger(touchEvent);
-    ok(!endCalled, 'event was not recognized, because it was blocked by the filter');
+    ok(!endCalled, 'event was not recognized, because it was blocked by the rule');
 
 });

@@ -106,7 +106,7 @@ Em.GestureManager = Em.Object.extend({
           isValid = true;
         } else {
 
-          isValid = this._applyDelegateFilters( gestureDelegate,  gesture, this.view, eventObject );
+          isValid = this._applyDelegateRules( gestureDelegate,  gesture, this.view, eventObject );
           if ( isValid === undefined ) {
             isValid = gestureDelegate.shouldReceiveTouch( gesture, this.view, eventObject );
           }
@@ -133,10 +133,10 @@ Em.GestureManager = Em.Object.extend({
 
   },
 
-  _applyDelegateFilters: function(gestureDelegate, gesture, view, event) {
+  _applyDelegateRules: function(gestureDelegate, gesture, view, event) {
 
-    var filters = gestureDelegate.filters,
-        length = filters.length;
+    var rules = gestureDelegate.rules,
+        length = rules.length;
 
     if ( length > 0 ) {
 
@@ -144,7 +144,7 @@ Em.GestureManager = Em.Object.extend({
           result;
 
       for (i=0;i<length;i++) {
-        result = filters[i].shouldReceiveTouch(gesture, view, event);
+        result = rules[i].shouldReceiveTouch(gesture, view, event);
         if ( result !== undefined ) {
           return result;
         }
