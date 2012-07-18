@@ -172,8 +172,6 @@ test("With simultaneously enabled.", function() {
 
   application.destroy();
 
-  Em.AppGestureManager.restart();
-
 });
 
 
@@ -323,11 +321,11 @@ test("Only one view can be recognized when simultaneously is disabled.", functio
 
 
 
+  panView.unblockGestureRecognizer();
   swipeView.destroy();
   panView.destroy();
   application.destroy();
 
-  Em.AppGestureManager.restart();
 });
 
 
@@ -388,7 +386,5 @@ test("When unblock a view which did not block, throw exception", function() {
   swipeView.destroy();
   panView.destroy();
   application.destroy();
-
-  Em.AppGestureManager.restart();
 
 });

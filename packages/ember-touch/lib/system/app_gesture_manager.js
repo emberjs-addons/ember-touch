@@ -1,4 +1,3 @@
-
 /**
   @class
 
@@ -37,11 +36,9 @@ Em.AppGestureManager = Em.Object.create({
   },
 
   /*  
-   * You must pass a function(view) which will be used to allow/deny passing touchEvents
+   * shouldReceiveTouchFn function(view) which will be used to allow/deny passing touchEvents
    * to view gestures.
-   * If it is already blocked it will throw an exception.
    */
-
   block: function( view, shouldReceiveTouchFn ) {
 
     if ( this.get('isBlocked') ) {
@@ -66,12 +63,6 @@ Em.AppGestureManager = Em.Object.create({
     if ( view !== blockerView ) {
       throw new Error('unblock a view which was not the one which blocked the gesture recognizer');
     }
-
-    this.restart();
-
-  },
-
-  restart: function() {
 
     this.set('_isBlocked', false);
     this.set('_blockerView', null);
