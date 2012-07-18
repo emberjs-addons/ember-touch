@@ -83,7 +83,7 @@ Em.GestureManager = Em.Object.extend({
   _invokeEvent: function(eventName, eventObject) {
 
     var gestures = this.get('gestures'),
-        gesture,
+        l =  gestures.length,
         handler,
         result = true;
 
@@ -93,38 +93,44 @@ Em.GestureManager = Em.Object.extend({
       handler.call(this.view, eventObject);
     }
 
+    if ( l > 0 ) {
 
-    //appGestureManager allow to pass touchEvents at the App Level  
-    var gesturesCanReceiveTouchEvent = Em.AppGestureManager.get('isBlocked')? Em.AppGestureManager.shouldReceiveTouch(this.view) : true;
+      //appGestureManager allow to pass touchEvents at the App Level  
+      var gesturesCanReceiveTouchEvent = Em.AppGestureManager.get('isBlocked')? Em.AppGestureManager.shouldReceiveTouch(this.view) : true;
+      if ( gesturesCanReceiveTouchEvent ) {
 
-    if ( gesturesCanReceiveTouchEvent ) {
+        var gesture,
+            gestureDelegate,
+            isValid,
+            i;
 
-      for (var i=0, l=gestures.length; i < l; i++) {
-        gesture = gestures[i];
-        handler = gesture[eventName];
+        for (i=0; i < l; i++) {
+          gesture = gestures[i];
+          handler = gesture[eventName];
 
-        if (Em.typeOf(handler) === 'function') {
+          if (Em.typeOf(handler) === 'function') {
 
-          var gestureDelegate = gesture.get('delegate'),
-              isValid;
+            gestureDelegate = gesture.get('delegate');
 
-          //gestureDelegate allow to pass touchEvents depending on gesture state  
-          if ( !gestureDelegate ) {
-            isValid = true;
-          } else {
+            //gestureDelegate allow to pass touchEvents depending on gesture state  
+            if ( !gestureDelegate ) {
+              isValid = true;
+            } else {
 
-            isValid = this._applyDelegateRules( gestureDelegate,  gesture, this.view, eventObject );
-            if ( isValid === undefined ) {
-              isValid = gestureDelegate.shouldReceiveTouch( gesture, this.view, eventObject );
+              isValid = this._applyDelegateRules( gestureDelegate,  gesture, this.view, eventObject );
+              if ( isValid === undefined ) {
+                isValid = gestureDelegate.shouldReceiveTouch( gesture, this.view, eventObject );
+              }
+
+            }
+
+            if ( isValid ) {
+              result = handler.call(gesture, eventObject);
             }
 
           }
-
-          if ( isValid ) {
-            result = handler.call(gesture, eventObject);
-          }
-
         }
+
       }
 
     }
