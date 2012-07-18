@@ -87,38 +87,47 @@ Em.GestureManager = Em.Object.extend({
         handler,
         result = true;
 
-    // view could response directly to touch events
+    // view can response directly to touch events
     handler = this.view[eventName];
     if (Em.typeOf(handler) === 'function') {
       handler.call(this.view, eventObject);
     }
 
-    for (var i=0, l=gestures.length; i < l; i++) {
-      gesture = gestures[i];
-      handler = gesture[eventName];
 
-      if (Em.typeOf(handler) === 'function') {
+    //appGestureManager allow to pass touchEvents at the App Level  
+    var gesturesCanReceiveTouchEvent = this.appGestureManager.get('isBlocked')? this.appGestureManager.shouldReceiveTouch(this.view) : true;
 
-        var gestureDelegate = gesture.get('delegate'),
-            isValid;
+    if ( gesturesCanReceiveTouchEvent ) {
 
-        if ( !gestureDelegate ) {
-          isValid = true;
-        } else {
+      for (var i=0, l=gestures.length; i < l; i++) {
+        gesture = gestures[i];
+        handler = gesture[eventName];
 
-          isValid = this._applyDelegateRules( gestureDelegate,  gesture, this.view, eventObject );
-          if ( isValid === undefined ) {
-            isValid = gestureDelegate.shouldReceiveTouch( gesture, this.view, eventObject );
+        if (Em.typeOf(handler) === 'function') {
+
+          var gestureDelegate = gesture.get('delegate'),
+              isValid;
+
+          //gestureDelegate allow to pass touchEvents depending on gesture state  
+          if ( !gestureDelegate ) {
+            isValid = true;
+          } else {
+
+            isValid = this._applyDelegateRules( gestureDelegate,  gesture, this.view, eventObject );
+            if ( isValid === undefined ) {
+              isValid = gestureDelegate.shouldReceiveTouch( gesture, this.view, eventObject );
+            }
+
+          }
+
+          if ( isValid ) {
+            result = handler.call(gesture, eventObject);
           }
 
         }
-
-        if ( isValid ) {
-          result = handler.call(gesture, eventObject);
-        }
-
       }
-   }
+
+    }
     
     // browser delivers the event to the DOM element
     // bubble the event to the parentView

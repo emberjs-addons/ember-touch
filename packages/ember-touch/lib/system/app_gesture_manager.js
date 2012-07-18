@@ -2,17 +2,15 @@
 /**
   @class
 
-  Manage the states of no-simulataneosly views. 
+  Allow any view to block the gesture recognition.
 
-  TODO: 
-    - the initialization/destroy process must be improved.
-    suggested based on Application cycle. 
+  When AppGestureManager isBlocked, gestureManager will call shouldReceiveTouch method 
+  and when it returns false, it will deny passing touchEvents to view gestures. 
 
   @extends Em.Object
 */
 Em.AppGestureManager = Em.Object.create({
 
-  _isBlocked: false,
 
 
   /*
@@ -21,6 +19,10 @@ Em.AppGestureManager = Em.Object.create({
   */
   _blockerView: null,
 
+  _isBlocked: false,
+  _shouldReceiveTouchFn:null,
+  
+
 
   isBlocked: Em.computed(function(){
 
@@ -28,25 +30,26 @@ Em.AppGestureManager = Em.Object.create({
 
   }).property('_isBlocked'),
 
-  wasBlockedBy: function ( view ) {
+  shouldReceiveTouch: function(view) {
 
-    return view === this.get('_blockerView');
+    return this.get('_shouldReceiveTouchFn')(view);
 
   },
 
+  /*  
+   * You must pass a function(view) which will be used to allow/deny passing touchEvents
+   * to view gestures.
+   * If it is already blocked it will throw an exception.
+   */
 
-  block: function( view ) {
+  block: function( view, shouldReceiveTouchFn ) {
 
     if ( this.get('isBlocked') ) {
       throw new Error('manager has already blocked the gesture recognizer');
     }
 
 
-    if (  view.get('simultaneosly') ) {
-      // Em.assert
-      throw new Error('a view with simultaneosly property true, cannot block the gesture recognizer');
-    }
-
+    this.set('_shouldReceiveTouchFn', shouldReceiveTouchFn);
     this.set('_isBlocked', true);
     this.set('_blockerView', view);
 
@@ -58,16 +61,13 @@ Em.AppGestureManager = Em.Object.create({
       throw new Error('unblock, the gesture recognizer when the recognizer was not blocked. Did you unblock after Start? ');
     }
 
-    if (  view.get('simultaneosly') ) { // Em.assert
-      throw new Error('a view with simultaneosly property true, cannot unblock the gesture recognizer');
-    }
-
     var blockerView = this.get('_blockerView');
 
     if ( view !== blockerView ) {
       throw new Error('unblock a view which was not the one which blocked the gesture recognizer');
     }
-    this.set('_isBlocked', false);
+
+    this.restart();
 
   },
 
@@ -75,6 +75,7 @@ Em.AppGestureManager = Em.Object.create({
 
     this.set('_isBlocked', false);
     this.set('_blockerView', null);
+    this.set('_shouldReceiveTouchFn', null);
 
   }
 

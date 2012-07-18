@@ -282,34 +282,23 @@ Em.Gesture = Em.Object.extend(
   /** @private */
 
 
-  simultaneouslyAllowed: function() {
-
-    var result = true;
+  /* if simultaneously is true, it will block appGestureManager
+   */
+  blockAppGestureManagerIfSimultaneously: function() {
 
     if ( !this.simultaneously ) {
 
-      if ( !this.manager.appGestureManager.get('isBlocked') ) {
-
-        this.manager.appGestureManager.block(this.view); 
-
-      } else {
-
-        // normally, when blocked it must return false. 
-        // But it could find the case, in which, the gesture did not unblock 
-        // ( cause of missing events/ or code developer ). 
-        // on this case, i want the same view can recognize again the gesture
-        
-        result = this.manager.appGestureManager.wasBlockedBy(this.view); 
-      }
+      var allowedView = this.view;
+      this.manager.appGestureManager.block(this.view, function(v) {
+        return allowedView === v;
+      }); 
 
     }
-    return result;
   },
   
   /**
     Notify the View of the event and trigger eventWasRejected if the view don't implement the API 
     or return false
-
   */
   attemptGestureEventDelivery: function(eventName) {
 
@@ -437,7 +426,8 @@ Em.Gesture = Em.Object.extend(
 
       // Discrete gestures may skip the possible step if they're ready to begin
         //
-        if (this.shouldBegin() && this.simultaneouslyAllowed()  ) {
+        if ( this.shouldBegin() ) {
+          this.blockAppGestureManagerIfSimultaneously();
           set(this, 'state', Em.Gesture.BEGAN);
           this.didBegin();
         }
@@ -473,8 +463,9 @@ Em.Gesture = Em.Object.extend(
 
     if (state === Em.Gesture.POSSIBLE && !this.gestureIsDiscrete) {
 
-      if (this.shouldBegin() && this.simultaneouslyAllowed()  ) {
+      if ( this.shouldBegin() ) {
 
+        this.blockAppGestureManagerIfSimultaneously();
         set(this, 'state', Em.Gesture.BEGAN);
         this.didBegin();
 
