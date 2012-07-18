@@ -185,7 +185,6 @@ Em.Gesture = Em.Object.extend(
   */
   simultaneously: true,
 
-  appGestureManager:null,
 
   /** 
     You can use the `touches` protected property to access the touches hash. The touches 
@@ -282,14 +281,14 @@ Em.Gesture = Em.Object.extend(
   /** @private */
 
 
-  /* if simultaneously is true, it will block appGestureManager
+  /* if simultaneously is true, it will block AppGestureManager
    */
   blockAppGestureManagerIfSimultaneously: function() {
 
     if ( !this.simultaneously ) {
 
       var allowedView = this.view;
-      this.manager.appGestureManager.block(this.view, function(v) {
+      Em.AppGestureManager.block(this.view, function(v) {
         return allowedView === v;
       }); 
 

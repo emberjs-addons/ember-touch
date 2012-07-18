@@ -95,7 +95,7 @@ Em.GestureManager = Em.Object.extend({
 
 
     //appGestureManager allow to pass touchEvents at the App Level  
-    var gesturesCanReceiveTouchEvent = this.appGestureManager.get('isBlocked')? this.appGestureManager.shouldReceiveTouch(this.view) : true;
+    var gesturesCanReceiveTouchEvent = Em.AppGestureManager.get('isBlocked')? Em.AppGestureManager.shouldReceiveTouch(this.view) : true;
 
     if ( gesturesCanReceiveTouchEvent ) {
 

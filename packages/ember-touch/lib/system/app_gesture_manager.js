@@ -6,6 +6,8 @@
   When AppGestureManager isBlocked, gestureManager will call shouldReceiveTouch method 
   and when it returns false, it will deny passing touchEvents to view gestures. 
 
+  It works as a singleton instance at the AppLevel.
+
   @extends Em.Object
 */
 Em.AppGestureManager = Em.Object.create({

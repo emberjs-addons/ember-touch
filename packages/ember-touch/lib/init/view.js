@@ -39,7 +39,6 @@ Em.View.reopen(
       var gestures = [];
 
       var manager = Em.GestureManager.create({
-        appGestureManager: Em.AppGestureManager
       });
 
 
@@ -68,13 +67,6 @@ Em.View.reopen(
       set(this, 'eventManager', manager);
  
     }
-  },
-
-  unblockGestureRecognizer: function() {
-
-    var eventManager = get(this, 'eventManager');
-    eventManager.appGestureManager.unblock(this);
-
   }
 
 });
