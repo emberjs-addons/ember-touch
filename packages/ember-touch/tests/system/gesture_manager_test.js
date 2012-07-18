@@ -270,3 +270,87 @@ test("manager avoid delivering events when delegate ReceiveTouch is false", func
     ok(!endCalled, 'event was not recognized, because it was blocked by the rule');
 
 });
+
+
+
+test("manager avoid delivering events based on appGestureManager blocking logic", function() {
+
+    var endCalled = false;
+
+    var blocked = false;
+    var blockedFn = function(view ) {
+      return blocked;
+    };
+
+
+    var view = Em.View.create({
+      
+      tapOptions: {
+        numberOfRequiredTouches: 1
+      },
+      tapEnd: function(recognizer) {
+        endCalled = true;
+      }
+
+    });
+
+    Em.run(function(){
+      view.append();
+    });
+
+
+    Em.AppGestureManager.block(view, blockedFn);
+
+    touchEvent = new jQuery.Event('touchstart');
+    touchEvent['originalEvent'] = {
+      targetTouches: [{
+        pageX: 0,
+        pageY: 10
+      }]
+    };
+
+    view.$().trigger(touchEvent);
+
+    touchEvent = new jQuery.Event('touchend');
+    touchEvent['originalEvent'] = {
+      changedTouches: [{
+        pageX: 0,
+        pageY: 10
+      }]
+    };
+
+    view.$().trigger(touchEvent);
+
+
+    equal(gestures[0].touches.get('length') , 0,"no touch was included on the tap gesture ");
+    ok(!endCalled, 'event was not recognized because AppGestureManager was blocking it');
+
+
+    Em.AppGestureManager.unblock(view);
+
+
+    touchEvent = new jQuery.Event('touchstart');
+    touchEvent['originalEvent'] = {
+      targetTouches: [{
+        pageX: 0,
+        pageY: 10
+      }]
+    };
+
+    view.$().trigger(touchEvent);
+
+    touchEvent = new jQuery.Event('touchend');
+    touchEvent['originalEvent'] = {
+      changedTouches: [{
+        pageX: 0,
+        pageY: 10
+      }]
+    };
+
+    view.$().trigger(touchEvent);
+
+
+    ok(endCalled, 'event was recognized after unblocking AppGestureManager');
+
+
+});
