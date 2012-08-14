@@ -226,6 +226,12 @@ Em.Gesture = Em.Object.extend(
   */
   delegate: null, 
 
+  /*	
+	Use this property to disable gesture recognition. 
+  Use isEnabledBinding to global or view properties.
+  */
+  isEnabled: true,
+
 
   init: function() {
     this._super();

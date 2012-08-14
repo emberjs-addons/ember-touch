@@ -112,8 +112,10 @@ Em.GestureManager = Em.Object.extend({
 
             gestureDelegate = gesture.get('delegate');
 
+            if ( !gesture.get('isEnabled') ) {
+              isValid = false;
             //gestureDelegate allow to pass touchEvents depending on gesture state  
-            if ( !gestureDelegate ) {
+            } else if ( !gestureDelegate ) {
               isValid = true;
             } else {
 

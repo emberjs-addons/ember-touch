@@ -64,6 +64,120 @@ test("manager should re-dispatch event to view", function() {
 
 });
 
+test("manager avoid delivering events when gesture.isEnabled is false", function() {
+
+    var endCalled;
+    var view = Em.View.create({
+      
+      tapOptions: {
+        numberOfRequiredTouches: 1,
+        isEnabled: false
+      },
+
+      tapEnd: function(recognizer) {
+        endCalled = true;
+      }
+
+    });
+
+
+    endCalled = false;
+
+    Em.run(function(){
+      view.append();
+    });
+
+
+    gestures = get(get(view, 'eventManager'), 'gestures');
+    equal(gestures.length,1,"there should be only tap gesture");
+
+
+    touchEvent = new jQuery.Event('touchstart');
+    touchEvent['originalEvent'] = {
+      targetTouches: [{
+        pageX: 0,
+        pageY: 10
+      }]
+    };
+    view.$().trigger(touchEvent);
+    equal(gestures[0].touches.get('length') , 0,"the touch was not included on the tap gesture ");
+
+
+    gestures[0].set('isEnabled', true);
+
+
+    touchEvent = new jQuery.Event('touchstart');
+    touchEvent['originalEvent'] = {
+      targetTouches: [{
+        pageX: 0,
+        pageY: 10
+      }]
+    };
+    view.$().trigger(touchEvent);
+    equal(gestures[0].touches.get('length') , 1,"the touch was included on the tap gesture ");
+
+
+
+
+});
+
+
+test("manager avoid delivering events when gesture.isEnabled is setup via binding", function() {
+
+    var endCalled;
+    var view = Em.View.create({
+
+      isTapEnabled: false,
+
+      tapOptions: {
+        numberOfRequiredTouches: 1,
+        isEnabledBinding: 'isTapEnabled'
+      },
+
+      tapEnd: function(recognizer) {
+        endCalled = true;
+      }
+
+    });
+
+
+    endCalled = false;
+
+    Em.run(function(){
+      view.append();
+    });
+
+
+    gestures = get(get(view, 'eventManager'), 'gestures');
+    equal(gestures.length,1,"there should be only tap gesture");
+
+
+    touchEvent = new jQuery.Event('touchstart');
+    touchEvent['originalEvent'] = {
+      targetTouches: [{
+        pageX: 0,
+        pageY: 10
+      }]
+    };
+    view.$().trigger(touchEvent);
+    equal(gestures[0].touches.get('length') , 0,"the touch was included on the tap gesture ");
+
+    Em.run(function(){
+      view.set('isTapEnabled', true);
+    });
+
+    touchEvent = new jQuery.Event('touchstart');
+    touchEvent['originalEvent'] = {
+      targetTouches: [{
+        pageX: 0,
+        pageY: 10
+      }]
+    };
+    view.$().trigger(touchEvent);
+    equal(gestures[0].touches.get('length') , 1,"the touch was included on the tap gesture ");
+
+});
+
 
 test("manager avoid delivering events when a delegate rule return false", function() {
 

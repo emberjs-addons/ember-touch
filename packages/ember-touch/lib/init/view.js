@@ -56,7 +56,19 @@ Em.View.reopen(
           optionsHash.view = this;
           optionsHash.manager = manager;
 
-          gestures.push(knownGestures[gesture].create(optionsHash));
+          if ( optionsHash.isEnabledBinding && 
+              !Ember.isGlobalPath(optionsHash.isEnabledBinding) ) {
+
+              optionsHash.isEnabledBinding = 'view.'+optionsHash.isEnabledBinding;
+
+          }
+
+          var currentGesture = knownGestures[gesture].create(optionsHash);
+          if ( optionsHash.isEnabledBinding ) {
+            Ember.run.sync();
+          }
+
+          gestures.push(currentGesture);
         }
       }
       
