@@ -56,16 +56,24 @@ Em.View.reopen(
           optionsHash.view = this;
           optionsHash.manager = manager;
 
-          if ( optionsHash.isEnabledBinding && 
-              !Ember.isGlobalPath(optionsHash.isEnabledBinding) ) {
+          var extensions = {};
+          if ( optionsHash.isEnabledBinding ) { 
 
-              optionsHash.isEnabledBinding = 'view.'+optionsHash.isEnabledBinding;
+            if ( !Ember.isGlobalPath(optionsHash.isEnabledBinding) ) {
+              extensions.isEnabledBinding = 'view.'+optionsHash.isEnabledBinding;
+            } else {
+              extensions.isEnabledBinding = optionsHash.isEnabledBinding;
+            }
 
+            optionsHash = Ember.$.extend({}, optionsHash);
+            delete optionsHash.isEnabledBinding;
           }
 
-          var currentGesture = knownGestures[gesture].create(optionsHash);
-          if ( optionsHash.isEnabledBinding ) {
+          var currentGesture = knownGestures[gesture].create(optionsHash, extensions);
+          if ( extensions.isEnabledBinding ) {
+
             Ember.run.sync();
+
           }
 
           gestures.push(currentGesture);
