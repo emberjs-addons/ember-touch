@@ -173,9 +173,6 @@ Em.Gesture = Em.Object.extend(
   gestureIsDiscrete: false,
 
 
-  preventDefaultOnChange: false,
-
-
   /**
     When true is guaranteed to allow simultaneous recognition. When false, the gesture  
     should not be recognized when there is other active gesture whose simultaneously is disabled.
@@ -477,11 +474,6 @@ Em.Gesture = Em.Object.extend(
         // Give the gesture a chance to update its state so the view can get 
         // updated information in the Start event 
         this.didChange();
-
-        if ( this.preventDefaultOnChange ) {
-          evt.preventDefault();
-        }
-
         this.attemptGestureEventDelivery(get(this, 'name')+'Start');
       }
 
@@ -489,10 +481,6 @@ Em.Gesture = Em.Object.extend(
 
       set(this, 'state', Em.Gesture.CHANGED);
       this.didChange();
-
-      if ( this.preventDefaultOnChange ) {
-        evt.preventDefault();
-      }
 
       // Discrete gestures don't fire changed events
       if ( !this.gestureIsDiscrete ) {
