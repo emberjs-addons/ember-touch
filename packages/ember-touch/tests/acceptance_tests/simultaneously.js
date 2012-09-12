@@ -88,9 +88,20 @@ module("Simultaneously Feature", {
 
       });
 
+    application = Em.Application.create({
+      ready: function() {
+        start();
+      }
+    });
+    if ( Ember.VERSION!== "0.9.7.1" ) {
+      stop();
+    }
+
   },
 
   teardown: function() {
+
+    application.destroy();
   }
 
 });
@@ -99,7 +110,6 @@ module("Simultaneously Feature", {
 
 test("With simultaneously enabled.", function() {
   
-  application = Em.Application.create();
 
   var swipeView = SwipeView.create({
     swipeOptions: {
@@ -170,15 +180,12 @@ test("With simultaneously enabled.", function() {
   swipeView.destroy();
   panView.destroy();
 
-  application.destroy();
 
 });
 
 
 test("Only one view can be recognized when simultaneously is disabled.", function() {
-  
 
-  application = Em.Application.create();
   var swipeView = SwipeView.create({
     swipeOptions: {
       simultaneously: false
@@ -322,16 +329,13 @@ test("Only one view can be recognized when simultaneously is disabled.", functio
   Em.AppGestureManager.unblock(panView);
   swipeView.destroy();
   panView.destroy();
-  application.destroy();
 
 });
 
 
 
 test("When unblock a view which did not block, throw exception", function() {
-  
 
-  application = Em.Application.create();
   var swipeView = SwipeView.create({
     swipeOptions: {
       simultaneously: false
@@ -384,6 +388,5 @@ test("When unblock a view which did not block, throw exception", function() {
 
   swipeView.destroy();
   panView.destroy();
-  application.destroy();
 
 });

@@ -2,7 +2,6 @@ require "rake-pipeline-web-filters"
 require "json"
 require "uglifier"
 
-
 class EmberProductionFilter < Rake::Pipeline::Filter
   def generate_output(inputs, output)
     inputs.each do |input|
@@ -72,7 +71,8 @@ end
 
 
 input "packages" do
-  match "*/lib/**/*.js" do
+  match "ember-touch/lib/**/*.js" do
+
     minispade :rewrite_requires => true, :string => true, :module_id_generator => proc { |input|
       id = input.path.dup
       id.sub!('/lib/', '/')
@@ -84,6 +84,38 @@ input "packages" do
     concat "ember-touch-spade.js"
   end
 end
+
+
+input "packages" do
+  match "{ember-0.9.7.1,ember-0.9.8.1,ember-1.0.pre}/lib/**/*.js" do 
+    minispade :rewrite_requires => true, :string => true, :module_id_generator => proc { |input|
+      'ember'
+    }
+
+
+    concat do |input|
+      package = input.dup.sub!('/lib/main.js', '')
+      puts package
+      "#{package}-spade.js"
+    end
+
+  end
+end
+
+input "packages" do
+  match "ember/lib/**/*.js" do
+    minispade :rewrite_requires => true, :string => true, :module_id_generator => proc { |input|
+      id = input.path.dup
+      id.sub!('/lib/', '/')
+      id.sub!(/\.js$/, '')
+      id.sub!(/\/main$/, '')
+      id
+    }
+
+    concat "ember-spade.js"
+  end
+end
+
 
 
 input "packages" do

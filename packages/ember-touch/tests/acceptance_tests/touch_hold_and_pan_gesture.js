@@ -19,7 +19,14 @@ module("Acceptance Touch Hold and Pan Gesture", {
     panEndWasCalled = false;
     touchHoldEndWasCalled = false;
 
-    application = Em.Application.create();
+    application = Em.Application.create({
+      ready: function() {
+        start();
+      }
+    });
+    if ( Ember.VERSION!== "0.9.7.1" ) {
+      stop();
+    }
 
     application.View = Em.CollectionView.extend({
       

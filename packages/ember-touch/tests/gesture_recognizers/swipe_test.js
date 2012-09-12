@@ -13,7 +13,14 @@ module("Swipe Test",{
   setup: function() {
     endCalled = false;
 
-    application = Em.Application.create();
+    application = Em.Application.create({
+      ready: function() {
+        start();
+      }
+    });
+    if ( Ember.VERSION!== "0.9.7.1" ) {
+      stop();
+    }
 
     view = Em.View.create({
 

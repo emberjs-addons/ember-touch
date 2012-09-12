@@ -77,26 +77,23 @@
   </script>
 
   <script>
-    document.write(unescape('%3Cscript src="../dist/modules/ember.js"%3E%3C/script%3E'));
-  </script>
-
-  <script>
     // Load ember distribution from query vars
-    var distMatch = location.search.match(/dist=([^&]+)/),
-        dist = (distMatch && distMatch[1]) || 'spade';
+    var dist = 'spade';
 
-    var distros = {
-      spade:   'ember-touch-spade.js',
-      build:   'ember-touch.js'
-    };
+    var emberMatch = location.search.match(/ember=([^&]+)/), 
+        emberVersion = emberMatch ? emberMatch[1] : "0.9.8.1";
 
-    var emberFile = distros[dist];
-    if (!emberFile) { throw 'Unknown dist'; }
+    // load handlebars file if it is not packaged in the ember package
+    if ( emberVersion !== "0.9.7.1" && emberVersion !== "0.9.8.1" ) {
+      document.write(unescape('%3Cscript src="handlebars-1.0.0.beta.6.js"%3E%3C/script%3E'));
+    }
 
-    document.write(unescape('%3Cscript src="../dist/'+emberFile+'"%3E%3C/script%3E'));
-    // Close the script tag to make sure document.write happens
+    var emberPackage='ember-'+emberVersion+'-spade.js';
+    document.write(unescape('%3Cscript src="../dist/'+emberPackage+'"%3E%3C/script%3E'));
+
   </script>
 
+  <script type="text/javascript" src="../dist/ember-touch-spade.js"></script>
   <script type="text/javascript" src="ember-touch-tests.js"></script>
 
   <script type="text/javascript">

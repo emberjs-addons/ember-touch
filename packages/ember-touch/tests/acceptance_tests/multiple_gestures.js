@@ -11,7 +11,17 @@ var view;
 
 module("Test Gesture Recognizer",{
   setup: function() {
-    application = Em.Application.create();
+
+    application = Em.Application.create({
+      ready: function() {
+        start();
+      }
+    });
+
+    if ( Ember.VERSION!== "0.9.7.1" ) {
+      stop();
+    }
+
   },
 
   teardown: function() {
@@ -21,6 +31,7 @@ module("Test Gesture Recognizer",{
 });
 
 test("gesturable views that implement pinch methods get a pinch recognizer", function() {
+
   var view = Em.View.create({
     pinchStart: function(evt) {
 
