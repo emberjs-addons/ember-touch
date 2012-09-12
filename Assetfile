@@ -95,7 +95,6 @@ input "packages" do
 
     concat do |input|
       package = input.dup.sub!('/lib/main.js', '')
-      puts package
       "#{package}-spade.js"
     end
 
