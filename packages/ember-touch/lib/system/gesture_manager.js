@@ -93,57 +93,60 @@ Em.GestureManager = Em.Object.extend({
       handler.call(this.view, eventObject);
     }
 
-    if ( l > 0 ) {
+    if ( !Em.AppGestureManager.get('isAllBlocked') ) {
 
-      //appGestureManager allow to pass touchEvents at the App Level  
-      var gesturesCanReceiveTouchEvent = Em.AppGestureManager.get('isBlocked')? Em.AppGestureManager.shouldReceiveTouch(this.view) : true;
-      if ( gesturesCanReceiveTouchEvent ) {
+      if ( l > 0 ) {
 
-        var gesture,
-            gestureDelegate,
-            isValid,
-            i;
+        //appGestureManager allow to pass touchEvents at the App Level  
+        var gesturesCanReceiveTouchEvent = Em.AppGestureManager.get('isBlocked')? Em.AppGestureManager.shouldReceiveTouch(this.view) : true;
+        if ( gesturesCanReceiveTouchEvent ) {
 
-        for (i=0; i < l; i++) {
-          gesture = gestures[i];
-          handler = gesture[eventName];
+          var gesture,
+              gestureDelegate,
+              isValid,
+              i;
 
-          if (Em.typeOf(handler) === 'function') {
+          for (i=0; i < l; i++) {
+            gesture = gestures[i];
+            handler = gesture[eventName];
 
-            gestureDelegate = gesture.get('delegate');
+            if (Em.typeOf(handler) === 'function') {
 
-            if ( !gesture.get('isEnabled') ) {
-              isValid = false;
-            //gestureDelegate allow to pass touchEvents depending on gesture state  
-            } else if ( !gestureDelegate ) {
-              isValid = true;
-            } else {
+              gestureDelegate = gesture.get('delegate');
 
-              isValid = this._applyDelegateRules( gestureDelegate,  gesture, this.view, eventObject );
-              if ( isValid === undefined ) {
-                isValid = gestureDelegate.shouldReceiveTouch( gesture, this.view, eventObject );
+              if ( !gesture.get('isEnabled') ) {
+                isValid = false;
+              //gestureDelegate allow to pass touchEvents depending on gesture state  
+              } else if ( !gestureDelegate ) {
+                isValid = true;
+              } else {
+
+                isValid = this._applyDelegateRules( gestureDelegate,  gesture, this.view, eventObject );
+                if ( isValid === undefined ) {
+                  isValid = gestureDelegate.shouldReceiveTouch( gesture, this.view, eventObject );
+                }
+
+              }
+
+              if ( isValid ) {
+                result = handler.call(gesture, eventObject);
               }
 
             }
-
-            if ( isValid ) {
-              result = handler.call(gesture, eventObject);
-            }
-
           }
+
         }
 
       }
-
-    }
-    
-    // browser delivers the event to the DOM element
-    // bubble the event to the parentView
-    var parentView = this.view.get('parentView');
-    if ( parentView ) {
-      var manager = parentView.get('eventManager');
-      if ( manager ) { manager._invokeEvent(eventName, eventObject); }
       
+      // browser delivers the event to the DOM element
+      // bubble the event to the parentView
+      var parentView = this.view.get('parentView');
+      if ( parentView ) {
+        var manager = parentView.get('eventManager');
+        if ( manager ) { manager._invokeEvent(eventName, eventObject); }
+      }
+
     }
 
     return result;

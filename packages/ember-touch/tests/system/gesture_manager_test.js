@@ -71,6 +71,65 @@ test("manager should re-dispatch event to view", function() {
 
 });
 
+
+test("manager avoid delivering events when isAllBlocked is true", function() {
+
+    var endCalled;
+    var view = Em.View.create({
+      
+      tapOptions: {
+        numberOfRequiredTouches: 1
+      },
+
+      tapEnd: function(recognizer) {
+        endCalled = true;
+      }
+
+    });
+
+
+    endCalled = false;
+
+
+    Em.AppGestureManager.set('isAllBlocked', true);
+
+    Em.run(function(){
+      view.append();
+    });
+
+
+    gestures = get(get(view, 'eventManager'), 'gestures');
+    equal(gestures.length,1,"there should be only tap gesture");
+
+
+    touchEvent = new jQuery.Event('touchstart');
+    touchEvent['originalEvent'] = {
+      targetTouches: [{
+        pageX: 0,
+        pageY: 10
+      }]
+    };
+    view.$().trigger(touchEvent);
+    equal(gestures[0].touches.get('length') , 0,"the touch was not included on the tap gesture ");
+
+    Em.AppGestureManager.set('isAllBlocked', false);
+
+
+    touchEvent = new jQuery.Event('touchstart');
+    touchEvent['originalEvent'] = {
+      targetTouches: [{
+        pageX: 0,
+        pageY: 10
+      }]
+    };
+    view.$().trigger(touchEvent);
+    equal(gestures[0].touches.get('length') , 1,"the touch was included on the tap gesture ");
+
+
+
+
+});
+
 test("manager avoid delivering events when gesture.isEnabled is false", function() {
 
     var endCalled;

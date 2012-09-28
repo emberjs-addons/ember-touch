@@ -23,7 +23,7 @@ Em.AppGestureManager = Em.Object.create({
   _isBlocked: false,
   _shouldReceiveTouchFn:null,
   
-
+  isAllBlocked: false,
 
   isBlocked: Em.computed(function(){
 
