@@ -41,12 +41,10 @@ task :test, [:suite] => :dist do |t, args|
   end
 
   suites = {
-    :default => ["package=all&nojshint=true"],
+    :default => ["package=all"],
     :all => ["package=all",
-              "package=all&jquery=1.6.4&nojshint=true",
-              "package=all&extendprototypes=true&nojshint=true",
-              "package=all&extendprototypes=true&jquery=1.6.4&nojshint=true",
-              "package=all&dist=build&nojshint=true"]
+              "package=ember-touch&ember=0.9.7.1",
+              "package=ember-touch&ember=1.0.pre"]
   }
 
   if ENV['TEST']

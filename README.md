@@ -1,5 +1,7 @@
 # Sproutcore/Ember Touch
 
+[![Build Status](https://magnum.travis-ci.com/emberjs-addons/sproutcore-touch.png?token=jpSRrUB9CdLSzSbjqSL2)](http://magnum.travis-ci.com/emberjs-addons/sproutcore-touch)
+
 ## Overview
 Sproutcore/Ember Touch lays the groundwork for a comprehensive touch and
 gesture system that sits on top of [EmberJS](https://github.com/emberjs/ember.js).
