@@ -168,7 +168,7 @@ Em.SwipeGestureRecognizer = Em.Gesture.extend({
       this._disableCancelFired();
       set(this, 'state', Em.Gesture.ENDED);
 
-      var eventName = get(this, 'name')+'End';
+      var eventName = this.name+'End';
       this.attemptGestureEventDelivery(eventName);
       this._resetState(); 
       
@@ -190,7 +190,7 @@ Em.SwipeGestureRecognizer = Em.Gesture.extend({
     this._disableCancelFired();
     set(this, 'state', Em.Gesture.CANCELLED);
 
-    var eventName = get(this, 'name')+'Cancel';
+    var eventName = this.name+'Cancel';
     this.attemptGestureEventDelivery(eventName);
     this._resetState(); 
     

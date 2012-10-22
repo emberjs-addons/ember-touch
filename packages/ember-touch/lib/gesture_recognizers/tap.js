@@ -145,7 +145,7 @@ Em.TapGestureRecognizer = Em.Gesture.extend({
 
     // set state for the gesture manager
     set(this, 'state', Em.Gesture.CANCELLED);
-    var eventName = get(this, 'name')+'Cancel';
+    var eventName = this.name+'Cancel';
     this.attemptGestureEventDelivery(eventName);
     this._resetState(); 
 

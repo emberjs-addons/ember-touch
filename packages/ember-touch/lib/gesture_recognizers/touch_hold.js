@@ -121,7 +121,7 @@ Em.TouchHoldGestureRecognizer = Em.Gesture.extend({
 
       set(this, 'state', Em.Gesture.ENDED);
 
-      var eventName = get(this, 'name')+'End';
+      var eventName = this.name+'End';
 
       this.attemptGestureEventDelivery(eventName);
 

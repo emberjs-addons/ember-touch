@@ -233,6 +233,7 @@ Em.Gesture = Em.Object.extend(
   init: function() {
     this._super();
     this.touches = Em.TouchList.create();
+    this.name = get(this, 'name');
 
     var delegateName =  this.get('delegateName');
     var delegate =  this.get('delegate');
@@ -474,7 +475,7 @@ Em.Gesture = Em.Object.extend(
         // Give the gesture a chance to update its state so the view can get 
         // updated information in the Start event 
         this.didChange();
-        this.attemptGestureEventDelivery(get(this, 'name')+'Start');
+        this.attemptGestureEventDelivery(this.name+'Start');
       }
 
     } else if (state === Em.Gesture.BEGAN || state === Em.Gesture.CHANGED)  {
@@ -485,7 +486,7 @@ Em.Gesture = Em.Object.extend(
       // Discrete gestures don't fire changed events
       if ( !this.gestureIsDiscrete ) {
 
-        this.attemptGestureEventDelivery( get(this, 'name')+'Change');
+        this.attemptGestureEventDelivery(this.name+'Change');
 
       }
 
@@ -520,7 +521,7 @@ Em.Gesture = Em.Object.extend(
 
           set(this, 'state', Em.Gesture.ENDED);
           this.didEnd();
-          this.attemptGestureEventDelivery( get(this, 'name')+'End');
+          this.attemptGestureEventDelivery(this.name+'End');
 
         }  
 
@@ -536,7 +537,7 @@ Em.Gesture = Em.Object.extend(
           set(this, 'state', Em.Gesture.ENDED);
           this.didEnd();
 
-          this.attemptGestureEventDelivery( get(this, 'name')+'End');
+          this.attemptGestureEventDelivery(this.name+'End');
 
         }
 
@@ -557,7 +558,7 @@ Em.Gesture = Em.Object.extend(
       this.didCancel();
 
       if ( !this.gestureIsDiscrete ) {
-        this.attemptGestureEventDelivery( get(this, 'name')+'Cancel');
+        this.attemptGestureEventDelivery(this.name+'Cancel');
       }
 
     } 
