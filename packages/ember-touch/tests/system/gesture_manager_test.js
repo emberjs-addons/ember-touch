@@ -16,9 +16,7 @@ module("Gesture Manager",{
         start();
       }
     });
-    if ( Ember.VERSION!== "0.9.7.1" ) {
-      stop();
-    }
+    stop();
   },
 
   teardown: function() {

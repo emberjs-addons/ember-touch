@@ -24,9 +24,7 @@ module("Acceptance Touch Hold and Pan Gesture", {
         start();
       }
     });
-    if ( Ember.VERSION!== "0.9.7.1" ) {
-      stop();
-    }
+    stop();
 
     application.View = Em.CollectionView.extend({
       

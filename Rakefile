@@ -43,7 +43,6 @@ task :test, [:suite] => :dist do |t, args|
   suites = {
     :default => ["package=all"],
     :all => ["package=all",
-              "package=ember-touch&ember=0.9.7.1",
               "package=ember-touch&ember=1.0.pre"]
   }
 

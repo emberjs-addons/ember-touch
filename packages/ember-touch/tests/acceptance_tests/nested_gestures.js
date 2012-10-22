@@ -28,9 +28,7 @@ module("Nested gesture recognizers", {
         start();
       }
     });
-    if ( Ember.VERSION!== "0.9.7.1" ) {
-      stop();
-    }
+    stop();
 
     pinchStartWasCalled = false;
     pinchChangeWasCalled = false;

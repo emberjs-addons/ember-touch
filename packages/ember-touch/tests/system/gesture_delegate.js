@@ -15,9 +15,7 @@ module("Gesture Delegate", {
         start();
       }
     });
-    if ( Ember.VERSION!== "0.9.7.1" ) {
-      stop();
-    }
+    stop();
     MyApp = {};
   },
 

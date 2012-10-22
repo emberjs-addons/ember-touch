@@ -29,7 +29,6 @@ Consult the [gesture.js](https://github.com/emberjs-addons/sproutcore-touch/blob
 
 You can run your tests against multiple Ember Versions:
 
-  - 0.9.7.1
   - 0.9.8.1 ( default )
   - 1.0.pre
 
@@ -40,7 +39,7 @@ To run/check the unit test output, open:
 
   `http://localhost:9292/tests/index.html?package=ember-touch`
 
-  `http://localhost:9292/tests/index.html?package=ember-touch&ember=0.9.7.1`
+  `http://localhost:9292/tests/index.html?package=ember-touch&ember=1.0.pre`
 
 # Info
 

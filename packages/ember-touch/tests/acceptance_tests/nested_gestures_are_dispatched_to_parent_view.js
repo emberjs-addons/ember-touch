@@ -15,9 +15,7 @@ module("Nested Gestures on childs are redispatched to parents", {
         start();
       }
     });
-    if ( Ember.VERSION!== "0.9.7.1" ) {
-      stop();
-    }
+    stop();
 
 
     tapEndWasCalled = false;

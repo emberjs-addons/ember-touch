@@ -18,9 +18,7 @@ module("Test Gesture Recognizer",{
       }
     });
 
-    if ( Ember.VERSION!== "0.9.7.1" ) {
-      stop();
-    }
+    stop();
 
   },
 
