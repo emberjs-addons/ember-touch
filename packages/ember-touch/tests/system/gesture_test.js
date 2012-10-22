@@ -41,9 +41,10 @@ test("centerPoint", function() {
 });
 
 test("attemptGestureEventDelivery", function() {
-  var numCalled = 0, dataCalled, gestureCalled;
+  var numCalled = 0, dataCalled, gestureCalled, viewEvent;
   var view = Em.Object.create({
-    touchStart: function(recognizer) {
+    myGestureStart: function(recognizer, evt) {
+      viewEvent = evt;
       gestureCalled = recognizer;
       numCalled++;
     }
@@ -51,8 +52,12 @@ test("attemptGestureEventDelivery", function() {
 
   set(gesture, 'view', view);
 
-  gesture.attemptGestureEventDelivery('touchStart');
+  var touchEvent = new jQuery.Event();
+  touchEvent.type='touchstart';
 
+  gesture.attemptGestureEventDelivery('myGestureStart', touchEvent );
   equal(numCalled,1,'called once');
   equal(gestureCalled,gesture,'gesture passed through');
+  equal(touchEvent, viewEvent,'touchEvent are passed to view gestureEvents');
+
 });

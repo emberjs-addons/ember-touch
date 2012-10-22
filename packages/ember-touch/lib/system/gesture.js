@@ -305,6 +305,8 @@ Em.Gesture = Em.Object.extend(
   */
   attemptGestureEventDelivery: function(eventName, evt) {
 
+    Em.assert('attemptGestureEventDelivery is called with eventName and event arguments', !!eventName && !!evt);
+
     var wasNotified =  this._notifyViewOfGestureEvent(eventName, evt);
     if ( !wasNotified ) {
       this.eventWasRejected();
