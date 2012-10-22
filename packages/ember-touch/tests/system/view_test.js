@@ -55,3 +55,17 @@ test("should apply options", function() {
 
   equal(gestures[0].numberOfRequiredTouches,4, "should apply options hash");
 });
+
+test("A view without gestures have assigned a GestureManager at its eventManager property", function() {
+
+  var view = Em.View.create({
+
+  });
+
+  var eventManager = get(view, 'eventManager');
+  ok(eventManager,'view has an eventManager');
+
+  var gestures = get(eventManager, 'gestures');
+  equal(gestures.length,0,' has not gestures');
+
+});
