@@ -5,6 +5,7 @@ var get = Em.get;
 var view, gestures;
 var application;
 var period = 200;
+var viewEvent;
 var endCalled = false;
 var moveThreshold = 40;
 
@@ -30,9 +31,11 @@ module("Touch Hold Test",{
         moveThreshold: moveThreshold
       },
 
-      touchHoldEnd: function(recognizer) {
+      touchHoldEnd: function(recognizer, evt) {
         endCalled = true;
+        viewEvent = evt; 
       }
+
     });
 
     Em.run(function(){
@@ -95,6 +98,7 @@ test("without touch ends after the period, touchHoldEnd should have been fired a
       ok(gestures, "gestures should exist");
       equal(gestures.length,1,"there should be one gesture");
       equal(get(gestures[0], 'state'),Em.Gesture.ENDED, "gesture should be ended");
+      equal( viewEvent.type , Em.TimeoutTouchEventType.End, 'Gesture is ended via an Em.TimeoutTouchEvent');
 
       start();  
 

@@ -46,22 +46,22 @@ var get = Em.get, set = Em.set;
   of the pinch events. For example:
 
       var myView = Em.View.create({
-        pinchStart: function(recognizer) {
+        pinchStart: function(recognizer, evt) {
           this.$().css('background','red');
         },
 
-        pinchChange: function(recognizer) {
+        pinchChange: function(recognizer, evt) {
           var scale = recognizer.get('scale');
           this.$().css('scale',function(index, value) {
             return recognizer.get('scale') * value
           });
         },
 
-        pinchEnd: function(recognizer) {
+        pinchEnd: function(recognizer, evt) {
           this.$().css('background','blue');
         },
 
-        pinchCancel: function(recognizer) {
+        pinchCancel: function(recognizer, evt) {
           this.$().css('background','blue');
         }
       });
@@ -263,7 +263,7 @@ Em.Gesture = Em.Object.extend(
   didBegin: function() { },
 
   /** @private */
-  didChange: function() { },
+  didChange: function(evt) { },
 
   /** @private */
   eventWasRejected: function() { },
@@ -303,9 +303,9 @@ Em.Gesture = Em.Object.extend(
     Notify the View of the event and trigger eventWasRejected if the view doesn't implement the API 
     or return false
   */
-  attemptGestureEventDelivery: function(eventName) {
+  attemptGestureEventDelivery: function(eventName, evt) {
 
-    var wasNotified =  this._notifyViewOfGestureEvent(eventName);
+    var wasNotified =  this._notifyViewOfGestureEvent(eventName, evt);
     if ( !wasNotified ) {
       this.eventWasRejected();
     }             
@@ -376,12 +376,12 @@ Em.Gesture = Em.Object.extend(
 
     @private
   */
-  _notifyViewOfGestureEvent: function(eventName, data) {
+  _notifyViewOfGestureEvent: function(eventName, evt) {
     var handler = this.view[eventName];
     var result = false;
 
     if (Em.typeOf(handler) === 'function') {
-      result = handler.call(this.view, this, data);
+      result = handler.call(this.view, this, evt);
     }
 
     return result;
@@ -474,19 +474,19 @@ Em.Gesture = Em.Object.extend(
 
         // Give the gesture a chance to update its state so the view can get 
         // updated information in the Start event 
-        this.didChange();
-        this.attemptGestureEventDelivery(this.name+'Start');
+        this.didChange(evt);
+        this.attemptGestureEventDelivery(this.name+'Start', evt);
       }
 
     } else if (state === Em.Gesture.BEGAN || state === Em.Gesture.CHANGED)  {
 
       set(this, 'state', Em.Gesture.CHANGED);
-      this.didChange();
+      this.didChange(evt);
 
       // Discrete gestures don't fire changed events
       if ( !this.gestureIsDiscrete ) {
 
-        this.attemptGestureEventDelivery(this.name+'Change');
+        this.attemptGestureEventDelivery(this.name+'Change', evt);
 
       }
 
@@ -521,7 +521,7 @@ Em.Gesture = Em.Object.extend(
 
           set(this, 'state', Em.Gesture.ENDED);
           this.didEnd();
-          this.attemptGestureEventDelivery(this.name+'End');
+          this.attemptGestureEventDelivery(this.name+'End', evt);
 
         }  
 
@@ -537,7 +537,7 @@ Em.Gesture = Em.Object.extend(
           set(this, 'state', Em.Gesture.ENDED);
           this.didEnd();
 
-          this.attemptGestureEventDelivery(this.name+'End');
+          this.attemptGestureEventDelivery(this.name+'End', evt);
 
         }
 
@@ -558,7 +558,7 @@ Em.Gesture = Em.Object.extend(
       this.didCancel();
 
       if ( !this.gestureIsDiscrete ) {
-        this.attemptGestureEventDelivery(this.name+'Cancel');
+        this.attemptGestureEventDelivery(this.name+'Cancel', evt);
       }
 
     } 

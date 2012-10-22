@@ -5,6 +5,7 @@ var get = Em.get;
 var view;
 var application;
 var swipeThreshold = 10;
+var viewEvent;
 var cancelPeriod= 100;
 var endCalled = false;
 var cancelCalled = false;
@@ -31,17 +32,20 @@ module("Swipe Test",{
         simultaneously: true
       },
 
-      swipeStart: function(recognizer) {
-
+      swipeStart: function(recognizer, evt) {
+        viewEvent = evt;
       },
-      swipeChange: function(recognizer) {
+      swipeChange: function(recognizer, evt) {
 
+        viewEvent = evt;
       },
-      swipeEnd: function(recognizer) {
+      swipeEnd: function(recognizer, evt) {
         endCalled = true;
+        viewEvent = evt;
       },
-      swipeCancel: function(recognizer) {
+      swipeCancel: function(recognizer, evt) {
         cancelCalled = true;
+        viewEvent = evt;
       }
 
     });
@@ -103,7 +107,7 @@ test(" Init: one start event should put it in possible state and when move the i
 });
 
 
-test(" After init when cancelPeriod is reached, cancel method is called", function() {
+test(" After init when cancelPeriod is reached, cancel method is called with Em.TimeTouchEvent", function() {
   var touchEvent = jQuery.Event('touchstart');
   touchEvent['originalEvent'] = {
     targetTouches: [{
@@ -129,6 +133,7 @@ test(" After init when cancelPeriod is reached, cancel method is called", functi
   view.$().trigger(touchEvent);
 
   equal(get(get(get(view, 'eventManager'), 'gestures')[0], 'state'),Em.Gesture.BEGAN, "gesture should be BEGAN");
+  equal( viewEvent , touchEvent, 'viewEvent was assigned with the touchEvent');
 
 
   stop();  
@@ -141,6 +146,7 @@ test(" After init when cancelPeriod is reached, cancel method is called", functi
       ok(gestures, "gestures should exist");
       equal(gestures.length,1,"there should be one gesture");
       equal(get(gestures[0], 'state'),Em.Gesture.CANCELLED, "gesture should be cancelled");
+      equal( viewEvent.type , Em.TimeoutTouchEventType.Cancel, 'Gesture is cancelled via an Em.TimeoutTouchEvent');
 
       start();  
 

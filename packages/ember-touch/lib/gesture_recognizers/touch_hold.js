@@ -14,7 +14,7 @@ var get = Em.get, set = Em.set;
     var myview = Em.View.create({
       elementId: 'gestureTest',
       
-      touchHoldEnd: function(recognizer) {
+      touchHoldEnd: function(recognizer, evt) {
 
       }
     })
@@ -123,7 +123,8 @@ Em.TouchHoldGestureRecognizer = Em.Gesture.extend({
 
       var eventName = this.name+'End';
 
-      this.attemptGestureEventDelivery(eventName);
+      var evt = new Em.TimeoutTouchEvent({type: Em.TimeoutTouchEventType.End});
+      this.attemptGestureEventDelivery(eventName, evt);
 
       //this._resetState(); // let be executed on touchEnd
       

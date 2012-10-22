@@ -22,7 +22,7 @@ var get = Em.get, set = Em.set;
     var myview = Em.View.create({
       elementId: 'gestureTest',
       
-      panChange: function(rec) {
+      panChange: function(rec, evt) {
         var val = rec.get('translation');
         this.$().css({
           translateX: '%@=%@'.fmt((val.x < 0)? '-' : '+',Math.abs(val.x)),

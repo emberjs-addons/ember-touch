@@ -15,7 +15,7 @@ var get = Em.get, set = Em.set;
     var myview = Em.View.create({
       elementId: 'gestureTest',
       
-      pressEnd: function(recognizer) {
+      pressEnd: function(recognizer, evt) {
 
       }
     })

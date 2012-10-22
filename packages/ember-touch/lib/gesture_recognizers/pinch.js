@@ -20,7 +20,7 @@ var get = Em.get, set = Em.set;
     var myview = Em.View.create({
       elementId: 'gestureTest',
       
-      pinchChange: function(rec) {
+      pinchChange: function(rec, evt) {
         this.$().css('scale',function(index, value) {
           return rec.get('scale') * value
         });

@@ -18,7 +18,7 @@ var get = Em.get, set = Em.set;
     var myview = Em.View.create({
       elementId: 'gestureTest',
 
-      tapEnd: function(recognizer) {
+      tapEnd: function(recognizer, evt) {
         $('#gestureTest').css('background','yellow');
       }
     })
@@ -146,7 +146,8 @@ Em.TapGestureRecognizer = Em.Gesture.extend({
     // set state for the gesture manager
     set(this, 'state', Em.Gesture.CANCELLED);
     var eventName = this.name+'Cancel';
-    this.attemptGestureEventDelivery(eventName);
+    var evt = new Em.TimeoutTouchEvent({type: Em.TimeoutTouchEventType.Cancel});
+    this.attemptGestureEventDelivery(eventName, evt);
     this._resetState(); 
 
   },

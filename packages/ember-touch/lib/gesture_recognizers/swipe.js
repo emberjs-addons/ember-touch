@@ -11,17 +11,17 @@ var get = Em.get, set = Em.set;
 
     var myview = Em.View.create({
 
-      swipeStart: function(recognizer) {
+      swipeStart: function(recognizer, evt) {
 
       },
-      swipeChange: function(recognizer) {
+      swipeChange: function(recognizer, evt) {
 
       },
       // usually, you will only use this method
-      swipeEnd: function(recognizer) {
+      swipeEnd: function(recognizer, evt) {
 
       },
-      swipeCancel: function(recognizer) {
+      swipeCancel: function(recognizer, evt) {
 
       }
     })
@@ -127,7 +127,7 @@ Em.SwipeGestureRecognizer = Em.Gesture.extend({
 
   },
 
-  didChange: function() {
+  didChange: function(evt) {
 
     var currentLocation = this.centerPointForTouches(get(this.touches,'touches'));
     var x = this._initialLocation.x;
@@ -169,7 +169,7 @@ Em.SwipeGestureRecognizer = Em.Gesture.extend({
       set(this, 'state', Em.Gesture.ENDED);
 
       var eventName = this.name+'End';
-      this.attemptGestureEventDelivery(eventName);
+      this.attemptGestureEventDelivery(eventName, evt);
       this._resetState(); 
       
     }
@@ -191,7 +191,8 @@ Em.SwipeGestureRecognizer = Em.Gesture.extend({
     set(this, 'state', Em.Gesture.CANCELLED);
 
     var eventName = this.name+'Cancel';
-    this.attemptGestureEventDelivery(eventName);
+    var evt = new Em.TimeoutTouchEvent({type: Em.TimeoutTouchEventType.Cancel});
+    this.attemptGestureEventDelivery(eventName, evt);
     this._resetState(); 
     
   },
