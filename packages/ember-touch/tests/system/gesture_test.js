@@ -40,11 +40,10 @@ test("centerPoint", function() {
   equal(point.y,0,'0 distance');
 });
 
-test("notifyViewOfGestureEvent", function() {
+test("attemptGestureEventDelivery", function() {
   var numCalled = 0, dataCalled, gestureCalled;
   var view = Em.Object.create({
-    touchStart: function(recognizer, data) {
-      dataCalled = data;
+    touchStart: function(recognizer) {
       gestureCalled = recognizer;
       numCalled++;
     }
@@ -52,9 +51,8 @@ test("notifyViewOfGestureEvent", function() {
 
   set(gesture, 'view', view);
 
-  gesture.notifyViewOfGestureEvent('touchStart', 10);
+  gesture.attemptGestureEventDelivery('touchStart');
 
   equal(numCalled,1,'called once');
-  equal(dataCalled,10,'data passed through');
   equal(gestureCalled,gesture,'gesture passed through');
 });

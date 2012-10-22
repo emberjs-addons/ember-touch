@@ -299,12 +299,12 @@ Em.Gesture = Em.Object.extend(
   },
   
   /**
-    Notify the View of the event and trigger eventWasRejected if the view don't implement the API 
+    Notify the View of the event and trigger eventWasRejected if the view doesn't implement the API 
     or return false
   */
   attemptGestureEventDelivery: function(eventName) {
 
-    var wasNotified =  this.notifyViewOfGestureEvent(eventName);
+    var wasNotified =  this._notifyViewOfGestureEvent(eventName);
     if ( !wasNotified ) {
       this.eventWasRejected();
     }             
@@ -375,7 +375,7 @@ Em.Gesture = Em.Object.extend(
 
     @private
   */
-  notifyViewOfGestureEvent: function(eventName, data) {
+  _notifyViewOfGestureEvent: function(eventName, data) {
     var handler = this.view[eventName];
     var result = false;
 
@@ -557,7 +557,7 @@ Em.Gesture = Em.Object.extend(
       this.didCancel();
 
       if ( !this.gestureIsDiscrete ) {
-        this.notifyViewOfGestureEvent( get(this, 'name')+'Cancel');
+        this.attemptGestureEventDelivery( get(this, 'name')+'Cancel');
       }
 
     } 
