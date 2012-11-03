@@ -45,6 +45,11 @@ To run/check the unit test output, open:
 
 Look at the current [Wiki](https://github.com/emberjs-addons/sproutcore-touch).
 
+Docs can be generated: 
+
+  - _rake generate_docs_ 
+  - Access ./docs/build/index.html
+
 # Questions, bugs
 
 Please, open an issue.
