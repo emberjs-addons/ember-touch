@@ -402,19 +402,6 @@ Em.Gesture = Em.Object.extend({
     return location;
   },
 
-  /** @private */
-  _objectValues: function(object) {
-    var ret = [];
-
-    for (var item in object ) {
-      if (object.hasOwnProperty(item)) {
-        ret.push(object[item]);
-      }
-    }
-
-    return ret;
-  },
-
   /**
     Allows the gesture to notify the view it's associated with of a gesture
     event.
