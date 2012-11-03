@@ -1,11 +1,3 @@
-// ==========================================================================
-// Project:  Ember Touch 
-// Copyright: ©2011 Strobe Inc. and contributors.
-// License:   Licensed under MIT license (see license.js)
-// ==========================================================================
-
-
-
 /*
  Delegate implements the logic of your application's gesture-recognition behavior.
  Set up your gestures to use a GestureDelegate to coordinate the gesture recognition based 
