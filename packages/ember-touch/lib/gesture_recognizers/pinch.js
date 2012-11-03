@@ -3,13 +3,13 @@ require('ember-touch/system/gesture');
 var get = Em.get, set = Em.set;
 
 /**
-  @class
+ @module ember
+ @submodule ember-touch
+*/
+/**
+Recognizes a multi-touch pinch gesture. Pinch gestures require a specified number of fingers to move and will record and update the scale.
 
-  Recognizes a multi-touch pinch gesture. Pinch gestures require a specified number
-  of fingers to move and will record and update the scale.
-
-  For pinchChange events, the pinch gesture recognizer includes a scale property
-  which can be applied as a CSS transform directly.
+For pinchChange events, the pinch gesture recognizer includes a scale property which can be applied as a CSS transform directly.
 
     var myview = Em.View.create({
       elementId: 'gestureTest',
@@ -19,20 +19,19 @@ var get = Em.get, set = Em.set;
           return rec.get('scale') * value
         });
       }
-    })
+    });
 
-  You can specify how many touches the gesture requires to start using the numberOfRequiredTouches
-  property, which you can set in the pinchOptions hash:
+You can specify how many touches the gesture requires to start using the _numberOfRequiredTouches_ property, which you can set in the pinchOptions hash:
 
     var myview = Em.View.create({
       pinchOptions: {
         numberOfRequiredTouches: 3
       }
-      ...
-    })
+    });
 
-
-  @extends Em.Gesture
+@class PinchGestureRecognizer
+@namespace Ember
+@extends Em.Gesture
 */
 Em.PinchGestureRecognizer = Em.Gesture.extend({
 

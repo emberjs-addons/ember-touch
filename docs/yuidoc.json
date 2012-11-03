@@ -2,7 +2,6 @@
   "name": "Ember/Sprouctore Touch API",
   "description": "Ember/Sprouctore Touch API: a lightweight library for building and using touch gestures",
   "version": "0.1",
-  "url": "http://emberjs.com/",
   "options": {
     "paths": [
       "../packages/ember-touch/lib"

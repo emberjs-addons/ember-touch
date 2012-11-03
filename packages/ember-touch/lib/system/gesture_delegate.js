@@ -1,18 +1,33 @@
-/*
- Delegate implements the logic of your application's gesture-recognition behavior.
- Set up your gestures to use a GestureDelegate to coordinate the gesture recognition based 
- on the current status of your Application. 
- */
+
+/**
+@module ember
+@submodule ember-touch
+*/
+/**
+Delegate implements the logic of your application's gesture-recognition behavior.
+
+Set up your gestures to use a GestureDelegate to coordinate the gesture recognition based  on the current status of your Application. 
+
+@class GestureDelegate
+@namespace Ember
+@extends Ember.Object
+*/
 Em.GestureDelegate = Em.Object.extend({
 
-  /*
-  * Name of the gestureDelegate.
-	* It will be used on gestureOptions to assign a gestureDelegate to a specific gesture.
+  /**
+    Name of the gestureDelegate. It will be used on gestureOptions to assign a gestureDelegate to a specific gesture.
+
+    @property name
+    @type Array
   */
   name: null,
-  /*
-   * Rules can be setup with string path, extended classes or instances.
-   * Rules are intented to be executed before shouldReceiveTouch method.
+
+  /**
+    Rules can be setup with string path, extended classes or instances.
+    They are intented to be executed before shouldReceiveTouch method.
+
+    @property rules
+    @type Array
    */
   rules: null,
 
@@ -52,8 +67,11 @@ Em.GestureDelegate = Em.Object.extend({
 
   },
 
-	/*
-  Ask the delegate if a gesture recognizer should receive a touch event.
+	/**
+    Respond if a gesture recognizer should receive a touch event.
+
+    @method shouldReceiveTouch
+    @return Boolen
   */
   shouldReceiveTouch: function(gesture, view, event) {
     return true; 

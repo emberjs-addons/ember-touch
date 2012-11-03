@@ -3,11 +3,11 @@ require('ember-touch/system/gesture');
 var get = Em.get, set = Em.set;
 
 /**
-  @class
-
-  Recognizes a multi-touch tap gesture. Tap gestures allow for a certain amount
-  of wiggle-room between a start and end of a touch. Taps are discrete gestures
-  so only tapEnd() will get fired on a view.
+ @module ember
+ @submodule ember-touch
+*/
+/**
+Recognizes a multi-touch tap gesture. Tap gestures allow for a certain amount of wiggle-room between a start and end of a touch. Taps are discrete gestures so only tapEnd() will get fired on a view.
 
     var myview = Em.View.create({
       elementId: 'gestureTest',
@@ -15,31 +15,28 @@ var get = Em.get, set = Em.set;
       tapEnd: function(recognizer, evt) {
         $('#gestureTest').css('background','yellow');
       }
-    })
+    });
 
-  You can specify how many touches the gesture requires to start using the numberOfRequiredTouches
-  property, which you can set in the panOptions hash:
+You can specify how many touches the gesture requires to start using the numberOfRequiredTouches property, which you can set in the panOptions hash:
 
     var myview = Em.View.create({
       tapOptions: {
         numberOfRequiredTouches: 3
       }
-      ...
-    })
+    });
 
-  And you can also specify the number of taps required for the gesture to fire using the numberOfTaps
-  property.
-
+And you can also specify the number of taps required for the gesture to fire using the numberOfTaps property.
 
     var myview = Em.View.create({
       tapOptions: {
         numberOfTaps: 3,
         delayBetweenTaps: 150
       }
-      ...
-    })
+    });
 
-  @extends Em.Gesture
+@class TapGestureRecognizer
+@namespace Ember
+@extends Em.Gesture
 */
 Em.TapGestureRecognizer = Em.Gesture.extend({
 

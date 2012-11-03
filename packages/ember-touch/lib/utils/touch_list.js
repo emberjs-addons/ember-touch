@@ -1,12 +1,15 @@
-var get = Em.get;
-var set = Em.set;
+var get = Em.get; var set = Em.set;
 
 /**
-  @class
+@module ember
+@submodule ember-touch
+*/
+/**
+Used to manage and maintain a list of active touches related to a gesture  recognizer.
+  @class TouchList
+  @namespace Ember
+  @extends Ember.Object
   @private
-
-  Used to manage and maintain a list of active touches related to a gesture 
-  recognizer.
 */
 Em.TouchList = Em.Object.extend({
   touches: null,

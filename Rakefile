@@ -1,23 +1,29 @@
-abort "Please use Ruby 1.9 to build Ember.js!" if RUBY_VERSION !~ /^1\.9/
+abort "Please use Ruby 1.9 to build Ember-Touch.js!" if RUBY_VERSION !~ /^1\.9/
 
 require "bundler/setup"
 require "erb"
 require 'rake-pipeline'
-require "ember_docs/cli"
 require "colored"
 
 def pipeline
   Rake::Pipeline::Project.new("Assetfile")
 end
 
-desc "Strip trailing whitespace for JavaScript files in packages"
-task :strip_whitespace do
-  Dir["packages/**/*.js"].each do |name|
-    body = File.read(name)
-    File.open(name, "w") do |file|
-      file.write body.gsub(/ +\n/, "\n")
-    end
+
+def generate_docs
+  print "Generating docs .. "
+
+  Dir.chdir("docs") do
+    system("npm install") unless File.exist?('node_modules')
+    # Unfortunately -q doesn't always work so we get output
+    system("./node_modules/.bin/yuidoc -q")
   end
+
+end
+
+desc "Generate API Docs"
+task :generate_docs do
+  generate_docs
 end
 
 desc "Build ember-touch.js"

@@ -3,19 +3,18 @@ require('ember-touch/system/gesture');
 var get = Em.get, set = Em.set;
 
 /**
-  @class
+ @module ember
+ @submodule ember-touch
+*/
 
-  Recognizes a multi-touch pan gesture. Pan gestures require a specified number
-  of fingers to move and will record and update the center point between the
-  touches.
+/**
+Recognizes a multi-touch pan gesture. Pan gestures require a specified number of fingers to move and will record and update the center point between the touches.
 
-  For panChange events, the pan gesture recognizer includes a translation property
-  which can be applied as a CSS transform directly. Translation values are hashes
-  which contain an x and a y value.
+For panChange events, the pan gesture recognizer includes a translation property which can be applied as a CSS transform directly. Translation values are hashes which contain an x and a y value.
 
     var myview = Em.View.create({
       elementId: 'gestureTest',
-      
+
       panChange: function(rec, evt) {
         var val = rec.get('translation');
         this.$().css({
@@ -23,19 +22,19 @@ var get = Em.get, set = Em.set;
           translateY: '%@=%@'.fmt((val.y < 0)? '-' : '+',Math.abs(val.y))
         });
       }
-    })
-
-  You can specify how many touches the gesture requires to start using the numberOfRequiredTouches
-  property, which you can set in the panOptions hash:
+    });
+  
+You can specify how many touches the gesture requires to start using the _numberOfRequiredTouches_ property, which you can set in the panOptions hash.
 
     var myview = Em.View.create({
       panOptions: {
-        numberOfRequiredTouches: 3
+        numberOfRequiredTouches: 2
       }
-      ...
-    })
+    });
 
-  @extends Em.Gesture
+@class PanGestureRecognizer
+@namespace Ember
+@extends Em.Gesture
 */
 Em.PanGestureRecognizer = Em.Gesture.extend({
 

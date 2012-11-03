@@ -1,11 +1,7 @@
 var get = Em.get, set = Em.set;
 
-/** 
-  @class
-  
+/* 
   Extends Em.View by making the init method gesture-aware.
-
-  @extends Em.Object
 */
 Em.View.reopen(
 /** @scope Em.View.prototype */{

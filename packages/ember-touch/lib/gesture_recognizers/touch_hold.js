@@ -3,13 +3,15 @@ require('ember-touch/system/gesture');
 var get = Em.get, set = Em.set;
 
 /**
-  @class
+ @module ember
+ @submodule ember-touch
+*/
+/**
+Recognizes a multi-touch touch and hold gesture. 
 
-  Recognizes a multi-touch touch and hold gesture. Touch and Hold gestures 
-  allow move the finger on the same view, and after the user leaves its finger 
-  motionless during a specific period the end view event is automatically triggered. 
+Touch and Hold gestures  allow move the finger on the same view, and after the user leaves its finger motionless during a specific period the end view event is automatically triggered. 
 
-  TouchHold are discrete gestures so only touchHoldEnd() will get fired on a view.
+TouchHold are discrete gestures so only _touchHoldEnd_ will get fired.
 
     var myview = Em.View.create({
       elementId: 'gestureTest',
@@ -17,23 +19,23 @@ var get = Em.get, set = Em.set;
       touchHoldEnd: function(recognizer, evt) {
 
       }
-    })
+    });
 
-  You can specify how many touches the gesture requires to start using the numberOfRequiredTouches
-  property, a minimum "period" the finger must be held to automatically trigger the end event 
-  and "moveThreshold" which allows to move the finger a specific number of pixels
+You can specify how many touches the gesture requires to start using the _numberOfRequiredTouches_  a minimum _period_ the finger must be held to automatically trigger the end event  and _moveThreshold_ which allows to move the finger a specific number of pixels.
+
 
     var myview = Em.View.create({
       touchHoldOptions: {
         holdPeriod: 500,
         moveThreshold: 10
       }
-      ...
-    })
+    });
 
 
-  @extends Em.Gesture
-*/
+@class TouchHoldGestureRecognizer
+@namespace Ember
+@extends Em.Gesture
+**/
 Em.TouchHoldGestureRecognizer = Em.Gesture.extend({
 
   /**

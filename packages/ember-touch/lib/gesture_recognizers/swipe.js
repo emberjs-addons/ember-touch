@@ -3,11 +3,13 @@ require('ember-touch/system/gesture');
 var get = Em.get, set = Em.set;
 
 /**
-  @class
+ @module ember
+ @submodule ember-touch
+*/
+/**
+Recognizes a swipe gesture in one or more directions.
 
-  Recognizes a swipe gesture in one or more directions.
-
-  Swipes are continuous gestures that will get fired on a view.
+Swipes are continuous gestures that will get fired on a view.
 
     var myview = Em.View.create({
 
@@ -24,11 +26,10 @@ var get = Em.get, set = Em.set;
       swipeCancel: function(recognizer, evt) {
 
       }
-    })
+    });
 
-  SwipeGestureRecognizer recognizes a swipe when the touch has moved to a (direction) 
-  far enough (swipeThreshold) in a period (cancelPeriod). 
-  The current implementation will only recognize a direction on swipeEnd on (recognizer.swipeDirection).
+SwipeGestureRecognizer recognizes a swipe when the touch has moved to a (direction)  far enough (swipeThreshold) in a period (cancelPeriod). 
+The current implementation will only recognize a direction on swipeEnd on (recognizer.swipeDirection).
 
     var myview = Em.View.create({
       swipeOptions: {
@@ -36,13 +37,12 @@ var get = Em.get, set = Em.set;
         cancelPeriod: 100,
         swipeThreshold: 10
       }
-      ...
-    })
+    });
 
-  @extends Em.Gesture
+@class SwipeGestureRecognizer
+@namespace Ember
+@extends Em.Gesture
 */
-
-
 Em.SwipeGestureRecognizer = Em.Gesture.extend({
   
   /**

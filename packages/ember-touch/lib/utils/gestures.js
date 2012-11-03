@@ -2,21 +2,28 @@ var get = Em.get;
 var set = Em.set;
 
 /**
-  @class
-
-  Registry of known gestures in the system. This is a singleton class, and is
-  used by Em.View to analyze instances of Em.View for gesture support.
-
-  You will not use this class yourself. Rather, gesture recognizers will call
-  Em.Gestures.register(name, recognizer) when they want to make the system aware
-  of them.
-
-  @private
-  @extends Em.Object
+@module ember
+@submodule ember-touch
 */
-Em.Gestures = Em.Object.create(
-/** @scope Em.Gestures.prototype */{
 
+/**
+
+  Registry of known gestures in the system. This is a singleton class, and is used by Em.View to analyze instances of Em.View for gesture support.
+
+  You will not use this class yourself. Rather, gesture recognizers will call Em.Gestures.register(name, recognizer) when they want to make the system aware of them.
+
+  @class Gestures
+  @namespace Ember
+  @extends Em.Object
+  @private
+  @static
+*/
+Em.Gestures = Em.Object.create({
+
+  /**
+    @method _registeredGestures
+    @private
+  */
   _registeredGestures: null,
 
   init: function() {
@@ -26,8 +33,9 @@ Em.Gestures = Em.Object.create(
   },
 
   /**
-    Registers a gesture recognizer to the system. The gesture recognizer is
-    identified by the name parameter, which must be globally unique.
+    Registers a gesture recognizer to the system. The gesture recognizer is identified by the name parameter, which must be globally unique.
+
+    @method register
   */
   register: function(name, /** Em.Gesture */recognizer) {
     var registeredGestures = this._registeredGestures;
@@ -39,6 +47,9 @@ Em.Gestures = Em.Object.create(
     registeredGestures[name] = recognizer;
   },
 
+  /**
+    @method unregister
+  */
   unregister: function(name) {
     var registeredGestures = this._registeredGestures;
 
@@ -48,8 +59,9 @@ Em.Gestures = Em.Object.create(
   },
 
   /**
-    Registers a gesture recognizer to the system. The gesture recognizer is
-    identified by the name parameter, which must be unique across the system.
+    Registers a gesture recognizer to the system. The gesture recognizer is identified by the name parameter, which must be unique across the system.
+
+    @method knownGestures
   */
   knownGestures: function() {
     var registeredGestures = this._registeredGestures;

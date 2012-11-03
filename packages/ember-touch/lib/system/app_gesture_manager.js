@@ -1,6 +1,10 @@
-/**
-  @class
 
+/**
+@module ember
+@submodule ember-touch
+*/
+
+/**
   Allow any view to block the gesture recognition.
 
   When AppGestureManager isBlocked, gestureManager will call shouldReceiveTouch method 
@@ -8,22 +12,40 @@
 
   It works as a singleton instance at the AppLevel.
 
+  @class AppGestureManager
+  @namespace Ember
   @extends Em.Object
+  @static
 */
 Em.AppGestureManager = Em.Object.create({
 
 
+  /**
+    @property isAllBlocked
+    @default false
+  */
+  isAllBlocked: false,
 
-  /*
+  /**
   Assign the view which has blocked the recognizer, in order
   that view can be the only one which can unblock the recognizer. 
+
+    @private
+    @property _blockerView
   */
   _blockerView: null,
 
+  /**
+    @private
+    @property _isBlocked
+  */
   _isBlocked: false,
+
+  /**
+    @private
+    @property _shouldReceiveTouchFn
+  */
   _shouldReceiveTouchFn:null,
-  
-  isAllBlocked: false,
 
   isBlocked: Em.computed(function(){
 
@@ -31,16 +53,20 @@ Em.AppGestureManager = Em.Object.create({
 
   }).property('_isBlocked'),
 
+
+  /**
+    @method shouldReceiveTouch
+  */
   shouldReceiveTouch: function(view) {
 
     return this.get('_shouldReceiveTouchFn')(view);
 
   },
 
-  /*  
-   * shouldReceiveTouchFn function(view) which will be used to allow/deny passing touchEvents
-   * to view gestures.
-   */
+  /**
+    ShouldReceiveTouchFn function(view) which will be used to allow/deny passing touchEvents to view gestures.
+    @method block
+  */
   block: function( view, shouldReceiveTouchFn ) {
 
     if ( this.get('isBlocked') ) {
@@ -54,6 +80,9 @@ Em.AppGestureManager = Em.Object.create({
 
   },
 
+  /**
+    @method unblock
+  */
   unblock: function( view ) {
 
     if ( !this.get('isBlocked') ) {

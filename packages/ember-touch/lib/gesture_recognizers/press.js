@@ -4,13 +4,13 @@ require('ember-touch/system/gesture');
 var get = Em.get, set = Em.set;
 
 /**
-  @class
+ @module ember
+ @submodule ember-touch
+*/
+/**
+Recognizes a multi-touch press gesture. Press gestures  allow for a certain amount of wiggle-room between a start and end of a touch, and requires a minimum hold period to be triggered. 
 
-  Recognizes a multi-touch press gesture. Press gestures 
-  allow for a certain amount of wiggle-room between a start and end of a touch,
-  and requires a minimum hold period to be triggered. 
-
-  Presss are discrete gestures so only tapEnd() will get fired on a view.
+Presss are discrete gestures so only _pressEnd_ event will get fired.
 
     var myview = Em.View.create({
       elementId: 'gestureTest',
@@ -18,20 +18,19 @@ var get = Em.get, set = Em.set;
       pressEnd: function(recognizer, evt) {
 
       }
-    })
+    });
 
-  You can specify how many touches the gesture requires to start using the numberOfRequiredTouches
-  property, and a minimum pressPeriodThreshold which you can set in the pressHoldOptions hash:
+You can specify how many touches the gesture requires to start using the _numberOfRequiredTouches_ property, and a minimum _pressPeriodThreshold_ which you can set in the _pressHoldOptions_ hash:
 
     var myview = Em.View.create({
       pressOptions: {
         pressPeriodThreshold: 500
       }
-      ...
-    })
+    });
 
-
-  @extends Em.Gesture
+@class PressGestureRecognizer
+@namespace Ember
+@extends Em.Gesture
 */
 Em.PressGestureRecognizer = Em.Gesture.extend({
 

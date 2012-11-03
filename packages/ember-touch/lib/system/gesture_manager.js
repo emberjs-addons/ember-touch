@@ -1,19 +1,19 @@
-var get = Em.get;
-var set = Em.set;
+var get = Em.get; var set = Em.set;
 
 /**
-  @class
+@module ember
+@submodule ember-touch
+*/
 
-  Manages multiplegesture recognizers that are associated with a view.
-  This class is instantiated automatically by Em.View and you wouldn't
-  interact with it yourself.
+/**
+Manages multiplegesture recognizers that are associated with a view. This class is instantiated automatically by Em.View and you wouldn't
+interact with it yourself.
 
-  Em.GestureManager mainly acts as a composite for the multiple gesture
-  recognizers associated with a view. Whenever it gets a touch event, it
-  relays it to the gestures. The other main resposibility of
-  Em.GestureManager is to handle re-dispatching of events to the view.
+Em.GestureManager mainly acts as a composite for the multiple gesture recognizers associated with a view. Whenever it gets a touch event, it relays it to the gestures. The other main resposibility of Em.GestureManager is to handle re-dispatching of events to the view.
 
-  @extends Em.Object
+@class GestureManager
+@namespace Ember
+@extends Ember.Object
 */
 Em.GestureManager = Em.Object.extend({
 
@@ -21,16 +21,26 @@ Em.GestureManager = Em.Object.extend({
     An array containing all the gesture recognizers associated with a
     view. This is set automatically by Em.View.
 
+
+    @property gestures
     @default null
     @type Array
   */
   gestures: null,
+
+  /**
+    The Em.View which belongs this GestureManager instance.
+
+    @property view
+    @type Em.View
+  */
   view: null,
 
   /**
     Relays touchStart events to all the gesture recognizers to the
     specified view
 
+    @method touchStart
     @return Boolen
   */
   touchStart: function(evt, view) {
@@ -41,6 +51,7 @@ Em.GestureManager = Em.Object.extend({
     Relays touchMove events to all the gesture recognizers to the
     specified view
 
+    @method touchMove
     @return Boolen
   */
   touchMove: function(evt, view) {
@@ -51,6 +62,7 @@ Em.GestureManager = Em.Object.extend({
     Relays touchEnd events to all the gesture recognizers to the
     specified view
 
+    @method touchEnd
     @return Boolen
   */
   touchEnd: function(evt, view) {
@@ -61,6 +73,7 @@ Em.GestureManager = Em.Object.extend({
     Relays touchCancel events to all the gesture recognizers to the
     specified view
 
+    @method touchCancel
     @return Boolen
   */
   touchCancel: function(evt, view) {
@@ -72,6 +85,7 @@ Em.GestureManager = Em.Object.extend({
     by the touch event listeners. Propagates the event to the parentViews.
 
     @private
+    @method _invokeEvent
     @return Boolean
   */
   _invokeEvent: function(eventName, eventObject) {
@@ -147,6 +161,13 @@ Em.GestureManager = Em.Object.extend({
 
   },
 
+  /**
+    Iterates all gestureDelegate DelegateRule instances executing its shouldReceiveTouch method and return the value whenever a rule respond with a defined value .
+
+    @private
+    @method _applyDelegateRules
+    @return Boolean
+  */
   _applyDelegateRules: function(gestureDelegate, gesture, view, event) {
 
     var rules = gestureDelegate.rules,
