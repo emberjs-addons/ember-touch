@@ -15,6 +15,5 @@ gem "colored"
 group :development do
   gem "rack"
   gem "github-upload"
-  gem "ember-docs", :git => "https://github.com/emberjs/docs-generator.git"
   gem "kicker"
 end

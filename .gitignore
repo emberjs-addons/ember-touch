@@ -4,8 +4,8 @@ bin/
 *.bpkg
 Gemfile.lock
 spade-boot.js
-docs/jsdoc
-docs/output
+docs/build
+docs/node_modules
 lib/*/tests/all.js
 lib/*/tests/qunit*
 test_*.html
