@@ -11,7 +11,6 @@ var view;
 
 module("Test Gesture Recognizer",{
   setup: function() {
-
     application = Em.Application.create({
       ready: function() {
         start();

@@ -28,8 +28,11 @@ Em.View.reopen(
     if (knownGestures && !eventManager) {
       var gestures = [];
 
-      var manager = Em.GestureManager.create({
-      });
+      var manager = Em.GestureManager.create({});
+
+      // TODO: access via Application instance instead of global
+      // instance
+      var applicationGestureManager = Em.applicationGestureManager;
 
 
       for (var gesture in knownGestures) {
@@ -44,6 +47,7 @@ Em.View.reopen(
 
           optionsHash.name = gesture;
           optionsHash.view = this;
+          optionsHash.applicationGestureManager = applicationGestureManager;
           optionsHash.manager = manager;
 
           var extensions = {};
@@ -69,8 +73,9 @@ Em.View.reopen(
           gestures.push(currentGesture);
         }
       }
-      
 
+
+      set(manager, 'applicationGestureManager', applicationGestureManager);
       set(manager, 'view', this);
       set(manager, 'gestures', gestures);
 

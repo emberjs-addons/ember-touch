@@ -249,7 +249,7 @@ test("Only one view can be recognized when simultaneously is disabled.", functio
 
   ok( !swipeStartWasCalled, ' when simultaneously is disabled and a view is recognized, no other simultaneaously disable view can be recognized' );
 
-  Em.AppGestureManager.unblock(panView);
+  application.get('gestureManager').unblock(panView);
 
   // OJO: changed identifier
   touchEvent = new jQuery.Event('touchstart');
@@ -299,7 +299,7 @@ test("Only one view can be recognized when simultaneously is disabled.", functio
 
   ok( !panStartWasCalled, 'pan Start cannot be called ');
 
-  Em.AppGestureManager.unblock(swipeView);
+  application.get('gestureManager').unblock(swipeView);
 
 
   touchEvent = new jQuery.Event('touchstart');
@@ -324,7 +324,7 @@ test("Only one view can be recognized when simultaneously is disabled.", functio
   ok( panStartWasCalled, 'pan Start was called after unblock AppGestureManager ');
 
 
-  Em.AppGestureManager.unblock(panView);
+  application.get('gestureManager').unblock(panView);
   swipeView.destroy();
   panView.destroy();
 
@@ -378,11 +378,11 @@ test("When unblock a view which did not block, throw exception", function() {
 
 
   raises(function() {
-    Em.AppGestureManager.unblock(swipeView);
+    application.get('gestureManager').unblock(swipeView);
   }, "swipe view did not block the gesture recognizer, that's why it cannot enable it.");
 
 
-  Em.AppGestureManager.unblock(panView);
+  application.get('gestureManager').unblock(panView);
 
   swipeView.destroy();
   panView.destroy();

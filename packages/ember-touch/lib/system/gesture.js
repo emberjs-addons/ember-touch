@@ -160,6 +160,11 @@ Em.Gesture = Em.Object.extend({
     Assigned on startup.
   */
   view: null,
+
+  /** 
+    Assigned on startup.
+  */
+  applicationGestureManager: null,
   
   /** 
     Specifies whether a gesture is discrete or continuous.
@@ -330,7 +335,8 @@ Em.Gesture = Em.Object.extend({
     if ( !this.simultaneously ) {
 
       var allowedView = this.view;
-      Em.AppGestureManager.block(this.view, function(v) {
+
+      this.applicationGestureManager.block(this.view, function(v) {
         return allowedView === v;
       }); 
 

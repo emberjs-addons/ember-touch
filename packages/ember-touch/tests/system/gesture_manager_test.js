@@ -89,7 +89,7 @@ test("manager avoid delivering events when isAllBlocked is true", function() {
     endCalled = false;
 
 
-    Em.AppGestureManager.set('isAllBlocked', true);
+    application.get('gestureManager').set('isAllBlocked', true);
 
     Em.run(function(){
       view.append();
@@ -110,7 +110,7 @@ test("manager avoid delivering events when isAllBlocked is true", function() {
     view.$().trigger(touchEvent);
     equal(gestures[0].touches.get('length') , 0,"the touch was not included on the tap gesture ");
 
-    Em.AppGestureManager.set('isAllBlocked', false);
+    application.get('gestureManager').set('isAllBlocked', false);
 
 
     touchEvent = new jQuery.Event('touchstart');
@@ -476,8 +476,7 @@ test("manager avoid delivering events based on appGestureManager blocking logic"
       view.append();
     });
 
-
-    Em.AppGestureManager.block(view, blockedFn);
+    application.get('gestureManager').block(view, blockedFn);
 
     touchEvent = new jQuery.Event('touchstart');
     touchEvent['originalEvent'] = {
@@ -500,11 +499,12 @@ test("manager avoid delivering events based on appGestureManager blocking logic"
     view.$().trigger(touchEvent);
 
 
+    gestures = get(get(view, 'eventManager'), 'gestures');
     equal(gestures[0].touches.get('length') , 0,"no touch was included on the tap gesture ");
     ok(!endCalled, 'event was not recognized because AppGestureManager was blocking it');
 
 
-    Em.AppGestureManager.unblock(view);
+    application.get('gestureManager').unblock(view);
 
 
     touchEvent = new jQuery.Event('touchstart');

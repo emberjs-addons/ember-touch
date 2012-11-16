@@ -28,6 +28,9 @@ Em.GestureManager = Em.Object.extend({
   */
   gestures: null,
 
+
+  applicationGestureManager: null,
+
   /**
     The Em.View which belongs this GestureManager instance.
 
@@ -101,12 +104,12 @@ Em.GestureManager = Em.Object.extend({
       handler.call(this.view, eventObject);
     }
 
-    if ( !Em.AppGestureManager.get('isAllBlocked') ) {
+    if ( !this.applicationGestureManager.get('isAllBlocked') ) {
 
       if ( l > 0 ) {
 
         //appGestureManager allow to pass touchEvents at the App Level  
-        var gesturesCanReceiveTouchEvent = Em.AppGestureManager.get('isBlocked')? Em.AppGestureManager.shouldReceiveTouch(this.view) : true;
+        var gesturesCanReceiveTouchEvent = this.applicationGestureManager.get('isBlocked')? this.applicationGestureManager.shouldReceiveTouch(this.view) : true;
         if ( gesturesCanReceiveTouchEvent ) {
 
           var gesture,

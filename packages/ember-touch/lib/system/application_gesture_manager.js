@@ -12,12 +12,12 @@
 
   It works as a singleton instance at the AppLevel.
 
-  @class AppGestureManager
+  @class ApplicationGestureManager
   @namespace Ember
   @extends Em.Object
   @static
 */
-Em.AppGestureManager = Em.Object.create({
+Em.ApplicationGestureManager = Em.Object.extend({
 
 
   /**
@@ -102,3 +102,4 @@ Em.AppGestureManager = Em.Object.create({
   }
 
 });
+
