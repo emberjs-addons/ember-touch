@@ -331,9 +331,9 @@ Em.Gesture = Em.Object.extend({
   /**
    Block AppGestureManager, if simultaneously is true.
     @private 
-    @method blockAppGestureManagerIfSimultaneously
+    @method blockApplicationGestureManagerIfSimultaneously
    */
-  blockAppGestureManagerIfSimultaneously: function() {
+  blockApplicationGestureManagerIfSimultaneously: function() {
 
     if ( !this.simultaneously ) {
 
@@ -344,6 +344,7 @@ Em.Gesture = Em.Object.extend({
       }); 
 
     }
+
   },
   
   /**
@@ -481,7 +482,7 @@ Em.Gesture = Em.Object.extend({
       // Discrete gestures may skip the possible step if they're ready to begin
         //
         if ( this.shouldBegin() ) {
-          this.blockAppGestureManagerIfSimultaneously();
+          this.blockApplicationGestureManagerIfSimultaneously();
           set(this, 'state', Em.Gesture.BEGAN);
           this.didBegin();
         }
@@ -522,7 +523,7 @@ Em.Gesture = Em.Object.extend({
 
       if ( this.shouldBegin() ) {
 
-        this.blockAppGestureManagerIfSimultaneously();
+        this.blockApplicationGestureManagerIfSimultaneously();
         set(this, 'state', Em.Gesture.BEGAN);
         this.didBegin();
 
