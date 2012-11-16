@@ -208,6 +208,3 @@ Em.SwipeGestureRecognizer = Em.Gesture.extend({
   }
 
 });
-
-Em.Gestures.register('swipe', Em.SwipeGestureRecognizer);
-

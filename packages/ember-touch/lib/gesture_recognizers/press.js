@@ -117,6 +117,3 @@ Em.PressGestureRecognizer = Em.Gesture.extend({
   }
 
 });
-
-Em.Gestures.register('press', Em.PressGestureRecognizer);
-

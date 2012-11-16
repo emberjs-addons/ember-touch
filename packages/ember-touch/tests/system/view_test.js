@@ -1,14 +1,27 @@
-var set = Em.set;
+var set = Em.set; 
 var get = Em.get;
+var application;
 
 module("Em.View extensions", {
   setup: function() {
-    Em.Gestures.register('viewTestGesture',Em.Object.extend());
+
+    application = Em.Application.create({
+      ready: function() {
+
+        var gestureManager = get(this, 'gestureManager');
+        var gestures = get(gestureManager, 'registeredGestures');
+        gestures.register('viewTestGesture', Em.Object.extend());
+        start();
+      }
+    });
+    stop();
+
   },
 
   teardown: function() {
-    Em.Gestures.unregister('viewTestGesture');
+    application.destroy();
   }  
+
 });
 
 test("should detect gesture", function() {

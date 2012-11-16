@@ -149,6 +149,3 @@ Em.TapGestureRecognizer = Em.Gesture.extend({
   }
 
 });
-
-Em.Gestures.register('tap', Em.TapGestureRecognizer);
-

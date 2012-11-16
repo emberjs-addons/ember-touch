@@ -22,10 +22,9 @@ Em.View.reopen(
   init: function() {
     this._super();
 
-    var knownGestures = Em.Gestures.knownGestures();
     var eventManager = get(this, 'eventManager');
 
-    if (knownGestures && !eventManager) {
+    if (!eventManager) {
       var gestures = [];
 
       var manager = Em.GestureManager.create({});
@@ -33,6 +32,10 @@ Em.View.reopen(
       // TODO: access via Application instance instead of global
       // instance
       var applicationGestureManager = Em.applicationGestureManager;
+      var knownGestures = get(applicationGestureManager, 'registeredGestures').knownGestures();
+
+
+      Em.assert('You should register a gesture. Take a look at the registerGestures injection', !!knownGestures );
 
 
       for (var gesture in knownGestures) {

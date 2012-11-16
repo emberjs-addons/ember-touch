@@ -9,4 +9,3 @@ A lightweight library for building and using touch gestures with Ember Applicati
 require("ember-touch/utils");
 require("ember-touch/system");
 require("ember-touch/gesture_recognizers");
-require("ember-touch/init");

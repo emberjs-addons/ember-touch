@@ -7,10 +7,8 @@
 /**
   Allow any view to block the gesture recognition.
 
-  When AppGestureManager isBlocked, gestureManager will call shouldReceiveTouch method 
+  When ApplicationGestureManager isBlocked, gestureManager will call shouldReceiveTouch method 
   and when it returns false, it will deny passing touchEvents to view gestures. 
-
-  It works as a singleton instance at the AppLevel.
 
   @class ApplicationGestureManager
   @namespace Ember
@@ -19,6 +17,12 @@
 */
 Em.ApplicationGestureManager = Em.Object.extend({
 
+
+  /**
+
+    @property registeredGestures
+  */
+  registeredGestures: null,
 
   /**
     @property isAllBlocked

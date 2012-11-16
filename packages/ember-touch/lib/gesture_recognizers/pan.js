@@ -141,4 +141,3 @@ Em.PanGestureRecognizer = Em.Gesture.extend({
 
 });
 
-Em.Gestures.register('pan', Em.PanGestureRecognizer);

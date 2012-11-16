@@ -8,17 +8,17 @@ var set = Em.set;
 
 /**
 
-  Registry of known gestures in the system. This is a singleton class, and is used by Em.View to analyze instances of Em.View for gesture support.
+  Registry of known gestures in the system to be used on view creation to find which gestures are implemented in the view class. A instance of this class is injected in the Application namespace.
 
-  You will not use this class yourself. Rather, gesture recognizers will call Em.Gestures.register(name, recognizer) when they want to make the system aware of them.
+  You must be responsable to register your own gestures when you want to make the system aware of them.
 
-  @class Gestures
+  @class RegisteredGestureList
   @namespace Ember
   @extends Em.Object
   @private
   @static
 */
-Em.Gestures = Em.Object.create({
+Em.RegisteredGestures = Em.Object.extend({
 
   /**
     @method _registeredGestures

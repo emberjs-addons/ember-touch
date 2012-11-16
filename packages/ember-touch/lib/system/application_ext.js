@@ -17,22 +17,48 @@ Em.Application.reopen({
 Ember.onLoad('Ember.Application', function(Application) {
 
   Application.registerInjection({
-    name: "touch",
+    name: 'createGestureManager',
 
     injection: function(app, stateManager, property) {
-      // TODO: registerInjection get fired twice
 
       if ( !!app.get('gestureManager') ) { return; }
 
+      // This can be improved if a view instance could access its
+      // Application instance scope
       var currentManager = Em.applicationGestureManager;
       if ( !!currentManager ) {
         Em.assert('Either you create multiple Application instances or you forgot to destroy it', currentManager.get('isDestroyed') );
       }
+
       var manager = Em.ApplicationGestureManager.create({});
       Em.applicationGestureManager = manager;
       set(app, 'gestureManager', manager);
 
     }
+  });
+
+  Application.registerInjection({
+    name: 'registerGestures',
+    after: ['createGestureManager'],
+
+    injection: function(app, stateManager, property) {
+
+      if (property === 'gestureManager' ) {
+
+        var gestures = Em.RegisteredGestures.create({});
+        gestures.register('pan', Em.PanGestureRecognizer);
+        gestures.register('pinch', Em.PinchGestureRecognizer);
+        gestures.register('press', Em.PressGestureRecognizer);
+        gestures.register('swipe', Em.SwipeGestureRecognizer);
+        gestures.register('tap', Em.TapGestureRecognizer);
+        gestures.register('touchHold', Em.TouchHoldGestureRecognizer);
+
+        var gestureManager = get(app, 'gestureManager');
+        set(gestureManager, 'registeredGestures', gestures);
+      }
+
+    }
+
   });
 
 });

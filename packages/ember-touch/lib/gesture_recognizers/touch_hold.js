@@ -146,5 +146,4 @@ Em.TouchHoldGestureRecognizer = Em.Gesture.extend({
 
 });
 
-Em.Gestures.register('touchHold', Em.TouchHoldGestureRecognizer);
 

@@ -124,4 +124,3 @@ Em.PinchGestureRecognizer = Em.Gesture.extend({
 
 });
 
-Em.Gestures.register('pinch', Em.PinchGestureRecognizer);
