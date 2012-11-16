@@ -48,8 +48,7 @@ task :test, [:suite] => :dist do |t, args|
 
   suites = {
     :default => ["package=all"],
-    :all => ["package=all",
-              "package=ember-touch&ember=1.0.pre"]
+    :all => ["package=all"]
   }
 
   if ENV['TEST']
