@@ -25,13 +25,14 @@ Em.View.reopen(
     var eventManager = get(this, 'eventManager');
 
     if (!eventManager) {
-      var gestures = [];
-
-      var manager = Em.GestureManager.create({});
 
       // TODO: access via Application instance instead of global
       // instance
       var applicationGestureManager = Em.applicationGestureManager;
+
+
+      var gestures = [];
+      var manager = Em.GestureManager.create({});
       var knownGestures = get(applicationGestureManager, 'registeredGestures').knownGestures();
 
 
@@ -88,4 +89,3 @@ Em.View.reopen(
   }
 
 });
-

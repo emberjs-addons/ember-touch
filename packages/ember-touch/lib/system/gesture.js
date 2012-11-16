@@ -246,9 +246,8 @@ Em.Gesture = Em.Object.extend({
   */
   numberOfRequiredTouches: 1,
 
-
-
   init: function() {
+
     this._super();
     this.touches = Em.TouchList.create();
     this.name = get(this, 'name');
@@ -257,9 +256,13 @@ Em.Gesture = Em.Object.extend({
     var delegate =  this.get('delegate');
 
     if (!delegate && delegateName ) {
-      delegate = Em.GestureDelegates.find(delegateName);
+
+      var delegates = get(get(this, 'applicationGestureManager'), 'delegates');
+
+      delegate = delegates.find(delegateName);
       Em.assert('empty delegate, attempting to set up delegate based on delegateName', delegate);
-      this.set('delegate', delegate);
+      set(this, 'delegate', delegate);
+
     }
 
   },

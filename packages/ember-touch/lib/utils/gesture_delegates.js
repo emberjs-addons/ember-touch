@@ -5,8 +5,7 @@
 */
 
 /**
-
-  This is a singleton class to registry of delegates in the system.   
+  Registry of delegates in the system. A instance of this class is injected in the Application namespace.
   
   @class GestureDelegates
   @namespace Ember
@@ -15,7 +14,7 @@
   @static
 */
 
-Em.GestureDelegates = Em.Object.create({
+Em.GestureDelegates = Em.Object.extend({
 
   _delegates: {},
 
@@ -33,5 +32,3 @@ Em.GestureDelegates = Em.Object.create({
 
 
 });
-
-

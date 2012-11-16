@@ -42,7 +42,9 @@ test("can be assigned with delegateName property ", function() {
 
     });
 
-    Em.GestureDelegates.add(delegate);
+    var gestureDelegates = application.get('gestureManager').get('delegates');
+
+    gestureDelegates.add(delegate);
 
     var view = Em.View.create({
       
@@ -95,7 +97,7 @@ test("can be assigned with delegateName property ", function() {
 
 
 
-    Em.GestureDelegates.clear();
+    gestureDelegates.clear();
 
 });
 

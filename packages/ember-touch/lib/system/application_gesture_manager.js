@@ -19,7 +19,13 @@ Em.ApplicationGestureManager = Em.Object.extend({
 
 
   /**
+    @type Em.GestureDelegates
+    @property gestureDelegates
+  */
+  gestureDelegates: null,
 
+  /**
+    @type Em.RegisteredGestures
     @property registeredGestures
   */
   registeredGestures: null,

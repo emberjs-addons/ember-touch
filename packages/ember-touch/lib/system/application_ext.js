@@ -30,9 +30,13 @@ Ember.onLoad('Ember.Application', function(Application) {
         Em.assert('Either you create multiple Application instances or you forgot to destroy it', currentManager.get('isDestroyed') );
       }
 
-      var manager = Em.ApplicationGestureManager.create({});
-      Em.applicationGestureManager = manager;
-      set(app, 'gestureManager', manager);
+      var gestureManager = Em.ApplicationGestureManager.create(),
+          delegates = Em.GestureDelegates.create();
+
+      set(gestureManager, 'delegates', delegates);
+      
+      Em.applicationGestureManager = gestureManager;
+      set(app, 'gestureManager', gestureManager);
 
     }
   });
