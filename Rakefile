@@ -16,7 +16,8 @@ def generate_docs
   Dir.chdir("docs") do
     system("npm install") unless File.exist?('node_modules')
     # Unfortunately -q doesn't always work so we get output
-    system("./node_modules/.bin/yuidoc -q")
+    #
+    system("./node_modules/.bin/yuidoc -q -t touch-theme")
   end
 
 end
