@@ -7,7 +7,9 @@ var get = Em.get, set = Em.set;
  @submodule ember-touch
 */
 /**
-Recognizes a multi-touch tap gesture. Tap gestures allow for a certain amount of wiggle-room between a start and end of a touch. Taps are discrete gestures so only tapEnd() will get fired on a view.
+Recognizes a multi-touch tap gesture. Tap gestures allow for a certain amount
+of wiggle-room between a start and end of a touch. Taps are discrete gestures
+so only tapEnd() will get fired on a view.
 
     var myview = Em.View.create({
       elementId: 'gestureTest',
@@ -17,7 +19,8 @@ Recognizes a multi-touch tap gesture. Tap gestures allow for a certain amount of
       }
     });
 
-You can specify how many touches the gesture requires to start using the numberOfRequiredTouches property, which you can set in the panOptions hash:
+The number of touches required to start the gesture can be specified with the
+_numberOfRequiredTouches_ property, which can be set in the tapOptions hash.
 
     var myview = Em.View.create({
       tapOptions: {
@@ -25,7 +28,8 @@ You can specify how many touches the gesture requires to start using the numberO
       }
     });
 
-And you can also specify the number of taps required for the gesture to fire using the numberOfTaps property.
+And the number of taps required to fire the gesture can be specified using the
+_numberOfTaps_ property.
 
     var myview = Em.View.create({
       tapOptions: {
@@ -41,9 +45,8 @@ And you can also specify the number of taps required for the gesture to fire usi
 Em.TapGestureRecognizer = Em.Gesture.extend({
 
   /**
-    The translation value which represents the current amount of movement that has been applied
-    to the view. You would normally apply this value directly to your element as a 3D
-    transform.
+    The translation value which represents the current amount of movement that
+    has been applied to the view.
 
     @type Location
   */
@@ -72,7 +75,7 @@ Em.TapGestureRecognizer = Em.Gesture.extend({
 
   init: function(){
     this._super();
-    this._internalTouches = Em.TouchList.create(); 
+    this._internalTouches = Em.TouchList.create();
     Em.assert( get(this, 'numberOfRequiredTouches')===1, 'TODO: still not prepared for higher number' );
   },
 
@@ -96,7 +99,7 @@ Em.TapGestureRecognizer = Em.Gesture.extend({
         that._waitingFired(that);
       }, this.delayBetweenTaps);
 
-    } 
+    }
 
   },
 
@@ -112,7 +115,7 @@ Em.TapGestureRecognizer = Em.Gesture.extend({
     var distance = Math.sqrt((x -= x0) * x + (y -= y0) * y);
 
     return (Math.abs(distance) < this.tapThreshold) && !this._waitingForMoreTouches;
-    
+
   },
 
 
@@ -139,7 +142,7 @@ Em.TapGestureRecognizer = Em.Gesture.extend({
     var eventName = this.name+'Cancel';
     var evt = new Em.TimeoutTouchEvent({type: Em.TimeoutTouchEventType.Cancel});
     this.attemptGestureEventDelivery(eventName, evt);
-    this._resetState(); 
+    this._resetState();
 
   },
 

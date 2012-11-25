@@ -8,9 +8,13 @@ var get = Em.get, set = Em.set;
 */
 
 /**
-Recognizes a multi-touch pan gesture. Pan gestures require a specified number of fingers to move and will record and update the center point between the touches.
+Recognizes a multi-touch pan gesture. Pan gestures require a specified number
+of fingers to move. It will record and update the center point between the
+touches.
 
-For panChange events, the pan gesture recognizer includes a translation property which can be applied as a CSS transform directly. Translation values are hashes which contain an x and a y value.
+For panChange events, the pan gesture recognizer includes a translation
+property which can be applied as a CSS transform directly. Translation values
+are hashes which contain an x and a y value.
 
     var myview = Em.View.create({
       elementId: 'gestureTest',
@@ -23,8 +27,10 @@ For panChange events, the pan gesture recognizer includes a translation property
         });
       }
     });
-  
-You can specify how many touches the gesture requires to start using the _numberOfRequiredTouches_ property, which you can set in the panOptions hash.
+
+The number of touches required to start the gesture can be specified with the
+_numberOfRequiredTouches_ property. This property can be set in the panOptions
+hash.
 
     var myview = Em.View.create({
       panOptions: {
@@ -39,9 +45,8 @@ You can specify how many touches the gesture requires to start using the _number
 Em.PanGestureRecognizer = Em.Gesture.extend({
 
   /**
-    The translation value which represents the current amount of movement that has been applied
-    to the view. You would normally apply this value directly to your element as a 3D
-    transform.
+    The translation value which represents the current amount of movement that
+    has been applied to the view.
 
     @type Location
   */
@@ -49,17 +54,18 @@ Em.PanGestureRecognizer = Em.Gesture.extend({
 
 
   /**
-    The pixel distance that the fingers need to move before this gesture is recognized.
-    You should set up depending on your device factor and view behaviors.
-    Distance is calculated separately on vertical and horizontal directions depending 
-    on the direction property.
+    The pixel distance that the fingers need to move before the gesture is
+    recognized.
+    It should be set depending on the device factor and view behaviors.
+    Distance is calculated separately on vertical and horizontal directions
+    depending on the direction property.
 
     @private
     @type Number
   */
   initThreshold: 5,
 
-  direction:  Em.GestureDirection.Horizontal | Em.GestureDirection.Vertical , 
+  direction:  Em.GestureDirection.Horizontal | Em.GestureDirection.Vertical ,
 
   //..................................................
   // Private Methods and Properties
@@ -102,12 +108,12 @@ Em.PanGestureRecognizer = Em.Gesture.extend({
 
     var shouldBegin = false;
     //shouldBegin = Math.sqrt( (x - x0)*(x - x0) + (y - y0)*(y - y0)   ) >= this.initThreshold;
-    
+
     if ( this.direction & Em.GestureDirection.Vertical ) {
 
       shouldBegin = Math.abs( y - y0 ) >= this.initThreshold;
 
-    } 
+    }
     if (!shouldBegin && ( this.direction & Em.GestureDirection.Horizontal ) ) {
 
       shouldBegin = Math.abs( x - x0 ) >= this.initThreshold;

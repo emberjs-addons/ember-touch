@@ -7,13 +7,15 @@ var get = Em.get, set = Em.set;
  @submodule ember-touch
 */
 /**
-Recognizes a multi-touch pinch gesture. Pinch gestures require a specified number of fingers to move and will record and update the scale.
+Recognizes a multi-touch pinch gesture. Pinch gestures require a specified
+number of fingers to move and will record and update the scale.
 
-For pinchChange events, the pinch gesture recognizer includes a scale property which can be applied as a CSS transform directly.
+For pinchChange events, the pinch gesture recognizer includes a scale property
+which can be applied as a CSS transform directly.
 
     var myview = Em.View.create({
       elementId: 'gestureTest',
-      
+
       pinchChange: function(rec, evt) {
         this.$().css('scale',function(index, value) {
           return rec.get('scale') * value
@@ -21,7 +23,9 @@ For pinchChange events, the pinch gesture recognizer includes a scale property w
       }
     });
 
-You can specify how many touches the gesture requires to start using the _numberOfRequiredTouches_ property, which you can set in the pinchOptions hash:
+The number of touches required to start the gesture can be specified with the
+_numberOfRequiredTouches_ property. This property can be set in the
+pinchOptions hash.
 
     var myview = Em.View.create({
       pinchOptions: {
@@ -36,9 +40,8 @@ You can specify how many touches the gesture requires to start using the _number
 Em.PinchGestureRecognizer = Em.Gesture.extend({
 
   /**
-    The scale value which represents the current amount of scaling that has been applied
-    to the view. You would normally apply this value directly to your element as a 3D
-    scale.
+    The scale value which represents the current amount of scaling that has
+    been applied to the view.
 
     @type Number
   */
@@ -70,7 +73,7 @@ Em.PinchGestureRecognizer = Em.Gesture.extend({
 
     @private
     @type Number
-  */  
+  */
   _previousDistance: 0,
 
   /**
@@ -113,7 +116,7 @@ Em.PinchGestureRecognizer = Em.Gesture.extend({
 
     set(this, 'velocity', distanceDifference / timeDifference);
     set(this, 'scale', currentDistanceBetweenTouches / this._previousDistance);
-    
+
     this._previousTimestamp = get(this.touches,'timestamp');
     this._previousDistance = currentDistanceBetweenTouches;
   },
