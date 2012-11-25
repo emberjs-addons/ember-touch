@@ -250,7 +250,7 @@ test("manager avoid delivering events when a delegate rule return false", functi
     var delegateResult;
 
 
-    var myDelegateRule = Em.DelegateRule.create({
+    var myDelegateRule = Em.GestureDelegateRule.create({
 
       shouldReceiveTouch: function(gesture, view, event) {
         return ruleResult;

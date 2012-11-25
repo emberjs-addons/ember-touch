@@ -103,7 +103,7 @@ test("can be assigned with delegateName property ", function() {
 
 test("can create delegate rules and assign the gestureDelegate property on the property", function() {
 
-    MyApp.MyDelegateRule1 = Em.DelegateRule.extend({});
+    MyApp.MyDelegateRule1 = Em.GestureDelegateRule.extend({});
 
     var delegate1 = Em.GestureDelegate.create({
       name: 'application_delegate',
@@ -127,10 +127,10 @@ test("can create delegate rules and assign the gestureDelegate property on the p
 
 test("can assign the gestureDelegate property on rule instances", function() {
 
-    MyApp.myDelegateRule1 = Em.DelegateRule.create({});
+    MyApp.myDelegateRule1 = Em.GestureDelegateRule.create({});
 
 
-    MyApp.myDelegateRule2 = Em.DelegateRule.create({});
+    MyApp.myDelegateRule2 = Em.GestureDelegateRule.create({});
 
     var delegate1 = Em.GestureDelegate.create({
       name: 'application_delegate',

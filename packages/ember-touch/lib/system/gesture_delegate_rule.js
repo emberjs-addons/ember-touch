@@ -4,11 +4,11 @@
 @submodule ember-touch
 */
 /**
-  @class DelegateRule
+  @class GestureDelegateRule
   @namespace Ember
   @extends Ember.Object
 */
-Em.DelegateRule = Em.Object.extend({
+Em.GestureDelegateRule = Em.Object.extend({
 
   /**
     @property gestureDelegate
