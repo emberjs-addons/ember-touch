@@ -2,7 +2,6 @@
 .bundle
 bin/
 *.bpkg
-Gemfile.lock
 spade-boot.js
 docs/build
 docs/node_modules
