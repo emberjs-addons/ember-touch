@@ -7,8 +7,9 @@
 /**
   Allow any view to block the gesture recognition.
 
-  When ApplicationGestureManager isBlocked, gestureManager will call shouldReceiveTouch method 
-  and when it returns false, it will deny passing touchEvents to view gestures. 
+  When ApplicationGestureManager _isBlocked_, gestureManager will call the
+  _shouldReceiveTouch_ method and when it returns false, it will deny passing
+  touchEvents to view gestures.
 
   @class ApplicationGestureManager
   @namespace Ember
@@ -37,8 +38,8 @@ Em.ApplicationGestureManager = Em.Object.extend({
   isAllBlocked: false,
 
   /**
-  Assign the view which has blocked the recognizer, in order
-  that view can be the only one which can unblock the recognizer. 
+  Assign the view which has blocked the recognizer. That view is the only one
+  able to unblock the recognizer.
 
     @private
     @property _blockerView
@@ -74,7 +75,8 @@ Em.ApplicationGestureManager = Em.Object.extend({
   },
 
   /**
-    ShouldReceiveTouchFn function(view) which will be used to allow/deny passing touchEvents to view gestures.
+    ShouldReceiveTouchFn function(view) which will be used to allow/deny
+    passing touchEvents to view gestures.
     @method block
   */
   block: function( view, shouldReceiveTouchFn ) {

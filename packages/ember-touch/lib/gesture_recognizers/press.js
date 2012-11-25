@@ -10,7 +10,8 @@ var get = Em.get, set = Em.set;
 /**
 Recognizes a multi-touch press gesture. Press gestures allow for a certain
 amount of wiggle-room between a start and end of a touch, and requires a
-minimum hold period to be triggered.
+minimum hold period to be triggered. The press gesture also requires to
+stop touching the screen to be triggered.
 
 Press gestures are discrete so only _pressEnd_ will get fired.
 
