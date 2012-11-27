@@ -8,20 +8,25 @@ var set = Em.set;
 
 /**
 
-  Registry of known gestures in the system to be used on view creation to find which gestures are implemented in the view class. A instance of this class is injected in the Application namespace.
+  Registry of known gestures in the system which is used in the view `init`
+  method to find which gestures are supported by the initialized view.
 
-  You must be responsable to register your own gestures when you want to make the system aware of them.
+  A instance of this class is injected in the Application namespace and
+  add default built-in gestures provided in the `ember-touch` package.
+
+  You must be responsable to register your own gestures when you want 
+  to make the system aware of them.
 
   @class RegisteredGestureList
   @namespace Ember
   @extends Em.Object
   @private
-  @static
 */
 Em.RegisteredGestures = Em.Object.extend({
 
   /**
-    @method _registeredGestures
+    @property _registeredGestures
+    @type Hash
     @private
   */
   _registeredGestures: null,
@@ -33,7 +38,8 @@ Em.RegisteredGestures = Em.Object.extend({
   },
 
   /**
-    Registers a gesture recognizer to the system. The gesture recognizer is identified by the name parameter, which must be globally unique.
+    Registers a gesture recognizer to the system. 
+    The gesture recognizer is identified by the name parameter, which must be globally unique.
 
     @method register
   */
@@ -48,6 +54,7 @@ Em.RegisteredGestures = Em.Object.extend({
   },
 
   /**
+    Unregister a gesture.
     @method unregister
   */
   unregister: function(name) {
@@ -59,7 +66,9 @@ Em.RegisteredGestures = Em.Object.extend({
   },
 
   /**
-    Registers a gesture recognizer to the system. The gesture recognizer is identified by the name parameter, which must be unique across the system.
+    Registers a gesture recognizer to the system. 
+    The gesture recognizer is identified by the name parameter 
+    which must be unique in your application.
 
     @method knownGestures
   */

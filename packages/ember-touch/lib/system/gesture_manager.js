@@ -6,10 +6,17 @@ var get = Em.get; var set = Em.set;
 */
 
 /**
-Manages multiplegesture recognizers that are associated with a view. This class is instantiated automatically by Em.View and you wouldn't
+`Em.GestureManager` mainly acts as a composite for the multiple gesture 
+recognizers associated with a view. 
+
+This class is instantiated automatically by Em.View and you wouldn't
 interact with it yourself.
 
-Em.GestureManager mainly acts as a composite for the multiple gesture recognizers associated with a view. Whenever it gets a touch event, it relays it to the gestures. The other main resposibility of Em.GestureManager is to handle re-dispatching of events to the view.
+Whenever it gets a touch event, it relays it to the gestures when 
+coordination conditions are satisfied.
+
+The other main resposibility of `Em.GestureManager` is to manage
+event bubbling.
 
 @class GestureManager
 @namespace Ember
@@ -19,7 +26,7 @@ Em.GestureManager = Em.Object.extend({
 
   /**
     An array containing all the gesture recognizers associated with a
-    view. This is set automatically by Em.View.
+    view. This is set automatically by `Em.View`.
 
 
     @property gestures
@@ -28,11 +35,14 @@ Em.GestureManager = Em.Object.extend({
   */
   gestures: null,
 
-
+  /**
+    @type Em.ApplicationGestureManager
+    @property applicationGestureManager
+  */
   applicationGestureManager: null,
 
   /**
-    The Em.View which belongs this GestureManager instance.
+    The Em.View which belongs this `GestureManager` instance.
 
     @property view
     @type Em.View
@@ -41,7 +51,7 @@ Em.GestureManager = Em.Object.extend({
 
   /**
     Relays touchStart events to all the gesture recognizers to the
-    specified view
+    specified view when coordination conditions are satisfied.
 
     @method touchStart
     @return Boolen
@@ -52,7 +62,7 @@ Em.GestureManager = Em.Object.extend({
 
   /**
     Relays touchMove events to all the gesture recognizers to the
-    specified view
+    specified view when coordination conditions are satisfied.
 
     @method touchMove
     @return Boolen
@@ -63,7 +73,7 @@ Em.GestureManager = Em.Object.extend({
 
   /**
     Relays touchEnd events to all the gesture recognizers to the
-    specified view
+    specified view when coordination conditions are satisfied.
 
     @method touchEnd
     @return Boolen
@@ -74,7 +84,7 @@ Em.GestureManager = Em.Object.extend({
 
   /**
     Relays touchCancel events to all the gesture recognizers to the
-    specified view
+    specified view when coordination conditions are satisfied.
 
     @method touchCancel
     @return Boolen
@@ -165,7 +175,9 @@ Em.GestureManager = Em.Object.extend({
   },
 
   /**
-    Iterates all gestureDelegate DelegateRule instances executing its shouldReceiveTouch method and return the value whenever a rule respond with a defined value .
+    Iterates all `GestureDelegateRule` instances of the gestureDelegate parameter
+    executing its shouldReceiveTouch method and return the value whenever 
+    a rule respond with a defined value.
 
     @private
     @method _applyDelegateRules

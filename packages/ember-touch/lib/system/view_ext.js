@@ -3,11 +3,10 @@ var get = Em.get, set = Em.set;
 /* 
   Extends Em.View by making the init method gesture-aware.
 */
-Em.View.reopen(
-/** @scope Em.View.prototype */{
+Em.View.reopen({
 
   /**
-    The Em.GestureManager instance which will manager the gestures of the view.    
+    The Em.GestureManager instance which will manager the gestures of the view.
     This object is automatically created and set at init-time.
 
     @default null

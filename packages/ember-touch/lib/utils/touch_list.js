@@ -5,15 +5,24 @@ var get = Em.get; var set = Em.set;
 @submodule ember-touch
 */
 /**
-Used to manage and maintain a list of active touches related to a gesture  recognizer.
+  Used to manage and maintain a list of active touches related to a gesture recognizer.
+
   @class TouchList
   @namespace Ember
   @extends Ember.Object
   @private
 */
 Em.TouchList = Em.Object.extend({
+
+  /**
+    @property touches
+    @type Array
+  */
   touches: null,
 
+  /**
+    @property timestamp
+  */
   timestamp: null,
 
   init: function() {
@@ -22,12 +31,18 @@ Em.TouchList = Em.Object.extend({
     set(this, 'touches', []);
   },
 
+  /**
+    @method addTouch
+  */
   addTouch: function(touch) {
     var touches = get(this, 'touches');
     touches.push(touch);
     this.notifyPropertyChange('touches');
   },
 
+  /**
+    @method updateTouch
+  */
   updateTouch: function(touch) {
     var touches = get(this, 'touches');
 
@@ -42,6 +57,9 @@ Em.TouchList = Em.Object.extend({
     }
   },
 
+  /**
+    @method removeTouch
+  */
   removeTouch: function(touch) {
     var touches = get(this, 'touches');
 
@@ -56,10 +74,16 @@ Em.TouchList = Em.Object.extend({
     }
   },
 
+  /**
+    @method removeAllTouches
+  */
   removeAllTouches: function() {
     set(this, 'touches', []);
   },
 
+  /**
+    @method touchWithId
+  */
   touchWithId: function(id) {
     var ret = null,
         touches = get(this, 'touches');

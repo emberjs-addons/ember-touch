@@ -4,9 +4,11 @@
 @submodule ember-touch
 */
 /**
-Delegate implements the logic of your application's gesture-recognition behavior.
+GestureDelegate allows to `GestureManager` instances decide 
+if a touch event can be dispatched to a view gesture.
 
-Set up your gestures to use a GestureDelegate to coordinate the gesture recognition based  on the current status of your Application. 
+Set up your gestures to use a `GestureDelegate` to coordinate 
+the gesture recognition based on application logic.
 
 @class GestureDelegate
 @namespace Ember
@@ -15,7 +17,9 @@ Set up your gestures to use a GestureDelegate to coordinate the gesture recognit
 Em.GestureDelegate = Em.Object.extend({
 
   /**
-    Name of the gestureDelegate. It will be used on gestureOptions to assign a gestureDelegate to a specific gesture.
+    Name of the gestureDelegate. 
+    This optional property can be used on gestureOptions 
+    to assign a gestureDelegate to a specific gesture.
 
     @property name
     @type Array
@@ -23,8 +27,10 @@ Em.GestureDelegate = Em.Object.extend({
   name: null,
 
   /**
-    Rules can be setup with string path, extended classes or instances.
-    They are intented to be executed before shouldReceiveTouch method.
+    Array of `GestureDelegateRule` which can be setup 
+    with string path, extended classes or instances.
+    In runtime, they are intented to be checked before
+    `GestureDelegate.shouldReceiveTouch` call.
 
     @property rules
     @type Array

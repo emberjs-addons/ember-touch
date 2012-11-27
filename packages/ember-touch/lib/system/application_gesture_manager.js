@@ -5,41 +5,47 @@
 */
 
 /**
-  Allow any view to block the gesture recognition.
+  An ApplicationGestureManager instance is injected at the Application 
+  namespace to inform `GestureManager` instances if touch events can 
+  be dispatched.
 
-  When ApplicationGestureManager _isBlocked_, gestureManager will call the
-  _shouldReceiveTouch_ method and when it returns false, it will deny passing
-  touchEvents to view gestures.
+  `GestureManager` instances denies dispatching events whenever `isAllBlocked` 
+  property is true or `isBlocked` is true and the `shouldReceiveTouch` response
+  is false.
 
   @class ApplicationGestureManager
   @namespace Ember
   @extends Em.Object
-  @static
 */
 Em.ApplicationGestureManager = Em.Object.extend({
 
 
   /**
-    @type Em.GestureDelegates
+    Access registered gestureDelegates in the application.
+
+    @type GestureDelegates
     @property gestureDelegates
   */
   gestureDelegates: null,
 
   /**
-    @type Em.RegisteredGestures
+    Access the registered gestures in the application.
+
+    @type RegisteredGestures
     @property registeredGestures
   */
   registeredGestures: null,
 
   /**
+    Block application gesture recognition on true.
     @property isAllBlocked
     @default false
   */
   isAllBlocked: false,
 
   /**
-  Assign the view which has blocked the recognizer. That view is the only one
-  able to unblock the recognizer.
+    View which has blocked the recognizer. This is the 
+    only view which can unblock gesture recognition.
 
     @private
     @property _blockerView
@@ -53,11 +59,16 @@ Em.ApplicationGestureManager = Em.Object.extend({
   _isBlocked: false,
 
   /**
+    Whenever `isBlocked` property is true, this function
+    property decides if a touch event can be dispatched.
     @private
     @property _shouldReceiveTouchFn
   */
   _shouldReceiveTouchFn:null,
 
+  /**
+    @property isBlocked
+  */
   isBlocked: Em.computed(function(){
 
     return this.get('_isBlocked');
@@ -66,6 +77,9 @@ Em.ApplicationGestureManager = Em.Object.extend({
 
 
   /**
+    Whenever `isBlocked` property is true, the function output is provided 
+    to `GestureManager` instances to allow or deny dispatching touch events.
+
     @method shouldReceiveTouch
   */
   shouldReceiveTouch: function(view) {
@@ -75,8 +89,9 @@ Em.ApplicationGestureManager = Em.Object.extend({
   },
 
   /**
-    ShouldReceiveTouchFn function(view) which will be used to allow/deny
-    passing touchEvents to view gestures.
+    Blocks gesture recognition at the application level and setup
+    which events can be dispatched based on the `shouldReceiveTouchFn` parameter.
+
     @method block
   */
   block: function( view, shouldReceiveTouchFn ) {
@@ -93,6 +108,7 @@ Em.ApplicationGestureManager = Em.Object.extend({
   },
 
   /**
+    Unblock current gesture blocking state.
     @method unblock
   */
   unblock: function( view ) {
@@ -114,4 +130,3 @@ Em.ApplicationGestureManager = Em.Object.extend({
   }
 
 });
-

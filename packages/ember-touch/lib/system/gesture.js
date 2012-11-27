@@ -7,8 +7,7 @@ var get = Em.get, set = Em.set;
 
 /**
 Base class to be extended to define specific gesture recognizer. Handles low-level touch, 
-state management and provides some utility methods to the extended classes. 
-
+state management and provides some utility methods to the extended classes.
 
   @class Gesture
   @namespace Ember
