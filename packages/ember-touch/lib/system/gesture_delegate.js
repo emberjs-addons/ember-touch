@@ -62,8 +62,6 @@ Em.GestureDelegate = Em.Object.extend({
           rule = rule.create();
         }
 
-
-        rule.gestureDelegate = this;
         current.push( rule );
       }
 

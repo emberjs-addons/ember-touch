@@ -13,12 +13,6 @@
 Em.GestureDelegateRule = Em.Object.extend({
 
   /**
-    @property gestureDelegate
-  */
-  gestureDelegate: null,
-
-
-  /**
     @method shouldReceiveTouch
   */
   shouldReceiveTouch: function(gesture, view, event) {

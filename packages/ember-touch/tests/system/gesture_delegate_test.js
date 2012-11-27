@@ -101,7 +101,7 @@ test("can be assigned with delegateName property ", function() {
 
 });
 
-test("can create delegate rules and assign the gestureDelegate property on the property", function() {
+test("can create delegate rules", function() {
 
     MyApp.MyDelegateRule1 = Em.GestureDelegateRule.extend({});
 
@@ -111,7 +111,6 @@ test("can create delegate rules and assign the gestureDelegate property on the p
     });
 
     equal(delegate1.rules.length,1,"there should be only a rule");
-    ok( delegate1.rules[0].gestureDelegate === delegate1 ,"the gestureDelegate rule property has been assigned on delegate creation");
 
 
     var delegate2 = Em.GestureDelegate.create({
@@ -120,29 +119,5 @@ test("can create delegate rules and assign the gestureDelegate property on the p
     });
 
     equal(delegate2.rules.length,1,"there should be only a rule");
-    ok( delegate2.rules[0].gestureDelegate === delegate2 ,"the gestureDelegate rule property has been assigned on delegate creation");
 
-});
-
-
-test("can assign the gestureDelegate property on rule instances", function() {
-
-    MyApp.myDelegateRule1 = Em.GestureDelegateRule.create({});
-
-
-    MyApp.myDelegateRule2 = Em.GestureDelegateRule.create({});
-
-    var delegate1 = Em.GestureDelegate.create({
-      name: 'application_delegate',
-      rules: [MyApp.myDelegateRule1, MyApp.myDelegateRule2]
-    });
-
-    equal(delegate1.rules.length,2,"there should be 2 rules");
-
-    ok( delegate1.rules[0].gestureDelegate === delegate1 ,"the gestureDelegate rule property has been assigned on delegate creation");
-    ok( delegate1.rules[1].gestureDelegate === delegate1 ,"the gestureDelegate rule property has been assigned on delegate creation");
-
-    ok( MyApp.myDelegateRule1.gestureDelegate === delegate1 ,"the gestureDelegate rule property has been assigned on delegate creation ");
-    ok( MyApp.myDelegateRule2.gestureDelegate === delegate1 ,"the gestureDelegate filter property has been assigned on delegate creation ");
-
-});
+}); 
