@@ -3,6 +3,7 @@
 bin/
 *.bpkg
 spade-boot.js
+.github-upload-token
 docs/build
 docs/node_modules
 lib/*/tests/all.js

@@ -13,6 +13,6 @@ gem "colored"
 
 group :development do
   gem "rack"
-  gem "github-upload"
+  gem "github_downloads", :git => "https://github.com/pangratz/github_downloads.git"
   gem "kicker"
 end

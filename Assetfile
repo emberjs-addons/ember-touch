@@ -142,19 +142,14 @@ distros.each do |name, modules|
   input "dist/modules" do
     module_paths = modules.map{|m| "#{m}.js" }
     match "{#{module_paths.join(',')}}" do
-      concat(module_paths){ ["#{name}.js", "#{name}.prod.js"] }
+      concat(module_paths){ ["#{name}.js"] }
     end
 
-    # Strip dev code
-    match "#{name}.prod.js" do
-      filter(EmberProductionFilter) { ["#{name}.prod.js", "#{name}.min.js"] }
-    end
-
-    # Minify
-    match "#{name}.min.js" do
-      uglify{ "#{name}.min.js" }
+    match "#{name}.js" do
+      filter EmberProductionFilter
       filter EmberLicenseFilter
     end
+
   end
 end
 

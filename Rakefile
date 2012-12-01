@@ -9,6 +9,25 @@ def pipeline
   Rake::Pipeline::Project.new("Assetfile")
 end
 
+def setup_uploader(root=Dir.pwd)
+  require 'github_downloads'
+  uploader = nil
+  Dir.chdir(root) do
+    uploader = GithubDownloads::Uploader.new
+    uploader.authorize
+  end
+  uploader
+end
+
+def upload_file(uploader, filename, description, file)
+  print "Uploading #{filename}..."
+  if uploader.upload_file(filename, description, file)
+    puts "Success"
+  else
+    puts "Failure"
+  end
+end
+
 
 def generate_docs
   print "Generating docs .. "
@@ -20,6 +39,12 @@ def generate_docs
     system("./node_modules/.bin/yuidoc -q -t touch-theme")
   end
 
+end
+
+desc "Upload latest Ember-Touch.js build to GitHub repository"
+task :upload_latest => [:clean, :dist] do
+  uploader = setup_uploader
+  upload_file(uploader, 'ember-touch-latest.js', "Ember-Touch.js Master", "dist/ember-touch.js")
 end
 
 desc "Generate API Docs"

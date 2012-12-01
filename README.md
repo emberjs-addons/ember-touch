@@ -1,24 +1,23 @@
-# Sproutcore/Ember Touch
+# Ember Touch
 
 [![Build Status](https://secure.travis-ci.org/emberjs-addons/ember-touch.png)](http://travis-ci.org/emberjs-addons/ember-touch)
 
-## Overview
+Ember Touch lays the groundwork for a comprehensive touch and gesture system that sits on top of [EmberJS](https://github.com/emberjs/ember.js).
 
-Ember Touch lays the groundwork for a comprehensive touch and
-gesture system that sits on top of [EmberJS](https://github.com/emberjs/ember.js).
+## Documentation and examples
 
-# Usage
+Visit the [Project Page](http://ember-touch-website.herokuapp.com/).
 
-1. Import the project.
+## Usage
 
-  - You can execute _rake dist_ command to build ember-touch.js in the dist folder and being imported in your project.
+You could import the project in some of the following ways:
 
-  - Or clone the project to your Ember App and use your build tools ( ex: rake-pipeline ).
+  - Download the latest version [ember-touch.latest.js](http://cloud.github.com/downloads/emberjs-addons/ember-touch/ember-touch-latest.js)
 
-2. Add gesture support to your views just by adding specific methods (
-   tapEnd, touchHoldStart, touchHoldEnd....)
+  - Build it, executing _rake dist_ command and import dist/ember-touch.js  into your project.
 
-3. Tests your views on multi touch devices or qunit.
+  - Clone the project into your Ember Application and use your build tools ( ex: rake-pipeline ).
+
    
 ## Unit Tests
 
@@ -28,15 +27,7 @@ To run/check the unit test output, open:
 
   `http://localhost:9292/tests/index.html?package=ember-touch`
 
-# Info
-
-Look at the current [Project Page](http://ember-touch-website.herokuapp.com/).
-
-Yui Documentation: 
+## YUIDOC
 
   - _rake generate_docs_ 
   - Access ./docs/build/index.html
-
-# Questions, bugs
-
-Please, open an issue.
