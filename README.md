@@ -7,15 +7,11 @@
 Ember Touch lays the groundwork for a comprehensive touch and
 gesture system that sits on top of [EmberJS](https://github.com/emberjs/ember.js).
 
-Along with providing support for custom gesture recognizers, Ember
-Touch ships with some pre-built gestures: Pinch, Pan, Tap, TouchHold and
-Press.
-
 # Usage
 
 1. Import the project.
 
-  - You can execute _rake dist_ command to build ember-touch.js in the dist folder to be imported.
+  - You can execute _rake dist_ command to build ember-touch.js in the dist folder and being imported in your project.
 
   - Or clone the project to your Ember App and use your build tools ( ex: rake-pipeline ).
 
@@ -34,9 +30,9 @@ To run/check the unit test output, open:
 
 # Info
 
-Look at the current [Wiki](https://github.com/emberjs-addons/sproutcore-touch).
+Look at the current [Project Page](http://ember-touch-website.herokuapp.com/).
 
-Docs can be generated: 
+Yui Documentation: 
 
   - _rake generate_docs_ 
   - Access ./docs/build/index.html
