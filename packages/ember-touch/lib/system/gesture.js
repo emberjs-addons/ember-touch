@@ -101,13 +101,21 @@ Em.Gesture = Em.Object.extend({
 
 
   /** 
-    You can use the `touches` protected property to access the touches hash. The touches 
-    hash is keyed on the identifiers of the touches, and the values are the jQuery.Event 
-    objects.
+    Manage and maintain a list of active touches related to a gesture recognizer.
 
-    @private 
+    A gesture updates automatically its internal touch list 
+    to have only the last active touch events.
+
+    Custom gestures may not interact with the `TouchList` methods,
+    it is usually the gesture API which manages its touch list.
+
+    Custom gestures usually access its length property and
+    the internal touch list to have information of the last 
+    active touch events.
+
+    @protected 
     @property touches
-    @type Hash
+    @type Em.TouchList
   */
   touches: null,
 
