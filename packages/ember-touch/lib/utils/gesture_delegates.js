@@ -5,13 +5,13 @@
 */
 
 /**
-   A instance of this class is injected in the Application namespace 
-   to registry `GestureDelegate` instances in your application.
+   An instance of this class is injected in the Application namespace
+   to registry `GestureDelegate` instances in an application.
 
-   Whenever a `Gesture` setup its `delegateName` property, 
-   assigns its `gestureDelegate` instance calling the `find` method of the 
+   Whenever a `Gesture` setups its `delegateName` property, it
+   assigns its `gestureDelegate` instance calling the `find` method of the
    `GestureDelegates` instance.
-  
+
   @class GestureDelegates
   @namespace Ember
   @extends Em.Object

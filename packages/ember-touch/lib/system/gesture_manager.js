@@ -6,13 +6,13 @@ var get = Em.get; var set = Em.set;
 */
 
 /**
-`Em.GestureManager` mainly acts as a composite for the multiple gesture 
-recognizers associated with a view. 
+`Em.GestureManager` mainly acts as a composite for the multiple gesture
+recognizers associated with a view.
 
-This class is instantiated automatically by Em.View and you wouldn't
-interact with it yourself.
+This class is instantiated automatically by Em.View and it shouldn't be
+directly accessed.
 
-Whenever it gets a touch event, it relays it to the gestures when 
+Whenever it gets a touch event, it relays it to the gestures when
 coordination conditions are satisfied.
 
 The other main resposibility of `Em.GestureManager` is to manage
@@ -118,7 +118,7 @@ Em.GestureManager = Em.Object.extend({
 
       if ( l > 0 ) {
 
-        //appGestureManager allow to pass touchEvents at the App Level  
+        //appGestureManager allow to pass touchEvents at the App Level
         var gesturesCanReceiveTouchEvent = this.applicationGestureManager.get('isBlocked')? this.applicationGestureManager.shouldReceiveTouch(this.view) : true;
         if ( gesturesCanReceiveTouchEvent ) {
 
@@ -137,7 +137,7 @@ Em.GestureManager = Em.Object.extend({
 
               if ( !gesture.get('isEnabled') ) {
                 isValid = false;
-              //gestureDelegate allow to pass touchEvents depending on gesture state  
+              //gestureDelegate allow to pass touchEvents depending on gesture state
               } else if ( !gestureDelegate ) {
                 isValid = true;
               } else {
@@ -159,7 +159,7 @@ Em.GestureManager = Em.Object.extend({
         }
 
       }
-      
+
       // browser delivers the event to the DOM element
       // bubble the event to the parentView
       var parentView = this.view.get('parentView');
@@ -176,7 +176,7 @@ Em.GestureManager = Em.Object.extend({
 
   /**
     Iterates all `GestureDelegateRule` instances of the gestureDelegate parameter
-    executing its shouldReceiveTouch method and return the value whenever 
+    executing its shouldReceiveTouch method and return the value whenever
     a rule respond with a defined value.
 
     @private

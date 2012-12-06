@@ -5,7 +5,8 @@ var get = Em.get; var set = Em.set;
 @submodule ember-touch
 */
 /**
-  Manage and maintain a list of active touches related to a gesture recognizer.
+  This component manages and maintains a list of active touches related
+  to a gesture recognizer.
 
   @class TouchList
   @namespace Ember
@@ -35,7 +36,7 @@ Em.TouchList = Em.Object.extend({
     Add a touch event to the list.
     This method is called only in the initialization of
     the touch session adding touchstart events.
-    
+
     @method addTouch
   */
   addTouch: function(touch) {
@@ -47,7 +48,7 @@ Em.TouchList = Em.Object.extend({
   /**
     Update a touch event from the list.
     Given a touch event, it will iterate the current
-    list to replace with the event the item whose 
+    list to replace with the event the item whose
     identifier is equal to the event identifier.
     @method updateTouch
   */

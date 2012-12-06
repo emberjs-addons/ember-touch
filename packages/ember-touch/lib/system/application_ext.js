@@ -27,14 +27,14 @@ Ember.onLoad('Ember.Application', function(Application) {
       // Application instance scope
       var currentManager = Em.applicationGestureManager;
       if ( !!currentManager ) {
-        Em.assert('Either you create multiple Application instances or you forgot to destroy it', currentManager.get('isDestroyed') );
+        Em.assert('Either you created multiple Application instances or you forgot to destroy it', currentManager.get('isDestroyed') );
       }
 
       var gestureManager = Em.ApplicationGestureManager.create(),
           delegates = Em.GestureDelegates.create();
 
       set(gestureManager, 'delegates', delegates);
-      
+
       Em.applicationGestureManager = gestureManager;
       set(app, 'gestureManager', gestureManager);
 

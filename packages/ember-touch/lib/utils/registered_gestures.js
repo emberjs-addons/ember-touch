@@ -8,14 +8,14 @@ var set = Em.set;
 
 /**
 
-  Registry of known gestures in the system which is used in the view `init`
+  Registry of known gestures in the system which is used in the view's `init`
   method to find which gestures are supported by the initialized view.
 
-  A instance of this class is injected in the Application namespace and
-  add default built-in gestures provided in the `ember-touch` package.
+  An instance of this class is injected into the Application namespace and
+  adds default built-in gestures provided in the `ember-touch` package.
 
-  You must be responsable to register your own gestures when you want 
-  to make the system aware of them.
+  The programmer must register his own gestures when he wants the system
+  to be aware of them.
 
   @class RegisteredGestureList
   @namespace Ember
@@ -38,8 +38,8 @@ Em.RegisteredGestures = Em.Object.extend({
   },
 
   /**
-    Registers a gesture recognizer to the system. 
-    The gesture recognizer is identified by the name parameter, which must be globally unique.
+    Registers a gesture recognizer to the system.
+    The gesture recognizer is identified by the name parameter. It must be globally unique.
 
     @method register
   */
@@ -47,7 +47,7 @@ Em.RegisteredGestures = Em.Object.extend({
     var registeredGestures = this._registeredGestures;
 
     if (registeredGestures[name] !== undefined) {
-      throw new Em.Error(name+" already exists as a registered gesture recognizers. Gesture recognizers must have globally unique names.");
+      throw new Em.Error(name+" already exists as a registered gesture recognizer. Gesture recognizers must have globally unique names.");
     }
 
     registeredGestures[name] = recognizer;
@@ -66,9 +66,9 @@ Em.RegisteredGestures = Em.Object.extend({
   },
 
   /**
-    Registers a gesture recognizer to the system. 
-    The gesture recognizer is identified by the name parameter 
-    which must be unique in your application.
+    Registers a gesture recognizer in the system.
+    The gesture recognizer is identified by the name parameter
+    which must be unique in the application.
 
     @method knownGestures
   */

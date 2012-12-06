@@ -1,12 +1,12 @@
 var get = Em.get, set = Em.set;
 
-/* 
-  Extends Em.View by making the init method gesture-aware.
+/*
+  Extends Em.View making the init method gesture-aware.
 */
 Em.View.reopen({
 
   /**
-    The Em.GestureManager instance which will manager the gestures of the view.
+    The Em.GestureManager instance which will manage the gestures of the view.
     This object is automatically created and set at init-time.
 
     @default null
@@ -15,7 +15,7 @@ Em.View.reopen({
   eventManager: null,
 
   /**
-    Inspects the properties on the view instance and create gestures if they're 
+    Inspects the properties on the view instance and create gestures if they're
     used.
   */
   init: function() {
@@ -54,7 +54,7 @@ Em.View.reopen({
           optionsHash.manager = manager;
 
           var extensions = {};
-          if ( optionsHash.isEnabledBinding ) { 
+          if ( optionsHash.isEnabledBinding ) {
 
             if ( !Ember.isGlobalPath(optionsHash.isEnabledBinding) ) {
               extensions.isEnabledBinding = 'view.'+optionsHash.isEnabledBinding;
@@ -83,7 +83,7 @@ Em.View.reopen({
       set(manager, 'gestures', gestures);
 
       set(this, 'eventManager', manager);
- 
+
     }
   }
 

@@ -3,7 +3,7 @@
 @submodule ember-touch
 */
 /**
-  Defines a rule on its `shouldReceiveTouch` method 
+  Defines a rule on its `shouldReceiveTouch` method
   to be used by a `GestureDelegate` instance.
 
   @class GestureDelegateRule
