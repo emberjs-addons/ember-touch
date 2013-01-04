@@ -2,7 +2,7 @@
 var set = Em.set;
 var get = Em.get;
 
-var view, gestures;
+var view, gestures, View;
 var application;
 var period = 200;
 var viewEvent;
@@ -13,14 +13,7 @@ module("Touch Hold Test",{
   setup: function() {
     endCalled = false;
 
-    application = Em.Application.create({
-      ready: function() {
-        start();
-      }
-    });
-    stop();
-
-    view = Em.View.create({
+    View = Em.View.extend({
       
       elementId: 'gestureTest',
 
@@ -37,7 +30,15 @@ module("Touch Hold Test",{
     });
 
     Em.run(function(){
-      view.append();
+
+      application = Em.Application.create({
+        ready: function() {
+          view = View.create();
+          view.append();
+          start();
+        }
+      });
+      stop();
     });
   },
 
@@ -51,7 +52,10 @@ module("Touch Hold Test",{
     };
     view.$().trigger(touchEvent);
     view.destroy();
-    application.destroy();
+
+    Em.run(function(){
+      application.destroy();
+    });
   }
 });
 

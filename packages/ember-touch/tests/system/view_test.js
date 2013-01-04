@@ -5,21 +5,25 @@ var application;
 module("Em.View extensions", {
   setup: function() {
 
-    application = Em.Application.create({
-      ready: function() {
+    Em.run(function() {
+      application = Em.Application.create({
+        ready: function() {
 
-        var gestureManager = get(this, 'gestureManager');
-        var gestures = get(gestureManager, 'registeredGestures');
-        gestures.register('viewTestGesture', Em.Object.extend());
-        start();
-      }
+          var gestureManager = get(this, 'gestureManager');
+          var gestures = get(gestureManager, 'registeredGestures');
+          gestures.register('viewTestGesture', Em.Object.extend());
+          start();
+        }
+      });
+      stop();
     });
-    stop();
 
   },
 
   teardown: function() {
-    application.destroy();
+    Em.run(function() {
+      application.destroy();
+    });
   }  
 
 });

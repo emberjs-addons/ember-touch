@@ -1,8 +1,7 @@
-
 var set = Em.set;
 var get = Em.get;
 
-var view;
+var view, View;
 var application;
 var swipeThreshold = 10;
 var viewEvent;
@@ -14,15 +13,7 @@ module("Swipe Test",{
   setup: function() {
     endCalled = false;
 
-    application = Em.Application.create({
-      ready: function() {
-        start();
-      }
-    });
-    stop();
-
-    view = Em.View.create({
-
+    View = Em.View.extend({
       swipeOptions: {
         direction: Em.OneGestureDirection.Right,
         cancelPeriod: cancelPeriod,
@@ -34,7 +25,6 @@ module("Swipe Test",{
         viewEvent = evt;
       },
       swipeChange: function(recognizer, evt) {
-
         viewEvent = evt;
       },
       swipeEnd: function(recognizer, evt) {
@@ -45,11 +35,17 @@ module("Swipe Test",{
         cancelCalled = true;
         viewEvent = evt;
       }
-
     });
 
     Em.run(function(){
-      view.append();
+      application = Em.Application.create({
+        ready: function() {
+          view = View.create();
+          view.append();
+          start();
+        }
+      });
+      stop();
     });
   },
 
@@ -65,7 +61,10 @@ module("Swipe Test",{
     };
     view.$().trigger(touchEvent);
     view.destroy();
-    application.destroy();
+
+    Em.run(function(){
+      application.destroy();
+    });
   }
 });
 

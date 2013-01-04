@@ -1,7 +1,7 @@
 var set = Em.set;
 var get = Em.get;
 
-var view;
+var view, View;
 var application;
 var translation;
 var numEnded = 0;
@@ -12,14 +12,8 @@ module("Tap Test",{
     numEnded = 0;
     endCalled = false;
 
-    application = Em.Application.create({
-      ready: function() {
-        start();
-      }
-    });
-    stop();
 
-    view = Em.View.create({
+    View = Em.View.extend({
       elementId: 'gestureTest',
 
       tapEnd: function(recognizer) {
@@ -28,7 +22,15 @@ module("Tap Test",{
     });
 
     Em.run(function(){
-      view.append();
+
+      application = Em.Application.create({
+        ready: function() {
+          view = View.create({});
+          view.append();
+          start();
+        }
+      });
+      stop();
     });
   },
 
@@ -42,7 +44,10 @@ module("Tap Test",{
     };
     view.$().trigger(touchEvent);
     view.destroy();
-    application.destroy();
+
+    Em.run(function(){
+      application.destroy();
+    });
   }
 });
 

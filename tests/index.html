@@ -63,7 +63,7 @@
     // Load ember distribution from query vars
     var dist = 'spade';
     var emberMatch = location.search.match(/ember=([^&]+)/), 
-        emberVersion = emberMatch ? emberMatch[1] : "1.0.0-pre.2";
+        emberVersion = emberMatch ? emberMatch[1] : "master";
 
   </script>
 
@@ -74,7 +74,7 @@
     if (jQueryMatch ) {
         jQueryVersion = jQueryMatch[1];
     } else {
-        jQueryVersion = ( emberVersion !== "1.0.0-pre.2" ) ? "1.7.2" : "1.8.2";
+        jQueryVersion = ( emberVersion !== "master" ) ? "1.7.2" : "1.8.2";
     }
 
     if (jQueryVersion !== 'none') {

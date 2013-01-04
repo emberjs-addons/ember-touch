@@ -88,18 +88,22 @@ module("Simultaneously Feature", {
 
       });
 
-    application = Em.Application.create({
-      ready: function() {
-        start();
-      }
+    Em.run(function() {
+      application = Em.Application.create({
+        ready: function() {
+          start();
+        }
+      });
+      stop();
     });
-    stop();
 
   },
 
   teardown: function() {
 
-    application.destroy();
+    Em.run(function() {
+      application.destroy();
+    });
   }
 
 });

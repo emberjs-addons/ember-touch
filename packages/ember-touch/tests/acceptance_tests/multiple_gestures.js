@@ -5,19 +5,18 @@ var view;
 
 module("Test Gesture Recognizer",{
   setup: function() {
-    application = Em.Application.create({
-      ready: function() {
-        start();
-      }
-    });
 
-    stop();
+    Ember.run(function() {
+      application = Ember.Application.create({router: null });
+    });
 
   },
 
   teardown: function() {
     if(view) view.destroy();
-    application.destroy();
+    if (application) {
+      Ember.run(function(){ application.destroy(); });
+    }
   }
 });
 

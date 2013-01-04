@@ -13,16 +13,10 @@ var panChangeWasCalled = false;
 var panEndWasCalled = false;
 
 var tapEndWasCalled = false;
+var PinchPanView, OuterView;
 
 module("Nested gesture recognizers", {
   setup: function() {
-
-    application = Em.Application.create({
-      ready: function() {
-        start();
-      }
-    });
-    stop();
 
     pinchStartWasCalled = false;
     pinchChangeWasCalled = false;
@@ -34,7 +28,7 @@ module("Nested gesture recognizers", {
 
     tapEndWasCalled = false;
 
-    application.PinchPanView = Em.ContainerView.extend({
+    PinchPanView = Em.ContainerView.extend({
       scale: 1,
 
       translate: {
@@ -77,11 +71,11 @@ module("Nested gesture recognizers", {
       }
     });
 
-    application.OuterView = application.PinchPanView.extend({
+    OuterView = PinchPanView.extend({
       elementId: 'outer-div',
       childViews: ['nestedView'],
 
-      nestedView: application.PinchPanView.extend({
+      nestedView: PinchPanView.extend({
       elementId: 'nested-div',
         classNames: ['nestedId'],
 
@@ -96,14 +90,25 @@ module("Nested gesture recognizers", {
     });
 
     Em.run(function() {
-      outerdiv = application.OuterView.create();
-      outerdiv.append();
+      application = Ember.Application.create({
+        router: null,
+        ready: function () {
+          outerdiv = OuterView.create();
+          outerdiv.append();
+          start();
+        }
+        
+      });
+      stop();
     });
 
   },
 
   teardown: function() {
-    application.destroy();
+
+    Em.run(function() {
+      application.destroy();
+    });
   }
 });
 

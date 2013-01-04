@@ -55,7 +55,7 @@ Em.GestureDelegate = Em.Object.extend({
         rule = rules[i];
 
         if ( Em.typeOf(rule) === "string" ) {
-          rule = Em.getPath(rule);
+          rule = Em.get(rule);
         }
 
         if ( !rule.isInstance ) {

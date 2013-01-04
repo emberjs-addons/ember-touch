@@ -10,18 +10,24 @@ var endCalled;
 module("Gesture Delegate", {
 
   setup: function() {
-    application = Em.Application.create({
-      ready: function() {
-        start();
-      }
+
+    Em.run(function() {
+      application = Em.Application.create({
+        ready: function() {
+          start();
+        }
+      });
+      stop();
+      MyApp = {};
     });
-    stop();
-    MyApp = {};
   },
 
   teardown: function() {
-    application.destroy();
-    MyApp = null;
+
+    Em.run(function() {
+      application.destroy();
+      MyApp = null;
+    });
   }
 
 });

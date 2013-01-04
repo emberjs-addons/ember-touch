@@ -10,21 +10,25 @@ var tapEndWasCalled = false;
 module("Nested Gestures on childs are redispatched to parents", {
 
   setup: function() {
-    application = Em.Application.create({
-      ready: function() {
-        start();
-      }
+
+    Em.run(function() {
+      application = Em.Application.create({
+        ready: function() {
+          start();
+        }
+      });
+      stop();
+      tapEndWasCalled = false;
     });
-    stop();
-
-
-    tapEndWasCalled = false;
 
   },
 
   teardown: function() {
-    if ( view ) view.destroy();
-    application.destroy();
+
+    Em.run(function() {
+      if ( view ) view.destroy();
+      application.destroy();
+    });
   }
 
 });

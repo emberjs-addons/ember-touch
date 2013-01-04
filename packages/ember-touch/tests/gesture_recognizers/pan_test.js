@@ -1,7 +1,7 @@
 var set = Em.set;
 var get = Em.get;
 
-var view, change;
+var view, View, change;
 var application;
 var translation;
 var numEnded = 0;
@@ -10,14 +10,8 @@ module("Pan Test",{
   setup: function() {
     numEnded = 0;
 
-    application = Em.Application.create({
-      ready: function() {
-        start();
-      }
-    });
-    stop();
 
-    view = Em.View.create({
+    View = Em.View.extend({
       elementId: 'gestureTest',
 
       panStart: function(recognizer) {
@@ -38,7 +32,14 @@ module("Pan Test",{
     });
 
     Em.run(function(){
-      view.append();
+      application = Em.Application.create({
+        ready: function() {
+          view = View.create();
+          view.append();
+          start();
+        }
+      });
+      stop();
     });
   },
 
@@ -51,7 +52,10 @@ module("Pan Test",{
     };
     view.$().trigger(touchEvent);
     view.destroy();
-    application.destroy();
+
+    Em.run(function(){
+      application.destroy();
+    });
   }
 });
 

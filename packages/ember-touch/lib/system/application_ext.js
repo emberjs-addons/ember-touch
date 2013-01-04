@@ -8,14 +8,48 @@ Em.Application.reopen({
     this._super();
 
     var manager = get(this, 'gestureManager');
-    manager.destroy();
+    if ( !!manager ) {
+      manager.destroy();
+    }
 
   }
 
 });
 
-Ember.onLoad('Ember.Application', function(Application) {
+Ember.onLoad('application', function(Application) {
 
+  var app = Application;
+
+  if ( !!app.get('gestureManager') ) { return; }
+
+  // This can be improved if a view instance could access its
+  // Application instance scope
+  var currentManager = Em.applicationGestureManager;
+  if ( !!currentManager ) {
+    Em.assert('Either you created multiple Application instances or you forgot to destroy it', currentManager.get('isDestroyed') );
+  }
+
+  var gestureManager = Em.ApplicationGestureManager.create(),
+      delegates = Em.GestureDelegates.create();
+
+  set(gestureManager, 'delegates', delegates);
+
+  Em.applicationGestureManager = gestureManager;
+  set(app, 'gestureManager', gestureManager);
+
+
+
+  var gestures = Em.RegisteredGestures.create({});
+  gestures.register('pan', Em.PanGestureRecognizer);
+  gestures.register('pinch', Em.PinchGestureRecognizer);
+  gestures.register('press', Em.PressGestureRecognizer);
+  gestures.register('swipe', Em.SwipeGestureRecognizer);
+  gestures.register('tap', Em.TapGestureRecognizer);
+  gestures.register('touchHold', Em.TouchHoldGestureRecognizer);
+
+  //var gestureManager = get(app, 'gestureManager');
+  set(gestureManager, 'registeredGestures', gestures);
+/*
   Application.registerInjection({
     name: 'createGestureManager',
 
@@ -64,5 +98,6 @@ Ember.onLoad('Ember.Application', function(Application) {
     }
 
   });
+  */
 
 });

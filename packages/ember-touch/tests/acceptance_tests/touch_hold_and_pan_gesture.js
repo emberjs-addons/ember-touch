@@ -1,6 +1,7 @@
 var set = Em.set;
 var get = Em.get;
 var view;
+var View;
 var application;
 var content = [];
 
@@ -19,14 +20,8 @@ module("Acceptance Touch Hold and Pan Gesture", {
     panEndWasCalled = false;
     touchHoldEndWasCalled = false;
 
-    application = Em.Application.create({
-      ready: function() {
-        start();
-      }
-    });
-    stop();
 
-    application.View = Em.CollectionView.extend({
+    View = Em.CollectionView.extend({
       
       content: Ember.A([0, 1, 2, 3, 4]),
 
@@ -75,15 +70,24 @@ module("Acceptance Touch Hold and Pan Gesture", {
 
 
     Em.run(function() {
-      view = application.View.create();
-      view.append();
+
+      application = Em.Application.create({
+        ready: function() {
+          view = View.create();
+          view.append();
+          start();
+        }
+      });
+      stop();
     });
 
   },
 
   teardown: function() {
-    view.destroy();
-    application.destroy();
+    Em.run(function() {
+      view.destroy();
+      application.destroy();
+    });
   }
 
 });
