@@ -76,7 +76,7 @@ module("Nested gesture recognizers", {
       childViews: ['nestedView'],
 
       nestedView: PinchPanView.extend({
-      elementId: 'nested-div',
+        elementId: 'nested-div',
         classNames: ['nestedId'],
 
         tapEnd: function(recognizer) {
@@ -93,7 +93,7 @@ module("Nested gesture recognizers", {
       application = Ember.Application.create({
         router: null,
         ready: function () {
-          outerdiv = OuterView.create();
+          outerdiv = OuterView.create({});
           outerdiv.append();
           start();
         }
@@ -105,8 +105,8 @@ module("Nested gesture recognizers", {
   },
 
   teardown: function() {
-
     Em.run(function() {
+      outerdiv.destroy();
       application.destroy();
     });
   }
@@ -116,6 +116,7 @@ test("Tap on the nested div", function() {
 
   // ====================================
   // Make it start
+  console.log('test one');
 
   var touchEvent = jQuery.Event('touchstart');
   touchEvent['originalEvent'] = {
@@ -177,8 +178,8 @@ test("Tap on the nested div", function() {
 
   ok(tapEndWasCalled, 'tap end should have been called');
 });
-
 test("Simultaneous pinch and pan on the outer div", function() {
+
 
   // ====================================
   // Make it possible
@@ -282,12 +283,12 @@ test("Simultaneous pinch and pan on the outer div", function() {
 
   equal(outerdiv.scale,2,'double the scale');
 });
-
 test("one finger down on nested one, other on outer", function() {
 
   // ====================================
   // Put first finger down on nested div
 
+  console.log('test one');
   var touchEvent = jQuery.Event('touchstart');
   touchEvent['originalEvent'] = {
     targetTouches: [
