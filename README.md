@@ -12,7 +12,7 @@ Visit the [Project Page](http://ember-touch-website.herokuapp.com/).
 
 You could import the project in some of the following ways:
 
-  - Download the latest version [ember-touch.latest.js](http://cloud.github.com/downloads/emberjs-addons/ember-touch/ember-touch-latest.js)
+  - Download the latest version [ember-touch.js](https://raw.github.com/emberjs-addons/ember-touch/master/dist/ember-touch.js)
 
   - Build it, executing _rake dist_ command and import dist/ember-touch.js  into your project.
 
