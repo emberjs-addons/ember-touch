@@ -63,7 +63,7 @@
     // Load ember distribution from query vars
     var dist = 'spade';
     var emberMatch = location.search.match(/ember=([^&]+)/), 
-        emberVersion = emberMatch ? emberMatch[1] : "1.0.0-rc.1";
+        emberVersion = emberMatch ? emberMatch[1] : "";
 
   </script>
 
@@ -89,7 +89,7 @@
 
     document.write(unescape('%3Cscript src="handlebars-1.0.0-rc.3.js"%3E%3C/script%3E'));
 
-    var emberPackage='ember-'+emberVersion+'-spade.js';
+    var emberPackage='ember'+emberVersion+'-spade.js';
     document.write(unescape('%3Cscript src="../dist/'+emberPackage+'"%3E%3C/script%3E'));
 
   </script>
