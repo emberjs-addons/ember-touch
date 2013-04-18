@@ -9,6 +9,8 @@ module("Gesture Manager",{
     Em.run(function() {
       application = Em.Application.create({
         ready: function() {
+
+          Ember.Container.defaultContainer = this.__container__;
           start();
         }
       });
@@ -21,7 +23,6 @@ module("Gesture Manager",{
     Em.run(function() {
       application.destroy();
     });
-    Ember.Container.defaultContainer = null;
   }
 });
 

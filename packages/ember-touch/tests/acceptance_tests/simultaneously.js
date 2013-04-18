@@ -91,6 +91,8 @@ module("Simultaneously Feature", {
     Em.run(function() {
       application = Em.Application.create({
         ready: function() {
+
+          Ember.Container.defaultContainer = this.__container__;
           start();
         }
       });
@@ -104,7 +106,6 @@ module("Simultaneously Feature", {
     Em.run(function() {
       application.destroy();
     });
-    Ember.Container.defaultContainer = null;
 
   }
 

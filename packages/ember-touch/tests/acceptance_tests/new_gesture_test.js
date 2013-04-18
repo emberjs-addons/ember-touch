@@ -11,7 +11,6 @@ module("New gestures", {
       application = Em.Application.create({
         ready: function() {
 
-          //FIXME
           Ember.Container.defaultContainer = this.__container__;
 
           // Enable new gestures with application initializer
@@ -36,10 +35,6 @@ module("New gestures", {
       application.destroy();
 
     });
-
-    //FIXME
-    Ember.Container.defaultContainer = null;
-
 
   }  
 

@@ -5,11 +5,7 @@ var view;
 
 module("Test Gesture Recognizer",{
   setup: function() {
-/*
-    Ember.run(function() {
-      application = Ember.Application.create({router: null });
-    });
-*/
+
     Em.run(function() {
       application = Em.Application.create({
         ready: function() {
@@ -26,7 +22,6 @@ module("Test Gesture Recognizer",{
       if(view) view.destroy();
       application.destroy();
     });
-    Ember.Container.defaultContainer = null;
   }
 });
 

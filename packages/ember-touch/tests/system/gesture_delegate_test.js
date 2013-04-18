@@ -31,7 +31,6 @@ module("Gesture Delegate", {
       MyApp = null;
     });
 
-    Ember.Container.defaultContainer = null;
   }
 
 });
