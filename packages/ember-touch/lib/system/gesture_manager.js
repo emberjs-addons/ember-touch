@@ -1,8 +1,8 @@
 var get = Em.get; var set = Em.set;
 
 /**
-@module ember
-@submodule ember-touch
+  @module ember
+  @submodule ember-touch
 */
 
 /**
@@ -39,7 +39,13 @@ Em.GestureManager = Em.Object.extend({
     @type Em.ApplicationGestureManager
     @property applicationGestureManager
   */
-  applicationGestureManager: null,
+  //applicationGestureManager: null,
+
+  applicationGestureManager: Ember.computed(function() {
+    return this.view.get('container').lookup('gesture:application');
+  }),
+
+  container: null,
 
   /**
     The Em.View which belongs this `GestureManager` instance.
@@ -114,12 +120,15 @@ Em.GestureManager = Em.Object.extend({
       handler.call(this.view, eventObject);
     }
 
-    if ( !this.applicationGestureManager.get('isAllBlocked') ) {
+
+    var agm = this.get('applicationGestureManager'); 
+
+    if ( !agm.get('isAllBlocked') ) {
 
       if ( l > 0 ) {
 
         //appGestureManager allow to pass touchEvents at the App Level
-        var gesturesCanReceiveTouchEvent = this.applicationGestureManager.get('isBlocked')? this.applicationGestureManager.shouldReceiveTouch(this.view) : true;
+        var gesturesCanReceiveTouchEvent = agm.get('isBlocked')? agm.shouldReceiveTouch(this.view) : true;
         if ( gesturesCanReceiveTouchEvent ) {
 
           var gesture,

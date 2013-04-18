@@ -14,6 +14,8 @@ module("Gesture Delegate", {
     Em.run(function() {
       application = Em.Application.create({
         ready: function() {
+
+          Ember.Container.defaultContainer = this.__container__;
           start();
         }
       });
@@ -28,6 +30,8 @@ module("Gesture Delegate", {
       application.destroy();
       MyApp = null;
     });
+
+    Ember.Container.defaultContainer = null;
   }
 
 });
@@ -38,19 +42,16 @@ module("Gesture Delegate", {
 
 test("can be assigned with delegateName property ", function() {
 
-
     var delegate = Em.GestureDelegate.create({
         name: 'application_delegate',
 
         shouldReceiveTouch: function(gesture, view, event) {
           return true; 
         }
-
     });
 
-    var gestureDelegates = application.get('gestureManager').get('delegates');
-
-    gestureDelegates.add(delegate);
+    var applicationGestureManager = application.get('gestureManager');
+    applicationGestureManager.registerDelegate(delegate);
 
     var view = Em.View.create({
       
@@ -101,9 +102,6 @@ test("can be assigned with delegateName property ", function() {
     equal(gestures.length,1,"there should be only tap gesture");
     ok( !gestures[0].get('delegate') ,"the delegate is empty ");
 
-
-
-    gestureDelegates.clear();
 
 });
 

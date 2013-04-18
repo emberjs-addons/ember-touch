@@ -49,7 +49,12 @@ Em.Gesture = Em.Object.extend({
   /**
     Assigned on startup.
   */
-  applicationGestureManager: null,
+  applicationGestureManager: Ember.computed(function() {
+    // TODO: more elegant way
+    return this.view.get('container').lookup('gesture:application');
+  }),
+
+  container: null,
 
   /**
     Specifies whether a gesture is discrete or continuous.
@@ -152,9 +157,9 @@ Em.Gesture = Em.Object.extend({
 
     if (!delegate && delegateName ) {
 
-      var delegates = get(get(this, 'applicationGestureManager'), 'delegates');
+      var applicationGestureManager = get(this, 'applicationGestureManager');
 
-      delegate = delegates.find(delegateName);
+      delegate = applicationGestureManager.findDelegate(delegateName);
       Em.assert('empty delegate, attempting to set up delegate based on delegateName', delegate);
       set(this, 'delegate', delegate);
 
@@ -251,10 +256,13 @@ Em.Gesture = Em.Object.extend({
     if ( !this.simultaneously ) {
 
       var allowedView = this.view;
-
-      this.applicationGestureManager.block(this.view, function(v) {
+      var callback = function(v) {
         return allowedView === v;
-      });
+      };
+
+      var agm = this.get('applicationGestureManager');
+      agm.block.apply(agm, [allowedView, callback]);
+
 
     }
 
@@ -424,6 +432,7 @@ Em.Gesture = Em.Object.extend({
     @method touchMove
   */
   touchMove: function(evt) {
+
     var state = get(this, 'state');
 
     if (state === Em.Gesture.WAITING_FOR_TOUCHES || state === Em.Gesture.ENDED || state === Em.Gesture.CANCELLED) {

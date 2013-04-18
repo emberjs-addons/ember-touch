@@ -5,18 +5,28 @@ var view;
 
 module("Test Gesture Recognizer",{
   setup: function() {
-
+/*
     Ember.run(function() {
       application = Ember.Application.create({router: null });
+    });
+*/
+    Em.run(function() {
+      application = Em.Application.create({
+        ready: function() {
+          start();
+        }
+      });
+      stop();
     });
 
   },
 
   teardown: function() {
-    if(view) view.destroy();
-    if (application) {
-      Ember.run(function(){ application.destroy(); });
-    }
+    Em.run(function() {
+      if(view) view.destroy();
+      application.destroy();
+    });
+    Ember.Container.defaultContainer = null;
   }
 });
 

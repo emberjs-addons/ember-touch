@@ -3,6 +3,7 @@ var get = Em.get;
 var application;
 var touchEvent;
 var PanView, SwipeView;
+var panView, swipeView;
 
 var panStartWasCalled = false;
 var panChangeWasCalled = false;
@@ -87,7 +88,6 @@ module("Simultaneously Feature", {
         }
 
       });
-
     Em.run(function() {
       application = Em.Application.create({
         ready: function() {
@@ -104,6 +104,8 @@ module("Simultaneously Feature", {
     Em.run(function() {
       application.destroy();
     });
+    Ember.Container.defaultContainer = null;
+
   }
 
 });
@@ -112,14 +114,13 @@ module("Simultaneously Feature", {
 
 test("With simultaneously enabled.", function() {
   
-
-  var swipeView = SwipeView.create({
+  swipeView = SwipeView.create({
     swipeOptions: {
       simultaneously: true
     }
   });
 
-  var panView = PanView.create({
+  panView = PanView.create({
     panOptions: {
       simultaneously: true
     }
@@ -179,22 +180,23 @@ test("With simultaneously enabled.", function() {
 
   ok( swipeStartWasCalled, ' all should be recognized ' );
 
-  swipeView.destroy();
-  panView.destroy();
-
+  Em.run(function() {
+    swipeView.destroy();
+    panView.destroy();
+  });
 
 });
 
 
 test("Only one view can be recognized when simultaneously is disabled.", function() {
 
-  var swipeView = SwipeView.create({
+  swipeView = SwipeView.create({
     swipeOptions: {
       simultaneously: false
     }
   });
 
-  var panView = PanView.create({
+  panView = PanView.create({
     panOptions: {
       simultaneously: false
     }
@@ -206,6 +208,7 @@ test("Only one view can be recognized when simultaneously is disabled.", functio
   });
 
 
+
   touchEvent = new jQuery.Event('touchstart');
   touchEvent['originalEvent'] = {
     targetTouches: [ {
@@ -216,6 +219,7 @@ test("Only one view can be recognized when simultaneously is disabled.", functio
   };
   panView.$().trigger( touchEvent );
 
+
   touchEvent = new jQuery.Event('touchmove');
   touchEvent['originalEvent'] = {
     changedTouches: [{
@@ -225,12 +229,12 @@ test("Only one view can be recognized when simultaneously is disabled.", functio
     }]
   };
   panView.$().trigger( touchEvent );
+
 
 
   ok( panStartWasCalled, 'pan Start Was called ');
 
 
-  
   touchEvent = new jQuery.Event('touchstart');
   touchEvent['originalEvent'] = {
     targetTouches: [ {
@@ -241,6 +245,7 @@ test("Only one view can be recognized when simultaneously is disabled.", functio
   };
   swipeView.$().trigger( touchEvent );
 
+
   touchEvent = new jQuery.Event('touchmove');
   touchEvent['originalEvent'] = {
     changedTouches: [{
@@ -250,6 +255,7 @@ test("Only one view can be recognized when simultaneously is disabled.", functio
     }]
   };
   swipeView.$().trigger( touchEvent );
+
 
   ok( !swipeStartWasCalled, ' when simultaneously is disabled and a view is recognized, no other simultaneaously disable view can be recognized' );
 
@@ -274,6 +280,7 @@ test("Only one view can be recognized when simultaneously is disabled.", functio
       pageY: 0
     }]
   };
+
   swipeView.$().trigger( touchEvent );
 
   ok( swipeStartWasCalled, ' after unblock AppGestureManager all should be working ok ' );
@@ -299,12 +306,12 @@ test("Only one view can be recognized when simultaneously is disabled.", functio
       pageY: 0
     }]
   };
+
   panView.$().trigger( touchEvent );
 
   ok( !panStartWasCalled, 'pan Start cannot be called ');
 
   application.get('gestureManager').unblock(swipeView);
-
 
   touchEvent = new jQuery.Event('touchstart');
   touchEvent['originalEvent'] = {
@@ -329,8 +336,12 @@ test("Only one view can be recognized when simultaneously is disabled.", functio
 
 
   application.get('gestureManager').unblock(panView);
-  swipeView.destroy();
-  panView.destroy();
+
+  Em.run(function() {
+    swipeView.destroy();
+    panView.destroy();
+  });
+
 
 });
 
@@ -338,13 +349,14 @@ test("Only one view can be recognized when simultaneously is disabled.", functio
 
 test("When unblock a view which did not block, throw exception", function() {
 
-  var swipeView = SwipeView.create({
+
+  swipeView = SwipeView.create({
     swipeOptions: {
       simultaneously: false
     }
   });
 
-  var panView = PanView.create({
+  panView = PanView.create({
     panOptions: {
       simultaneously: false
     }
@@ -388,7 +400,10 @@ test("When unblock a view which did not block, throw exception", function() {
 
   application.get('gestureManager').unblock(panView);
 
-  swipeView.destroy();
-  panView.destroy();
+  Em.run(function() {
+    swipeView.destroy();
+    panView.destroy();
+  });
+
 
 });

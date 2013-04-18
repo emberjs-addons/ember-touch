@@ -116,7 +116,6 @@ test("Tap on the nested div", function() {
 
   // ====================================
   // Make it start
-  console.log('test one');
 
   var touchEvent = jQuery.Event('touchstart');
   touchEvent['originalEvent'] = {
@@ -288,7 +287,6 @@ test("one finger down on nested one, other on outer", function() {
   // ====================================
   // Put first finger down on nested div
 
-  console.log('test one');
   var touchEvent = jQuery.Event('touchstart');
   touchEvent['originalEvent'] = {
     targetTouches: [

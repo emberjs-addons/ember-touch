@@ -45,9 +45,9 @@ module("Press Test",{
       changedTouches: []
     };
     view.$().trigger(touchEvent);
-    view.destroy();
 
     Em.run(function(){
+      view.destroy();
       application.destroy();
     });
   }

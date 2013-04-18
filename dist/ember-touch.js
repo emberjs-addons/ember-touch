@@ -8,63 +8,6 @@
 
 
 (function() {
-
-/**
-@module ember
-@submodule ember-touch
-*/
-
-/**
-   An instance of this class is injected in the Application namespace
-   to registry `GestureDelegate` instances in an application.
-
-   Whenever a `Gesture` setups its `delegateName` property, it
-   assigns its `gestureDelegate` instance calling the `find` method of the
-   `GestureDelegates` instance.
-
-  @class GestureDelegates
-  @namespace Ember
-  @extends Em.Object
-  @private
-*/
-
-Em.GestureDelegates = Em.Object.extend({
-
-  /**
-    @method _delegates
-    @private
-  */
-  _delegates: {},
-
-  /**
-    @method add
-  */
-  add: function(delegate) {
-    this._delegates[ delegate.get('name') ] = delegate;
-  },
-
-  /**
-    @method find
-  */
-  find: function( name ) {
-    return this._delegates[name];
-  },
-
-  /**
-    @method clear
-  */
-  clear: function() {
-    this._delegates = {};
-  }
-
-
-});
-
-})();
-
-
-
-(function() {
 Em.TimeoutTouchEventType = {
   Cancel: 'cancel',
   End: 'end'
@@ -82,94 +25,6 @@ by an user touch event.
 Em.TimeoutTouchEvent = function(options){
   this.type = options.type;
 };
-
-})();
-
-
-
-(function() {
-var get = Em.get;
-var set = Em.set;
-
-/**
-@module ember
-@submodule ember-touch
-*/
-
-/**
-
-  Registry of known gestures in the system which is used in the view's `init`
-  method to find which gestures are supported by the initialized view.
-
-  An instance of this class is injected into the Application namespace and
-  adds default built-in gestures provided in the `ember-touch` package.
-
-  The programmer must register his own gestures when he wants the system
-  to be aware of them.
-
-  @class RegisteredGestureList
-  @namespace Ember
-  @extends Em.Object
-  @private
-*/
-Em.RegisteredGestures = Em.Object.extend({
-
-  /**
-    @property _registeredGestures
-    @type Hash
-    @private
-  */
-  _registeredGestures: null,
-
-  init: function() {
-    this._registeredGestures = {};
-
-    return this._super();
-  },
-
-  /**
-    Registers a gesture recognizer to the system.
-    The gesture recognizer is identified by the name parameter. It must be globally unique.
-
-    @method register
-  */
-  register: function(name, /** Em.Gesture */recognizer) {
-    var registeredGestures = this._registeredGestures;
-
-    if (registeredGestures[name] !== undefined) {
-      throw new Em.Error(name+" already exists as a registered gesture recognizer. Gesture recognizers must have globally unique names.");
-    }
-
-    registeredGestures[name] = recognizer;
-  },
-
-  /**
-    Unregister a gesture.
-    @method unregister
-  */
-  unregister: function(name) {
-    var registeredGestures = this._registeredGestures;
-
-    if (registeredGestures[name] !== undefined) {
-      registeredGestures[name] = undefined;
-    }
-  },
-
-  /**
-    Registers a gesture recognizer in the system.
-    The gesture recognizer is identified by the name parameter
-    which must be unique in the application.
-
-    @method knownGestures
-  */
-  knownGestures: function() {
-    var registeredGestures = this._registeredGestures;
-
-    return (registeredGestures)? registeredGestures : {};
-  }
-
-});
-
 
 })();
 
@@ -297,6 +152,7 @@ Em.TouchList = Em.Object.extend({
 
 
 (function() {
+var get = Em.get, set = Em.set;
 
 /**
 @module ember
@@ -304,9 +160,9 @@ Em.TouchList = Em.Object.extend({
 */
 
 /**
-  An ApplicationGestureManager instance is injected at the Application
-  namespace to inform `GestureManager` instances if touch events can
-  be dispatched.
+  An ApplicationGestureManager instance is registered into the container
+  to inform `GestureManager` instances if touch events can
+  be dispatched and it stores application gestures and delegates.
 
   `GestureManager` instances deny dispatching events whenever the `isAllBlocked`
   property is true or `isBlocked` is true and the `shouldReceiveTouch` response
@@ -320,20 +176,13 @@ Em.ApplicationGestureManager = Em.Object.extend({
 
 
   /**
-    Access the registered gestureDelegates in the application.
+    Access the list of application delegates registered.
 
     @type GestureDelegates
-    @property gestureDelegates
+    @property _gestures
   */
-  gestureDelegates: null,
+  _delegates: null,
 
-  /**
-    Access the registered gestures in the application.
-
-    @type RegisteredGestures
-    @property registeredGestures
-  */
-  registeredGestures: null,
 
   /**
     Block application gesture recognition when true.
@@ -341,6 +190,13 @@ Em.ApplicationGestureManager = Em.Object.extend({
     @default false
   */
   isAllBlocked: false,
+
+  /**
+    Access the registered gestures in the application.
+
+    @property _gestures
+  */
+  _gestures: null,
 
   /**
     View which has blocked the recognizer. This is the
@@ -365,10 +221,68 @@ Em.ApplicationGestureManager = Em.Object.extend({
   */
   _shouldReceiveTouchFn:null,
 
+
+  init: function() {
+    this._super();
+    this._gestures = {};
+    this._delegates = {};
+
+  },
+
+  /**
+    Register a new gesture in the application
+
+    @method registerGesture
+  */
+  registerGesture: function(name, recognizer) {
+
+    if (this._gestures[name] !== undefined) {
+      throw new Ember.Error(name+" already exists as a registered gesture recognizer. Gesture recognizers must have globally unique names.");
+    }
+
+    this._gestures[name] = recognizer;
+
+  },
+
+  /**
+    @method unregisterGesture
+  */
+  unregisterGesture: function(name) {
+
+    if ( this._gestures[name] ) {
+      delete this._gestures[name];
+    }
+
+  },
+
+  /**
+    Get the list of the application gestures
+
+    @method knownGestures
+  */
+  knownGestures: function() {
+    return this._gestures || {};
+  },
+
+  /**
+    @method registerDelegate
+  */
+  registerDelegate: function(delegate) {
+    this._delegates[ delegate.get('name') ] = delegate;
+  },
+
+  /**
+    @method findDelegate
+  */
+  findDelegate: function( name ) {
+    return this._delegates[name];
+  },
+
+
   /**
     @property isBlocked
   */
-  isBlocked: Em.computed(function(){
+  isBlocked: Ember.computed(function(){
 
     return this.get('_isBlocked');
 
@@ -399,10 +313,9 @@ Em.ApplicationGestureManager = Em.Object.extend({
       throw new Error('manager has already blocked the gesture recognizer');
     }
 
-
-    this.set('_shouldReceiveTouchFn', shouldReceiveTouchFn);
-    this.set('_isBlocked', true);
-    this.set('_blockerView', view);
+    set(this, '_shouldReceiveTouchFn', shouldReceiveTouchFn);
+    set(this, '_isBlocked', true);
+    set(this, '_blockerView', view);
 
   },
 
@@ -556,8 +469,8 @@ Em.GestureDelegate = Em.Object.extend({
 var get = Em.get; var set = Em.set;
 
 /**
-@module ember
-@submodule ember-touch
+  @module ember
+  @submodule ember-touch
 */
 
 /**
@@ -594,7 +507,13 @@ Em.GestureManager = Em.Object.extend({
     @type Em.ApplicationGestureManager
     @property applicationGestureManager
   */
-  applicationGestureManager: null,
+  //applicationGestureManager: null,
+
+  applicationGestureManager: Ember.computed(function() {
+    return this.view.get('container').lookup('gesture:application');
+  }),
+
+  container: null,
 
   /**
     The Em.View which belongs this `GestureManager` instance.
@@ -669,12 +588,15 @@ Em.GestureManager = Em.Object.extend({
       handler.call(this.view, eventObject);
     }
 
-    if ( !this.applicationGestureManager.get('isAllBlocked') ) {
+
+    var agm = this.get('applicationGestureManager'); 
+
+    if ( !agm.get('isAllBlocked') ) {
 
       if ( l > 0 ) {
 
         //appGestureManager allow to pass touchEvents at the App Level
-        var gesturesCanReceiveTouchEvent = this.applicationGestureManager.get('isBlocked')? this.applicationGestureManager.shouldReceiveTouch(this.view) : true;
+        var gesturesCanReceiveTouchEvent = agm.get('isBlocked')? agm.shouldReceiveTouch(this.view) : true;
         if ( gesturesCanReceiveTouchEvent ) {
 
           var gesture,
@@ -818,7 +740,12 @@ Em.Gesture = Em.Object.extend({
   /**
     Assigned on startup.
   */
-  applicationGestureManager: null,
+  applicationGestureManager: Ember.computed(function() {
+    // TODO: more elegant way
+    return this.view.get('container').lookup('gesture:application');
+  }),
+
+  container: null,
 
   /**
     Specifies whether a gesture is discrete or continuous.
@@ -921,9 +848,9 @@ Em.Gesture = Em.Object.extend({
 
     if (!delegate && delegateName ) {
 
-      var delegates = get(get(this, 'applicationGestureManager'), 'delegates');
+      var applicationGestureManager = get(this, 'applicationGestureManager');
 
-      delegate = delegates.find(delegateName);
+      delegate = applicationGestureManager.findDelegate(delegateName);
       Em.assert('empty delegate, attempting to set up delegate based on delegateName', delegate);
       set(this, 'delegate', delegate);
 
@@ -1020,10 +947,13 @@ Em.Gesture = Em.Object.extend({
     if ( !this.simultaneously ) {
 
       var allowedView = this.view;
-
-      this.applicationGestureManager.block(this.view, function(v) {
+      var callback = function(v) {
         return allowedView === v;
-      });
+      };
+
+      var agm = this.get('applicationGestureManager');
+      agm.block.apply(agm, [allowedView, callback]);
+
 
     }
 
@@ -1193,6 +1123,7 @@ Em.Gesture = Em.Object.extend({
     @method touchMove
   */
   touchMove: function(evt) {
+
     var state = get(this, 'state');
 
     if (state === Em.Gesture.WAITING_FOR_TOUCHES || state === Em.Gesture.ENDED || state === Em.Gesture.CANCELLED) {
@@ -1329,54 +1260,46 @@ Em.Gesture.CANCELLED = 5;
 
 
 (function() {
-
 var set = Ember.set, get = Ember.get;
-
 
 Em.Application.reopen({
 
-  willDestroy: function() {
-    this._super();
+  gestureManager: Ember.computed(function() {
+    // TODO: more elegant way
+    return this.__container__.lookup('gesture:application');
+  })
 
-    var manager = get(this, 'gestureManager');
-    if ( !!manager ) {
-      manager.destroy();
-    }
+});
 
+
+Ember.Application.initializer({
+
+  name: 'gestureManager',
+  before: 'defaultGestures',
+
+  initialize: function(container) {
+    container.register('gesture:application', Ember.ApplicationGestureManager);
   }
 
 });
 
-Ember.onLoad('application', function(app) {
+Ember.Application.initializer({
 
-  if ( !!app.get('gestureManager') ) { return; }
+  name: 'defaultGestures',
+  after: 'gestureManager',
 
-  // This can be improved if a view instance could access its
-  // Application instance scope
-  var currentManager = Em.applicationGestureManager;
-  if ( !!currentManager ) {
-    Em.assert('Either you created multiple Application instances or you forgot to destroy it', currentManager.get('isDestroyed') );
+  initialize: function(container) {
+
+    var gestureManager = container.lookup('gesture:application');
+
+    gestureManager.registerGesture('pan', Em.PanGestureRecognizer);
+    gestureManager.registerGesture('pinch', Em.PinchGestureRecognizer);
+    gestureManager.registerGesture('press', Em.PressGestureRecognizer);
+    gestureManager.registerGesture('swipe', Em.SwipeGestureRecognizer);
+    gestureManager.registerGesture('tap', Em.TapGestureRecognizer);
+    gestureManager.registerGesture('touchHold', Em.TouchHoldGestureRecognizer);
+
   }
-
-  var gestureManager = Em.ApplicationGestureManager.create(),
-      delegates = Em.GestureDelegates.create();
-
-  set(gestureManager, 'delegates', delegates);
-
-  Em.applicationGestureManager = gestureManager;
-  set(app, 'gestureManager', gestureManager);
-
-
-
-  var gestures = Em.RegisteredGestures.create({});
-  gestures.register('pan', Em.PanGestureRecognizer);
-  gestures.register('pinch', Em.PinchGestureRecognizer);
-  gestures.register('press', Em.PressGestureRecognizer);
-  gestures.register('swipe', Em.SwipeGestureRecognizer);
-  gestures.register('tap', Em.TapGestureRecognizer);
-  gestures.register('touchHold', Em.TouchHoldGestureRecognizer);
-
-  set(gestureManager, 'registeredGestures', gestures);
 
 });
 
@@ -1401,27 +1324,28 @@ Em.View.reopen({
   */
   eventManager: null,
 
+  init: function() {
+    this._super();
+    this._createGestureManager();
+    
+  },
+
   /**
     Inspects the properties on the view instance and create gestures if they're
     used.
   */
-  init: function() {
-    this._super();
-
+  _createGestureManager: function() {
+    
     var eventManager = get(this, 'eventManager');
 
     if (!eventManager) {
 
-      // TODO: access via Application instance instead of global
-      // instance
-      var applicationGestureManager = Em.applicationGestureManager;
+      var applicationGestureManager = get(this, 'container').lookup('gesture:application');
+      var knownGestures = applicationGestureManager.knownGestures();
 
 
       var gestures = [];
-      var manager = Em.GestureManager.create({});
-      var knownGestures = get(applicationGestureManager, 'registeredGestures').knownGestures();
-
-
+      var manager = Em.GestureManager.create();
       Em.assert('You should register a gesture. Take a look at the registerGestures injection', !!knownGestures );
 
 
@@ -1437,7 +1361,6 @@ Em.View.reopen({
 
           optionsHash.name = gesture;
           optionsHash.view = this;
-          optionsHash.applicationGestureManager = applicationGestureManager;
           optionsHash.manager = manager;
 
           var extensions = {};
@@ -1465,13 +1388,14 @@ Em.View.reopen({
       }
 
 
-      set(manager, 'applicationGestureManager', applicationGestureManager);
       set(manager, 'view', this);
       set(manager, 'gestures', gestures);
 
       set(this, 'eventManager', manager);
 
     }
+
+
   }
 
 });

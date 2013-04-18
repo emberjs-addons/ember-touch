@@ -1,3 +1,4 @@
+var get = Em.get, set = Em.set;
 
 /**
 @module ember
@@ -5,9 +6,9 @@
 */
 
 /**
-  An ApplicationGestureManager instance is injected at the Application
-  namespace to inform `GestureManager` instances if touch events can
-  be dispatched.
+  An ApplicationGestureManager instance is registered into the container
+  to inform `GestureManager` instances if touch events can
+  be dispatched and it stores application gestures and delegates.
 
   `GestureManager` instances deny dispatching events whenever the `isAllBlocked`
   property is true or `isBlocked` is true and the `shouldReceiveTouch` response
@@ -21,20 +22,13 @@ Em.ApplicationGestureManager = Em.Object.extend({
 
 
   /**
-    Access the registered gestureDelegates in the application.
+    Access the list of application delegates registered.
 
     @type GestureDelegates
-    @property gestureDelegates
+    @property _gestures
   */
-  gestureDelegates: null,
+  _delegates: null,
 
-  /**
-    Access the registered gestures in the application.
-
-    @type RegisteredGestures
-    @property registeredGestures
-  */
-  registeredGestures: null,
 
   /**
     Block application gesture recognition when true.
@@ -42,6 +36,13 @@ Em.ApplicationGestureManager = Em.Object.extend({
     @default false
   */
   isAllBlocked: false,
+
+  /**
+    Access the registered gestures in the application.
+
+    @property _gestures
+  */
+  _gestures: null,
 
   /**
     View which has blocked the recognizer. This is the
@@ -66,10 +67,68 @@ Em.ApplicationGestureManager = Em.Object.extend({
   */
   _shouldReceiveTouchFn:null,
 
+
+  init: function() {
+    this._super();
+    this._gestures = {};
+    this._delegates = {};
+
+  },
+
+  /**
+    Register a new gesture in the application
+
+    @method registerGesture
+  */
+  registerGesture: function(name, recognizer) {
+
+    if (this._gestures[name] !== undefined) {
+      throw new Ember.Error(name+" already exists as a registered gesture recognizer. Gesture recognizers must have globally unique names.");
+    }
+
+    this._gestures[name] = recognizer;
+
+  },
+
+  /**
+    @method unregisterGesture
+  */
+  unregisterGesture: function(name) {
+
+    if ( this._gestures[name] ) {
+      delete this._gestures[name];
+    }
+
+  },
+
+  /**
+    Get the list of the application gestures
+
+    @method knownGestures
+  */
+  knownGestures: function() {
+    return this._gestures || {};
+  },
+
+  /**
+    @method registerDelegate
+  */
+  registerDelegate: function(delegate) {
+    this._delegates[ delegate.get('name') ] = delegate;
+  },
+
+  /**
+    @method findDelegate
+  */
+  findDelegate: function( name ) {
+    return this._delegates[name];
+  },
+
+
   /**
     @property isBlocked
   */
-  isBlocked: Em.computed(function(){
+  isBlocked: Ember.computed(function(){
 
     return this.get('_isBlocked');
 
@@ -100,10 +159,9 @@ Em.ApplicationGestureManager = Em.Object.extend({
       throw new Error('manager has already blocked the gesture recognizer');
     }
 
-
-    this.set('_shouldReceiveTouchFn', shouldReceiveTouchFn);
-    this.set('_isBlocked', true);
-    this.set('_blockerView', view);
+    set(this, '_shouldReceiveTouchFn', shouldReceiveTouchFn);
+    set(this, '_isBlocked', true);
+    set(this, '_blockerView', view);
 
   },
 

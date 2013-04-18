@@ -1,50 +1,42 @@
-
 var set = Ember.set, get = Ember.get;
-
 
 Em.Application.reopen({
 
-  willDestroy: function() {
-    this._super();
+  gestureManager: Ember.computed(function() {
+    // TODO: more elegant way
+    return this.__container__.lookup('gesture:application');
+  })
 
-    var manager = get(this, 'gestureManager');
-    if ( !!manager ) {
-      manager.destroy();
-    }
+});
 
+
+Ember.Application.initializer({
+
+  name: 'gestureManager',
+  before: 'defaultGestures',
+
+  initialize: function(container) {
+    container.register('gesture:application', Ember.ApplicationGestureManager);
   }
 
 });
 
-Ember.onLoad('application', function(app) {
+Ember.Application.initializer({
 
-  if ( !!app.get('gestureManager') ) { return; }
+  name: 'defaultGestures',
+  after: 'gestureManager',
 
-  // This can be improved if a view instance could access its
-  // Application instance scope
-  var currentManager = Em.applicationGestureManager;
-  if ( !!currentManager ) {
-    Em.assert('Either you created multiple Application instances or you forgot to destroy it', currentManager.get('isDestroyed') );
+  initialize: function(container) {
+
+    var gestureManager = container.lookup('gesture:application');
+
+    gestureManager.registerGesture('pan', Em.PanGestureRecognizer);
+    gestureManager.registerGesture('pinch', Em.PinchGestureRecognizer);
+    gestureManager.registerGesture('press', Em.PressGestureRecognizer);
+    gestureManager.registerGesture('swipe', Em.SwipeGestureRecognizer);
+    gestureManager.registerGesture('tap', Em.TapGestureRecognizer);
+    gestureManager.registerGesture('touchHold', Em.TouchHoldGestureRecognizer);
+
   }
-
-  var gestureManager = Em.ApplicationGestureManager.create(),
-      delegates = Em.GestureDelegates.create();
-
-  set(gestureManager, 'delegates', delegates);
-
-  Em.applicationGestureManager = gestureManager;
-  set(app, 'gestureManager', gestureManager);
-
-
-
-  var gestures = Em.RegisteredGestures.create({});
-  gestures.register('pan', Em.PanGestureRecognizer);
-  gestures.register('pinch', Em.PinchGestureRecognizer);
-  gestures.register('press', Em.PressGestureRecognizer);
-  gestures.register('swipe', Em.SwipeGestureRecognizer);
-  gestures.register('tap', Em.TapGestureRecognizer);
-  gestures.register('touchHold', Em.TouchHoldGestureRecognizer);
-
-  set(gestureManager, 'registeredGestures', gestures);
 
 });

@@ -14,27 +14,28 @@ Em.View.reopen({
   */
   eventManager: null,
 
+  init: function() {
+    this._super();
+    this._createGestureManager();
+    
+  },
+
   /**
     Inspects the properties on the view instance and create gestures if they're
     used.
   */
-  init: function() {
-    this._super();
-
+  _createGestureManager: function() {
+    
     var eventManager = get(this, 'eventManager');
 
     if (!eventManager) {
 
-      // TODO: access via Application instance instead of global
-      // instance
-      var applicationGestureManager = Em.applicationGestureManager;
+      var applicationGestureManager = get(this, 'container').lookup('gesture:application');
+      var knownGestures = applicationGestureManager.knownGestures();
 
 
       var gestures = [];
-      var manager = Em.GestureManager.create({});
-      var knownGestures = get(applicationGestureManager, 'registeredGestures').knownGestures();
-
-
+      var manager = Em.GestureManager.create();
       Em.assert('You should register a gesture. Take a look at the registerGestures injection', !!knownGestures );
 
 
@@ -50,7 +51,6 @@ Em.View.reopen({
 
           optionsHash.name = gesture;
           optionsHash.view = this;
-          optionsHash.applicationGestureManager = applicationGestureManager;
           optionsHash.manager = manager;
 
           var extensions = {};
@@ -78,13 +78,14 @@ Em.View.reopen({
       }
 
 
-      set(manager, 'applicationGestureManager', applicationGestureManager);
       set(manager, 'view', this);
       set(manager, 'gestures', gestures);
 
       set(this, 'eventManager', manager);
 
     }
+
+
   }
 
 });

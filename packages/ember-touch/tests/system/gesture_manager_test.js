@@ -21,6 +21,7 @@ module("Gesture Manager",{
     Em.run(function() {
       application.destroy();
     });
+    Ember.Container.defaultContainer = null;
   }
 });
 
@@ -88,7 +89,6 @@ test("manager avoid delivering events when isAllBlocked is true", function() {
 
     endCalled = false;
 
-
     application.get('gestureManager').set('isAllBlocked', true);
 
     Em.run(function(){
@@ -107,7 +107,11 @@ test("manager avoid delivering events when isAllBlocked is true", function() {
         pageY: 10
       }]
     };
-    view.$().trigger(touchEvent);
+
+
+    Em.run(function(){
+      view.$().trigger(touchEvent);
+    });
     equal(gestures[0].touches.get('length') , 0,"the touch was not included on the tap gesture ");
 
     application.get('gestureManager').set('isAllBlocked', false);
@@ -130,8 +134,10 @@ test("manager avoid delivering events when isAllBlocked is true", function() {
 
 test("manager avoid delivering events when gesture.isEnabled is false", function() {
 
-    var endCalled;
-    var view = Em.View.create({
+    var endCalled,
+        view;
+   
+    view = Em.View.create({
       
       tapOptions: {
         numberOfRequiredTouches: 1,
@@ -143,7 +149,6 @@ test("manager avoid delivering events when gesture.isEnabled is false", function
       }
 
     });
-
 
     endCalled = false;
 
@@ -182,26 +187,29 @@ test("manager avoid delivering events when gesture.isEnabled is false", function
 
 
 
-
 });
 
 
 test("manager avoid delivering events when gesture.isEnabled is setup via binding", function() {
 
-    var endCalled;
-    var view = Em.View.create({
+    var endCalled,
+        view;
 
-      isTapEnabled: false,
+    Em.run(function() {
+      view = Em.View.create({
 
-      tapOptions: {
-        numberOfRequiredTouches: 1,
-        isEnabledBinding: 'isTapEnabled'
-      },
+        isTapEnabled: false,
 
-      tapEnd: function(recognizer) {
-        endCalled = true;
-      }
+        tapOptions: {
+          numberOfRequiredTouches: 1,
+          isEnabledBinding: 'isTapEnabled'
+        },
 
+        tapEnd: function(recognizer) {
+          endCalled = true;
+        }
+
+      });
     });
 
 
@@ -210,7 +218,6 @@ test("manager avoid delivering events when gesture.isEnabled is setup via bindin
     Em.run(function(){
       view.append();
     });
-
 
     gestures = get(get(view, 'eventManager'), 'gestures');
     equal(gestures.length,1,"there should be only tap gesture");

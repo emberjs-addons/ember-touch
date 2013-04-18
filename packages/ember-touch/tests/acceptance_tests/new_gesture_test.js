@@ -1,46 +1,64 @@
 var set = Em.set; 
 var get = Em.get;
+var view;
 var application;
+var oldInitializers, locator, lookup;
 
-module("Em.View extensions", {
+module("New gestures", {
   setup: function() {
 
-    Em.run(function() {
+   Em.run(function() {
       application = Em.Application.create({
         ready: function() {
 
-          var gestureManager = get(this, 'gestureManager');
-          var gestures = get(gestureManager, 'registeredGestures');
-          gestures.register('viewTestGesture', Em.Object.extend());
+          //FIXME
+          Ember.Container.defaultContainer = this.__container__;
+
+          // Enable new gestures with application initializer
+          var applicationGestureManager = this.get('gestureManager');
+          applicationGestureManager.registerGesture('newGesture', Em.Object.extend() );
           start();
         }
       });
       stop();
-    });
+   });
+
 
   },
 
   teardown: function() {
+    
+
     Em.run(function() {
+
+      var applicationGestureManager = application.get('gestureManager');
+      applicationGestureManager.unregisterGesture('newGesture');
       application.destroy();
+
     });
+
+    //FIXME
+    Ember.Container.defaultContainer = null;
+
+
   }  
 
 });
 
 test("should detect gesture", function() {
 
-  var view = Em.View.create({
-    viewTestGestureStart: function() {
+
+  view = Em.View.create({
+    newGestureStart: function() {
 
     },
-    viewTestGestureChange: function() {
+    newGestureChange: function() {
 
     },
-    viewTestGestureEnd: function() {
+    newGestureEnd: function() {
 
     },
-    viewTestGestureCancel: function() {
+    newGestureCancel: function() {
 
     }
   });
@@ -54,12 +72,14 @@ test("should detect gesture", function() {
 
 test("should apply options", function() {
 
-  var view = Em.View.create({
-    viewTestGestureOptions: {
+
+  view = Em.View.create({
+
+    newGestureOptions: {
       numberOfRequiredTouches: 4
     },
 
-    viewTestGestureStart: function() {
+    newGestureStart: function() {
 
     }
   });
@@ -69,13 +89,14 @@ test("should apply options", function() {
 
   var gestures = get(eventManager, 'gestures');
   equal(gestures.length,1,'gesture exists');
+  var gesture = gestures[0];
+  equal(gesture.numberOfRequiredTouches,4, "should apply options hash");
 
-  equal(gestures[0].numberOfRequiredTouches,4, "should apply options hash");
 });
 
 test("A view without gestures have assigned a GestureManager at its eventManager property", function() {
 
-  var view = Em.View.create({
+  view = Em.View.create({
 
   });
 
