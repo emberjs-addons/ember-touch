@@ -510,7 +510,7 @@ Em.GestureManager = Em.Object.extend({
   //applicationGestureManager: null,
 
   applicationGestureManager: Ember.computed(function() {
-    return this.view.get('container').lookup('gesture:application');
+    return this.view.get('controller.container').lookup('gesture:application');
   }),
 
   container: null,
@@ -742,7 +742,7 @@ Em.Gesture = Em.Object.extend({
   */
   applicationGestureManager: Ember.computed(function() {
     // TODO: more elegant way
-    return this.view.get('container').lookup('gesture:application');
+    return this.view.get('controller.container').lookup('gesture:application');
   }),
 
   container: null,
@@ -1324,7 +1324,7 @@ Em.View.reopen({
   */
   eventManager: null,
 
-  init: function() {
+  willInsertElement: function() {
     this._super();
     this._createGestureManager();
     
@@ -1340,7 +1340,7 @@ Em.View.reopen({
 
     if (!eventManager) {
 
-      var applicationGestureManager = get(this, 'container').lookup('gesture:application');
+      var applicationGestureManager = get(this, 'controller.container').lookup('gesture:application');
       var knownGestures = applicationGestureManager.knownGestures();
 
 
