@@ -14,7 +14,7 @@ Em.View.reopen({
   */
   eventManager: null,
 
-  init: function() {
+  willInsertElement: function() {
     this._super();
     this._createGestureManager();
     
@@ -30,7 +30,7 @@ Em.View.reopen({
 
     if (!eventManager) {
 
-      var applicationGestureManager = get(this, 'container').lookup('gesture:application');
+      var applicationGestureManager = get(this, 'controller.container').lookup('gesture:application');
       var knownGestures = applicationGestureManager.knownGestures();
 
 
