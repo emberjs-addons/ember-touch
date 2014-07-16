@@ -51,7 +51,7 @@ Em.Gesture = Em.Object.extend({
   */
   applicationGestureManager: Ember.computed(function() {
     // TODO: more elegant way
-    return this.view.get('container').lookup('gesture:application');
+    return this.view.get('controller.container').lookup('gesture:application');
   }),
 
   container: null,
