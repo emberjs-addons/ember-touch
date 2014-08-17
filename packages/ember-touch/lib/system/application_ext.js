@@ -36,7 +36,7 @@ Ember.Application.initializer({
     gestureManager.registerGesture('swipe', Em.SwipeGestureRecognizer);
     gestureManager.registerGesture('tap', Em.TapGestureRecognizer);
     gestureManager.registerGesture('touchHold', Em.TouchHoldGestureRecognizer);
-
+    gestureManager.registerGesture('rotate', Em.RotateGestureRecognizer);
   }
 
 });
